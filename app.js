@@ -12,6 +12,9 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+import dotenv from 'dotenv';
+dotenv.config({path:'variables.env'});
+
 var app = express();
 
 // view engine setup

@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 
+import mongoose from 'mongoose';
+
+
+// Connect to our Database and handle any bad connections
+mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
+mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
+mongoose.connection.on('error', (err) => {
+  console.error(`  ❌  ❌  ${err.message}  ❌  ❌  `);
+});
+
+
 /**
  * Module dependencies.
  */
