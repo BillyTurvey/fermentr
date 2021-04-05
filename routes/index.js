@@ -11,6 +11,7 @@ router.get('/', (req, res, next) => {
 router.post('/incoming', (req, res, next) => {
   console.log(`🍺  INCOMING...  🌡`);
   console.log(req.body);
+	res.json(req);
 });
 
 export default router;
