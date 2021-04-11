@@ -10,6 +10,8 @@ mongoose.connection.on('error', (err) => {
   console.error(`  ❌  ❌  ${err.message}  ❌  ❌  `);
 });
 
+// Import models
+import Hour from 'models/Hour.js';
 
 /**
  * Module dependencies.
