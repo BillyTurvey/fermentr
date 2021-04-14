@@ -10,14 +10,14 @@ const deviceSchema = new mongoose.Schema({
 		type: String,
 		trim: true,
 	},
-	temperature: {
-		actual: [{
-			time: Number,
-			value: Number
-		}]
-	}
+	accessToken: String,
+	owner: {
+		type: String,
+		trim: true,
+	},
+	dateRegistered: Number
 });
 
-const Fermentation = mongoose.model('Fermentation', deviceSchema);
+const Device = mongoose.model('Device', deviceSchema);
 
-export default Fermentation;
+export default Device;

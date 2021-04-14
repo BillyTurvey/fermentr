@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
+import deviceRouter from './routes/device.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -14,6 +14,12 @@ const __dirname = dirname(__filename);
 
 import dotenv from 'dotenv';
 dotenv.config({path:'variables.env'});
+
+import TokenStrategy from ('passport-accesstoken');
+const strategyOptions = {
+  tokenHeader: 'x-custom-token',
+  tokenField: 'custom-token'
+};
 
 var app = express();
 
@@ -28,7 +34,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/device', deviceRouter);
+
+// Authentication middleware for devices
+passport.use(new TokenStrategy.Strategy(strategyOptions,
+  function (token, done) {
+      User.findOne({token: token}, function (err, device) {
+          if (err) {
+              return done(err);
+          }
+
+          if (!user) {
+              return done(null, false);
+          }
+
+          if (!user.verifyToken(token)) {
+              return done(null, false);
+          }
+
+          return done(null, user);
+      });
+  }
+));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
