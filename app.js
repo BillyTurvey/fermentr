@@ -3,10 +3,15 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import flash from 'connect-flash';
+import passport from 'passport';
+import session from 'express-session';
+import MongoDBStore from 'connect-mongodb-session'
+const SessionStore = MongoDBStore(session);
 
 import indexRouter from './routes/index.js';
-import deviceRouter from './routes/device.js';
-import userRouter from './routes/user.js';
+import deviceRouter from './routes/deviceRouter.js';
+import userRouter from './routes/userRouter.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -24,6 +29,7 @@ const strategyOptions = {
 
 var app = express();
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -33,12 +39,52 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
+// Sessions allow us to store data on visitors from request to request
+// This keeps users logged in and allows us to send flash messages
+
+//// Where we will store session data
+const store = new SessionStore({
+  uri: process.env.DB,
+  collection: 'mySessions',
+  connectionOptions: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000
+  }
+});
+
+//// Catch session store errors
+store.on('error', function(error) {
+  console.log(error);
+});
+
+app.use(session({
+  secret: process.env.SECRET,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    sameSite: 'lax'
+  },
+  store: store,
+  resave: true,
+  saveUninitialized: false, //required for where the law prohibits setting cookies without permission 
+}));
+
+// // Passport JS is what we use to handle our logins
+app.use(passport.initialize());
+app.use(passport.session());
+
+// pass variables to our templates + all requests
+app.use((req, res, next) => {
+  res.locals.flashes = req.flash();
+  next();
+});
+
+// Routes
 app.use('/', indexRouter);
 app.use('/device', deviceRouter);
 app.use('/user', userRouter);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,7 +96,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  
   // render the error page
   res.status(err.status || 500);
   res.render('error');

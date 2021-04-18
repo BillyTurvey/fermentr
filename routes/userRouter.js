@@ -21,6 +21,7 @@ router.post('/logIn',
 );
 
 router.get('/register', user.registrationForm);
-router.post('/register', );
+
+router.post('/register', user.register);
 
 export default router;
