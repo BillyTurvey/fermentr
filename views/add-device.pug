@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	form(action="/add-device" method="post")
+	
+		label(for="deviceName") Device Name – to help you differentiate multiple devices.
+		input(type="text", name="deviceName" required)
+
+		button(type="submit")

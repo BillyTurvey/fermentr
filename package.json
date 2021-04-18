@@ -8,6 +8,7 @@
     "prod": "pm2 start ./bin/www.js"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
@@ -18,7 +19,9 @@
     "passport": "^0.1.18",
     "passport-accesstoken": "^0.1.0",
     "path": "^0.12.7",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "uuid": "^8.3.0",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "cypress": "^6.8.0",

@@ -10,7 +10,7 @@ const deviceSchema = new mongoose.Schema({
 		type: String,
 		trim: true,
 	},
-	accessToken: String,
+	tokenHash: String,
 	owner: {
 		type: String,
 		trim: true,

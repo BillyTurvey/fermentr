@@ -11,9 +11,9 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Import models
-import Device from 'models/Device.js';
-import Fermentation from 'models/Fermentation.js';
-import Reading from 'models/Reading.js';
+import Device from '../models/Device.js';
+import Fermentation from '../models/Fermentation.js';
+import Reading from '../models/Reading.js';
 
 /**
  * Module dependencies.

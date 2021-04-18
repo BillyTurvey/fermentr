@@ -1,15 +1,44 @@
 import mongoose from 'mongoose';
 import Device from '../models/Device.js';
 import Reading from '../models/Reading.js';
+import validator from 'validator';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
+const generateTokenAndID = (req, res, next) => {
+	// res.locals.deviceID = uuidv4();
+	// res.locals.token = uuidv4();
+};
 
+const hashToken = (req, res, next) => {
+	const saltRounds = 12; //
+	bcrypt.hash('newID', saltRounds)
+	.then((hash) => {
+		res.locals.tokenHash = hash;
+		next();
+	});
+};
 
-const addDevice = (req, res, next) => {
-	//
+const add = (req, res, next) => {
+	validator.escape(req.body.deviceName);
+	const device = new Device({
+		deviceID: res.locals.deviceID,
+		name: res.body.deviceName,
+		tokenHash: res.locals.tokenHash,
+		dateRegistered: Date.now(),
+		owner: req.user
+	});
+	device.save()
+	.then()
 };
 
 const authenticateDevice = (req, res, next) => {
 	//
+};
+
+const sanitiseReading = (req, res, next) => {
+	validator.escape(req.body.deviceID);
+	validator.escape(req.body.reading);
 };
 
 const addReading = (req, res, next) => {
@@ -21,9 +50,21 @@ const addReading = (req, res, next) => {
 	reading.save().then(res.json({message: 'thank you'}));
 };
 
+const sendTargetTemp = (req, res, next) => {
+	//find fermentation in DB
+	//calculate the time location
+	//send it back to the device
+};
 
-
-export { addDevice, authenticateDevice, addReading, sendTargetTemp };
+export { 
+	add, 
+	sanitiseReading, 
+	generateTokenAndID,
+	hashToken,
+	authenticateDevice, 
+	addReading, 
+	sendTargetTemp
+};
 
 
 // WRITE  TESTS FOR THIS...
@@ -34,7 +75,8 @@ export { addDevice, authenticateDevice, addReading, sendTargetTemp };
 // 	- Device name
 // - Upon submission the form will be posted to the server and the following will happen:
 // 	- Input sanitisation.
-// 	- The device name must be unique to the user ie. multiple users may have devices with the same name but the same user may not have multiple devices with the same name.
+// 	- The device name must be unique to the user ie. multiple users may have devices 
+//     with the same name but the same user may not have multiple devices with the same name.
 // 	- The user may only register 5 devices, must check how many devices the user has.
 // 	- An access token and device ID will be generated on the server and..
 // 	- device will be saved to the database in the device collection...

@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import passport from 'passport';
 
 import indexRouter from './routes/index.js';
 import deviceRouter from './routes/device.js';
@@ -15,7 +16,7 @@ const __dirname = dirname(__filename);
 import dotenv from 'dotenv';
 dotenv.config({path:'variables.env'});
 
-import TokenStrategy from ('passport-accesstoken');
+import TokenStrategy from 'passport-accesstoken';
 const strategyOptions = {
   tokenHeader: 'x-custom-token',
   tokenField: 'custom-token'
@@ -43,15 +44,12 @@ passport.use(new TokenStrategy.Strategy(strategyOptions,
           if (err) {
               return done(err);
           }
-
           if (!user) {
               return done(null, false);
           }
-
           if (!user.verifyToken(token)) {
               return done(null, false);
           }
-
           return done(null, user);
       });
   }
