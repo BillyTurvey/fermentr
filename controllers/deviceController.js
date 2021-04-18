@@ -6,8 +6,8 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
 const generateTokenAndID = (req, res, next) => {
-	// res.locals.deviceID = uuidv4();
-	// res.locals.token = uuidv4();
+	res.locals.deviceID = uuidv4();
+	res.locals.token = uuidv4();
 };
 
 const hashToken = (req, res, next) => {

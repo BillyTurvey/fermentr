@@ -3,10 +3,10 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import passport from 'passport';
 
 import indexRouter from './routes/index.js';
 import deviceRouter from './routes/device.js';
+import userRouter from './routes/user.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -36,24 +36,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/device', deviceRouter);
+app.use('/user', userRouter);
 
-// Authentication middleware for devices
-passport.use(new TokenStrategy.Strategy(strategyOptions,
-  function (token, done) {
-      User.findOne({token: token}, function (err, device) {
-          if (err) {
-              return done(err);
-          }
-          if (!user) {
-              return done(null, false);
-          }
-          if (!user.verifyToken(token)) {
-              return done(null, false);
-          }
-          return done(null, user);
-      });
-  }
-));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

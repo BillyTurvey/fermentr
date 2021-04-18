@@ -1,0 +1,9 @@
+mixin logInForm() 
+	form(action=`/user/logIn` method="POST")
+		label(for="email") Email
+		input(type="text" name="email" value=email||'' required)
+
+		label(for="password") Password
+		input(type="password" name="password" required)
+
+		button(value="Submit") Submit

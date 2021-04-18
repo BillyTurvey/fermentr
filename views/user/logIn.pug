@@ -1,0 +1,11 @@
+extends ../layout
+
+include mixins/_logInForm
+
+block content
+	.inner
+		h2 Log In
+		+logInForm
+
+		a(href="/register") Register as a new user.
+		a(href="/resetpassword") Reset password.
