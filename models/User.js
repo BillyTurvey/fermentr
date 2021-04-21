@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 import mongodbErrorHandler from 'mongoose-mongodb-errors';
-import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -22,12 +22,38 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 		required: true
+	},
+	password: {
+		type: String,
+		required: true
 	}
 });
 
-userSchema.plugin(passportLocalMongoose, {usernameField: 'email'});
+userSchema.pre('save', function(next) {
+	if (!this.isModified('password')) {
+		return next();
+	}
+
+	bcrypt.hash(this.password, 12)
+		.then(function(hashedPassword) {
+			this.password = hashedPassword;
+			next();
+		})
+		.catch(function(err) {
+			return next(err);
+		});
+	});
+	
+	userSchema.methods.isAuthenticated = function(password) {
+		bcrypt.compare(password, this.password)
+			.then(function(authenticated) {
+				return authenticated; 
+			})
+			.catch(function(err) {
+				return next(err);
+			});
+};
+
 userSchema.plugin(mongodbErrorHandler);
 
-const User = mongoose.model('User', userSchema)
-
-export default User;
+export const User = mongoose.model('User', userSchema)
