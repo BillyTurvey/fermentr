@@ -1,17 +1,13 @@
 import User from '../models/User.js'
 import {promisify} from 'util';
 
-const renderRegistrationForm = (req, res) => {
-	res.render('register', { title: 'Register' });
+export const registrationForm = (req, res, next) => {
+	res.render('user/register');
 };
 
-const register = async (req, res, next) => {
-	const newUser = new User({
-		email: req.body.email,
-		name: req.body.name
-	});
-	const registerUser = promisify(User.register).bind(User);
-	registerUser(newUser, req.body.password)
+export const register = async (req, res, next) => {
+	//validate/sanitise TODO
+	User.create(req.body)
 		.then( () => {
 			req.flash('success', `${req.body.name}, your account was successfully created.`);
 			res.redirect('/');
@@ -26,14 +22,12 @@ const register = async (req, res, next) => {
 				res.render('user/register', {
 					title: 'Register', 
 					email: req.body.email,
-					name: req.body.fullName, 
+					name: req.body.name, 
 					flashes: req.flash(),
 				});
 		});
 };
 
-const registrationForm = (req, res, next) => {
-	res.render('user/register');
-};
-
-export { registrationForm, register};
+export const logIn = async (req, res, next) => {
+	await User.findOne()
+}

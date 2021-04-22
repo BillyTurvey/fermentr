@@ -29,20 +29,16 @@ const userSchema = new mongoose.Schema({
 	}
 });
 
-userSchema.pre('save', function(next) {
-	if (!this.isModified('password')) {
-		return next();
-	}
+userSchema.pre('save', async function(next) {
+	if (!this.isModified('password')) return next();
 
-	bcrypt.hash(this.password, 12)
-		.then(function(hashedPassword) {
-			this.password = hashedPassword;
-			next();
-		})
-		.catch(function(err) {
-			return next(err);
-		});
-	});
+	try {
+		this.password = await bcrypt.hash(this.password, 12);
+		next();
+	} catch (error) {
+		return next(err);
+	}
+});
 	
 	userSchema.methods.isAuthenticated = function(password) {
 		bcrypt.compare(password, this.password)
@@ -56,4 +52,6 @@ userSchema.pre('save', function(next) {
 
 userSchema.plugin(mongodbErrorHandler);
 
-export const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
+
+export default User;
