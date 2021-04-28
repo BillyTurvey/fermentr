@@ -22,6 +22,11 @@ router.post('/logIn',
 
 router.get('/register', user.registrationForm);
 
-router.post('/register', user.register);
+router.post('/register',
+	user.sanitizeAndValidateRegistration,
+	user.checkIfPasswordsMatch,
+	user.handleRegistrationValidationErrors,
+	user.register
+	);
 
 export default router;

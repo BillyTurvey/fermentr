@@ -52,6 +52,7 @@ userSchema.pre('save', async function(next) {
 
 userSchema.plugin(mongodbErrorHandler);
 
+
 const User = mongoose.model('User', userSchema)
 
 export default User;

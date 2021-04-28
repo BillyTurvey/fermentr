@@ -1,6 +1,11 @@
 extends ../layout 
 
 block content
+
+	h1 Register
+
+	a(href="/user/logIn") Already have an account? Log in here.
+
 	form(action=`/user/register` method="POST")
 
 		label(for="name") Name
