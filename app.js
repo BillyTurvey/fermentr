@@ -1,5 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
+import helmet from 'helmet';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -21,18 +22,15 @@ const __dirname = dirname(__filename);
 import dotenv from 'dotenv';
 dotenv.config({path:'variables.env'});
 
-import TokenStrategy from 'passport-accesstoken';
-const strategyOptions = {
-  tokenHeader: 'x-custom-token',
-  tokenField: 'custom-token'
-};
-
 var app = express();
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+app.use(helmet({
+  referrerPolicy: { policy: 'same-origin'}
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
