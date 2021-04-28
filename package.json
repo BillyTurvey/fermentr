@@ -22,7 +22,6 @@
     "http-errors": "~1.6.3",
     "mongodb": "^3.6.6",
     "mongoose": "^5.12.3",
-    "mongoose-mongodb-errors": "^0.0.2",
     "morgan": "~1.9.1",
     "passport": "^0.1.18",
     "passport-accesstoken": "^0.1.0",

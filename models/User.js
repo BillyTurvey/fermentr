@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import validator from 'validator';
 import bcrypt from 'bcrypt';
-import mongodbErrorHandler from 'mongoose-mongodb-errors';
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -49,9 +48,6 @@ userSchema.pre('save', async function(next) {
 				return next(err);
 			});
 };
-
-userSchema.plugin(mongodbErrorHandler);
-
 
 const User = mongoose.model('User', userSchema)
 

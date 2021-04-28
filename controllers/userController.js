@@ -7,8 +7,8 @@ export const registrationForm = (req, res, next) => {
 };
 
 export const sanitizeAndValidateRegistration = [
-  body('name', 'Name is a required field.').escape().trim().notEmpty().isByteLength(str [, {min:1, max:200}]),
-  body('name', 'Your entered name is tool long').isByteLength(str [, {min:1, max:200}]),
+  body('name', 'Name is a required field.').escape().trim().notEmpty(),
+  body('name', 'Your entered name is tool long').isByteLength({min:1, max:200}),
 	body('email', 'Email is a required field.').escape().trim().notEmpty(),
 	body('email', 'Email is not valid.').isEmail().normalizeEmail({
 		remove_dots: false,
@@ -48,11 +48,13 @@ export const register = async (req, res, next) => {
 		.then( () => {
 			req.flash('success', `${req.body.name}, your account was successfully created.`);
 			res.redirect('/');
+			console.log('USER CREATED:', req.user);
 		})
 		.catch(error => {
 				console.log(`Error during user registration:`);
-				console.error(error);
-				if (error.name == 'UserExistsError') {
+				console.log(error);
+				console.log(error.message);
+				if (error.message.includes('E11000')) {
 					error.message = 'Email already registered.';
 				};
 				req.flash('error', error.message);

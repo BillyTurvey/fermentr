@@ -88,36 +88,39 @@ describe('Email validation', function () {
 		cy.get('.flash--error')
 		.should('contain', 'Email is not valid.');
 	});
-	it('Rejects already registered emails', async function () {
-		const user = await cy.fixture('registeredUser');
-		cy.get('input[name="email"]').type(user.email);
-		cy.get('input[name="name"]').type(user.name);
-		cy.get('input[name="password"]').type(user.password);
-		cy.get('input[name="passwordConfirm"]').type(user.password+'{enter}');			
-		cy.get('.flash--error').should('contain', 'Email already registered.');
+	it('Rejects already registered emails', function () {
+		cy.fixture('registeredUser').then(user => {
+			cy.get('input[name="email"]').type(user.email);
+			cy.get('input[name="name"]').type(user.name);
+			cy.get('input[name="password"]').type(user.password);
+			cy.get('input[name="passwordConfirm"]').type(user.password+'{enter}');			
+			cy.get('.flash--error').should('contain', 'Email already registered.');
+		});
 	});
 });
 
 describe('Success', function () {
 	beforeEach(registerWithoutRequired);
-	it('redirects to home after registration with success flashes', async function () {
-		const user = await cy.fixture('registeredUser');
-		cy.get('input[name="email"]').type(newTestEmail());
-		cy.get('input[name="name"]').type(user.name);
-		cy.get('input[name="password"]').type(user.password);
-		cy.get('input[name="passwordConfirm"]').type(user.password+'{enter}');			
-		cy.get('.flash--error').should('contain', 'Email already registered.');
+	it('redirects to home after registration with success flashes', function () {
+		cy.fixture('registeredUser').then(user => {
+			cy.get('input[name="email"]').type(newTestEmail());
+			cy.get('input[name="name"]').type(user.name);
+			cy.get('input[name="password"]').type(user.password);
+			cy.get('input[name="passwordConfirm"]').type(user.password+'{enter}');
+			cy.contains('Welcome to Fermentr');
+		});
 	});
-	it('Registered user can log in', async function () {
-		const user = await cy.fixture('registeredUser');
-		const sameEmail = newTestEmail();
-		cy.get('input[name="email"]').type(sameEmail);
-		cy.get('input[name="name"]').type(user.name);
-		cy.get('input[name="password"]').type(user.password);
-		cy.get('input[name="passwordConfirm"]').type('Another Password44'+'{enter}');
-		cy.visit(url('/user/logIn'));			
-		cy.get('input[name="email"]').type(sameEmail);
-		cy.get('input[name="password"]').type('Another Password44'+'{enter}');
-		cy.get('.flash--success').should('contain', 'Log in successful');
+	it('Registered user can log in', function () {
+		cy.fixture('registeredUser').then(user => {
+			const sameEmail = newTestEmail();
+			cy.get('input[name="email"]').type(sameEmail);
+			cy.get('input[name="name"]').type(user.name);
+			cy.get('input[name="password"]').type(user.password);
+			cy.get('input[name="passwordConfirm"]').type('Another Password44'+'{enter}');
+			cy.visit(url('/user/logIn'));			
+			cy.get('input[name="email"]').type(sameEmail);
+			cy.get('input[name="password"]').type('Another Password44'+'{enter}');
+			cy.get('.flash--success').should('contain', 'Log in successful');
+		});
 	})
 });
