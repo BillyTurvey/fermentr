@@ -1,6 +1,6 @@
 extends ../layout
 
-include mixins/_logInForm
+include ../mixins/_logInForm
 
 block content
 	.inner
@@ -8,4 +8,5 @@ block content
 		+logInForm
 
 		a(href="/register") Register as a new user.
+		br
 		a(href="/resetpassword") Reset password.

@@ -1,21 +1,25 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block header 
-      header
-    
-    block messages 
-      if locals.flashes
-        .inner.inner--flashes
-          .flash-messages
-            - const categories = Object.keys(locals.flashes)
-            each category in categories
-              each message in flashes[category]
-                .flash(class=`flash--${category}`)
-                  p.flash__text!= message
-                  button.flash__remove(onClick='this.parentElement.remove()') &times;
-                  
-    block content
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		header
+			a(href='/')
+				h1 fermentr.io
+			nav
+				ul
+					li
+						a(href='')
+		block messages 
+			if locals.flashes
+				.inner.inner--flashes
+					.flash-messages
+						- const categories = Object.keys(locals.flashes)
+						each category in categories
+							each message in flashes[category]
+								.flash(class=`flash--${category}`)
+									p.flash__text!= message
+									button.flash__remove(onClick='this.parentElement.remove()') &times;
+									
+		block content

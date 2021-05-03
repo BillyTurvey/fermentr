@@ -5,7 +5,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import flash from 'connect-flash';
-import passport from 'passport';
+// import passport from 'passport';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session'
 const SessionStore = MongoDBStore(session);
@@ -22,11 +22,11 @@ const __dirname = dirname(__filename);
 import dotenv from 'dotenv';
 dotenv.config({path:'variables.env'});
 
-import TokenStrategy from 'passport-accesstoken';
-const strategyOptions = {
-  tokenHeader: 'x-custom-token',
-  tokenField: 'custom-token'
-};
+// import TokenStrategy from 'passport-accesstoken';
+// const strategyOptions = {
+//   tokenHeader: 'x-custom-token',
+//   tokenField: 'custom-token'
+// };
 
 var app = express();
 
@@ -42,7 +42,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
@@ -66,7 +66,7 @@ store.on('error', function(error) {
 });
 
 app.use(session({
-  secret: process.env.SECRET,
+  secret: process.env.SESSION_SECRET,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
     sameSite: 'lax'
@@ -76,9 +76,9 @@ app.use(session({
   saveUninitialized: false, //required for where the law prohibits setting cookies without permission 
 }));
 
-// // Passport JS is what we use to handle our logins
-app.use(passport.initialize());
-app.use(passport.session());
+// // // Passport JS is what we use to handle our logins
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
