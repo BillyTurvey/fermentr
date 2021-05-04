@@ -1,6 +1,4 @@
 import User from '../models/User.js';
-import {body, param, validationResult} from 'express-validator';
-import jwt from 'jsonwebtoken';
 import {newToken, verifyToken} from '../utils/auth.js';
 
 export const registrationForm = (req, res, next) => {
@@ -12,22 +10,40 @@ export const logInForm = (req, res, next) => {
 };
 
 export const logIn = async (req, res, next) => {
-	await User.findOne();
+	//find user in db
+	const user = await User.findOne({email: req.body.email}).exec();
+	// check email and password
+	if (!user || !user.isAuthenticated(req.body.password)) {
+		req.flash('error', 'Invalid login credentials.');
+		res.render('user/logIn', {
+			title: 'Log In',
+			email: req.body.email,
+			flashes: req.flash()
+		});
+	}
+	// give them a token
+	const token = newToken(user);
+	res.cookie('Bearer', token, {
+		secure: true,
+		httpOnly: true,
+		sameSite: 'lax'
+	});
+	// redirect
 };
 
 export const register = async (req, res, next) => {
 	try {
 		const user = await User.create(req.body);
-		const token = newToken(user);
-		req.flash(
-			'success',
-			`${req.body.name}, your account was successfully created.`
-		);
-		res.redirect('/');
+		req.flash('success', `${req.body.name}, your account was successfully created.`);
+		req.flash('success', 'You are now logged in.');
+		res.cookie('Bearer', newToken(user), {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'lax'
+		});
+		res.redirect('../..');
 	} catch (error) {
-		console.log(`Error during user registration:`);
-		console.log(error);
-		console.log(error.message);
+		console.log(`Error during user registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
 			error.message = 'Email already registered.';
 		}

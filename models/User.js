@@ -6,8 +6,8 @@ import bcrypt from 'bcrypt';
 const userSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: 'Please provide a name!', 
-		trim: true,
+		required: 'Please provide a name!',
+		trim: true
 	},
 	email: {
 		type: String,
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
 	}
 });
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
 
 	try {
@@ -38,17 +38,18 @@ userSchema.pre('save', async function(next) {
 		return next(err);
 	}
 });
-	
-	userSchema.methods.isAuthenticated = function(password) {
-		bcrypt.compare(password, this.password)
-			.then(function(authenticated) {
-				return authenticated; 
-			})
-			.catch(function(err) {
-				return next(err);
-			});
+
+userSchema.methods.isAuthenticated = function (password) {
+	bcrypt
+		.compare(password, this.password)
+		.then(function (resultBoolean) {
+			return resultBoolean;
+		})
+		.catch(function (err) {
+			return next(err);
+		});
 };
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 
 export default User;
