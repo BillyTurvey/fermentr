@@ -1,9 +1,14 @@
 extends layout
 
 block content
+
+	p Use this page to register a new device to your account. 
 	form(action="/add-device" method="post")
 
 		label(for="deviceName") Device Name – to help you differentiate multiple devices.
 		input(type="text", name="deviceName" required)
+
+		label(for="deviceName") Description (optional).
+		input(type="text", name="description")
 
 		button(type="submit")

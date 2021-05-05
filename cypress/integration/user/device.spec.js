@@ -1,7 +1,7 @@
 import {newTestEmail, url} from '../../fixtures/testUtils.js';
 
-const registerWithoutRequired = () => {
-	cy.visit(url('/user/register'), {
+const addDeviceWithoutRequired = () => {
+	cy.visit(url('/device/add'), {
 		onLoad: (contentWindow) => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
 			for (let i = 0; i < inputFields.length; i++) {
@@ -11,53 +11,28 @@ const registerWithoutRequired = () => {
 	});
 };
 
-describe('Registration page', function () {
-	beforeEach(registerWithoutRequired);
-	it('Greets with "Register"', function () {
-		cy.contains('Register');
+const logIn = () => {
+	cy.visit(url('user/logIn'));
+	cy.fixture('registeredUser').then((user) => {
+		cy.get('input[name="email"]').type(user.email);
+		cy.get('input[name="password"]').type(user.password);
+		cy.get('form').contains('Submit').click();
 	});
-	it('Links to login page', function () {
-		cy.contains('Already have an account? Log in here.').should('have.attr', 'href', '/user/logIn');
-	});
-});
+}
 
-describe('Invalid Form Submission', function () {
-	beforeEach(registerWithoutRequired);
-	it('Reloads page upon invalid form submission', function () {
-		cy.get('input[name="email"]').type(newTestEmail());
+// user must be logged in to view 'add device' page.
+// device name is a required field
+
+describe('Device name', function () {
+	beforeEach(addDeviceWithoutRequired);
+	it('is a required field', function () {
 		cy.get('form').contains('Submit').click();
-		cy.location('pathname').should('eq', '/user/register');
+		cy.get('.flash--error').should('contain', 'Device name is a required field.');
 	});
-	it('Requires password', function () {
-		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should('contain', 'Password is not valid.');
-	});
-	it('Repopulates entered form data after invalid submission - not password', function () {
-		const sameEmail = newTestEmail();
-		cy.get('input[name="email"]').type(sameEmail);
-		cy.get('input[name="name"]').type('Any Name');
-		cy.get('form').contains('Submit').click();
-		cy.get('input[name="email"]').should('have.attr', 'value', sameEmail);
-		cy.get('input[name="name"]').should('have.attr', 'value', 'Any Name');
-	});
-	it('does not repopulate password after invalid form submission', function () {
-		cy.get('input[name="name"]').type("Doesn't Repopulate Passwords");
-		cy.get('input[name="password"]').type('randomP@55word');
-		cy.get('input[name="passwordConfirm"]').type('randomP@55word');
-		cy.get('form').contains('Submit').click();
-		cy.get('input[name="password"]').should('be.empty');
-		cy.get('input[name="passwordConfirm"]').should('be.empty');
-	});
-	it('Requires passwords to match', function () {
-		const sameEmail = newTestEmail();
-		cy.get('input[name="email"]').type(sameEmail);
-		cy.get('input[name="name"]').type('Any Name');
-		cy.get('input[name="password"]').type('randomP@55word');
-		cy.get('input[name="passwordConfirm"]').type('differentP@55word');
-		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should('contain', 'Passwords do not match.');
-	});
-});
+// device name mustbe unique to user
+// all fields are sanitized/escaped
+// form submition will supply user with access token.
+
 
 describe('Sanitization', function () {
 	beforeEach(registerWithoutRequired);

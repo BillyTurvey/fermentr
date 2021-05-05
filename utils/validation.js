@@ -50,3 +50,26 @@ export const handleRegistrationValidationErrors = (req, res, next) => {
 		next();
 	}
 };
+
+export const sanitizeAndValidateDeviceRegistration = [
+	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
+	body('deviceName', 'Your device name is tool long').isByteLength({min: 1, max: 200}),
+	body('description', 'Please shorten your description').escape().trim().isByteLength({max: 400}),
+	(req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			req.flash(
+				'error',
+				errors.array().map((err) => err.msg)
+			);
+			res.render('user/register', {
+				title: 'Register',
+				email: req.body.email,
+				name: req.body.name,
+				flashes: req.flash()
+			});
+		} else {
+			next();
+		}
+	}
+];
