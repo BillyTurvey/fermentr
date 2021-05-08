@@ -1,19 +1,16 @@
-import {newTestEmail, url, unrequireFormInputs} from '../../fixtures/testUtils.js';
-
-const logIn = url.addPath('/user/logIn');
-const home = url.addPath('/');
+import {newTestEmail, unrequireFormInputs} from '../../fixtures/testUtils.js';
 
 const visitLogInWithoutRequired = () => {
-	cy.visit(logIn, {onLoad: unrequireFormInputs});
+	cy.visit('/user/logIn', {onLoad: unrequireFormInputs});
 };
 
-describe('Log in', function () {
+describe('Log in page', function () {
 	beforeEach(visitLogInWithoutRequired);
 	it('Greets with "Log In"', function () {
 		cy.contains('Log In');
 	});
 	it('Links to "Reset password"', function () {
-		cy.contains('Reset password').should('have.attr', 'href', '/user/resetpassword');
+		cy.contains('Reset password').should('have.attr', 'href', '/user/resetPassword');
 	});
 	it('Links to /register', function () {
 		cy.contains('Register').should('have.attr', 'href', '/user/register');
@@ -22,14 +19,15 @@ describe('Log in', function () {
 		cy.get('form').contains('Submit').click();
 		cy.location('pathname').should('eq', 'user/logIn');
 	});
-	// it('Repopulates email after invalid submition', function () {
-	// 	const sameEmail = newTestEmail();
-	// 	cy.get('input[name="email"]').type(sameEmail);
-	// 	cy.get('input[name="password"]').type('randomWORDS3453');
-	// 	cy.get('form').contains('Submit').click();
-	// 	cy.get('input[name="email"]').should('have.attr', 'value', sameEmail);
-	// });
+	it('Repopulates email after invalid submition', function () {
+		const sameEmail = newTestEmail();
+		cy.get('input[name="email"]').type(sameEmail);
+		cy.get('input[name="password"]').type('randomWORDS3453');
+		cy.get('form').contains('Submit').click();
+		cy.get('input[name="email"]').should('have.attr', 'value', sameEmail);
+	});
 	it('Requires email', function () {
+		cy.get('input[name="password"]').type('randomWORDS3453');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Email is a required field');
 	});
@@ -46,12 +44,13 @@ describe('Log in', function () {
 
 describe('If user is not logged in...', function () {
 	before(() => {
-		cy.visit(url.addPath('/logout'));
+		cy.request('POST', 'user/logout');
+		cy.visit('/');
 	});
-	it('Log In option is present in the nav', function () {
+	it('Log in option is present in the nav', function () {
 		cy.get('a').contains('Log In').should('exist');
 	});
-	it('Log Out option is not present in the nav', function () {
+	it('Log out option is not present in the nav', function () {
 		cy.get('a').contains('Log Out').should('not.exist');
 	});
 });
@@ -78,18 +77,8 @@ describe('Logging out...', function () {
 			cy.visit(logIn);
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="password"]').type(user.password + '{enter}');
-			cy.get('a').contains('Log Out').click();
+			cy.get('nav > button').contains('Log Out').click();
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
-		});
-	});
-	it('User is returned to the same page after being logged out', function () {
-		cy.fixture('registeredUser').then((user) => {
-			cy.visit(logIn);
-			cy.get('input[name="email"]').type(user.email);
-			cy.get('input[name="password"]').type(user.password + '{enter}');
-			cy.visit(url.addPath('/strive'));
-			cy.get('a').contains('Log Out').click();
-			cy.url().should('include', 'strive');
 		});
 	});
 });

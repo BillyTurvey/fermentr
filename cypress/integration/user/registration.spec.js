@@ -1,7 +1,7 @@
 import {newTestEmail, url, unrequireFormInputs} from '../../fixtures/testUtils.js';
 
 const visitRegisterWithoutRequired = () => {
-	cy.visit(url('/user/register'), {onLoad: unrequireFormInputs});
+	cy.visit('/user/register', {onLoad: unrequireFormInputs});
 };
 
 describe('Registration page', function () {

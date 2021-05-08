@@ -23,12 +23,15 @@ export const logIn = async (req, res, next) => {
 	}
 	// give them a token
 	const token = newToken(user);
+	console.log(`Woof`);
 	res.cookie('Bearer', token, {
 		secure: true,
 		httpOnly: true,
 		sameSite: 'lax'
 	});
+	console.log(`Quack`);
 	// redirect
+	res.redirect('/');
 };
 
 export const register = async (req, res, next) => {
