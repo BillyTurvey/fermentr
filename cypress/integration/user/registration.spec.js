@@ -1,18 +1,11 @@
-import {newTestEmail, url} from '../../fixtures/testUtils.js';
+import {newTestEmail, url, unrequireFormInputs} from '../../fixtures/testUtils.js';
 
-const registerWithoutRequired = () => {
-	cy.visit(url('/user/register'), {
-		onLoad: (contentWindow) => {
-			let inputFields = contentWindow.document.getElementsByTagName('input');
-			for (let i = 0; i < inputFields.length; i++) {
-				inputFields.item(i).required = false;
-			}
-		}
-	});
+const visitRegisterWithoutRequired = () => {
+	cy.visit(url('/user/register'), {onLoad: unrequireFormInputs});
 };
 
 describe('Registration page', function () {
-	beforeEach(registerWithoutRequired);
+	beforeEach(visitRegisterWithoutRequired);
 	it('Greets with "Register"', function () {
 		cy.contains('Register');
 	});
@@ -22,7 +15,7 @@ describe('Registration page', function () {
 });
 
 describe('Invalid Form Submission', function () {
-	beforeEach(registerWithoutRequired);
+	beforeEach(visitRegisterWithoutRequired);
 	it('Reloads page upon invalid form submission', function () {
 		cy.get('input[name="email"]').type(newTestEmail());
 		cy.get('form').contains('Submit').click();
@@ -60,7 +53,7 @@ describe('Invalid Form Submission', function () {
 });
 
 describe('Sanitization', function () {
-	beforeEach(registerWithoutRequired);
+	beforeEach(visitRegisterWithoutRequired);
 	it('escapes form inputs', function () {
 		cy.get('input[name="email"]').type(newTestEmail());
 		cy.get('input[name="name"]').type('<script>alert("ALERT!")</script>');
@@ -72,7 +65,7 @@ describe('Sanitization', function () {
 });
 
 describe('Email validation', function () {
-	beforeEach(registerWithoutRequired);
+	beforeEach(visitRegisterWithoutRequired);
 	it('Email cannot be blank', function () {
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Email is not valid.');
@@ -96,7 +89,7 @@ describe('Email validation', function () {
 });
 
 describe('Success', function () {
-	beforeEach(registerWithoutRequired);
+	beforeEach(visitRegisterWithoutRequired);
 	it('redirects to home after registration with success flashes', function () {
 		cy.fixture('registeredUser').then((user) => {
 			cy.get('input[name="email"]').type(newTestEmail());

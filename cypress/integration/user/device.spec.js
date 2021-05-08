@@ -21,6 +21,7 @@ const logIn = () => {
 }
 
 // user must be logged in to view 'add device' page.
+
 // device name is a required field
 
 describe('Device name', function () {
