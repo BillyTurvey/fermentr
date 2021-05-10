@@ -2,14 +2,15 @@
 	"editor.insertSpaces": false,
 	"editor.tabSize": 2,
 	"emmet.syntaxProfiles": {
-    "html": {
-        "attr_quotes": "single"
-    }
-},
-"prettier.arrowParens": "avoid",
-"prettier.useTabs": true,
-"prettier.singleQuote": true,
-"prettier.requireConfig": true,
-"prettier.quoteProps": "consistent",
-"editor.formatOnSave": true
+		"html": {
+			"attr_quotes": "single"
+		}
+	},
+	"prettier.arrowParens": "avoid",
+	"prettier.useTabs": true,
+	"prettier.singleQuote": true,
+	"prettier.requireConfig": true,
+	"prettier.quoteProps": "consistent",
+	"editor.formatOnSave": true
+	// "editor.quickSuggestions": null
 }

@@ -1,3 +1,4 @@
+import {expectCt} from 'helmet';
 import {newTestEmail, unrequireFormInputs} from '../../fixtures/testUtils.js';
 
 const visitLogInWithoutRequired = () => {
@@ -17,7 +18,7 @@ describe('Log in page', function () {
 	});
 	it('Reloads page upon invalid submition', function () {
 		cy.get('form').contains('Submit').click();
-		cy.location('pathname').should('eq', 'user/logIn');
+		cy.location('pathname').should('eq', '/user/logIn');
 	});
 	it('Repopulates email after invalid submition', function () {
 		const sameEmail = newTestEmail();
@@ -81,4 +82,9 @@ describe('Logging out...', function () {
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
 		});
 	});
+	// it('Log out button is a button not an anchor link', function () {
+	// 	cy.intercept('POST', '/user/logOut', function (req) {
+	// 		expect(req.method)
+	// 	}
+	// });
 });
