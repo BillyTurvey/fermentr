@@ -59,7 +59,7 @@ describe('If user is not logged in...', function () {
 describe('If user is logged in...', function () {
 	before(() => {
 		cy.fixture('registeredUser').then((user) => {
-			cy.visit(logIn);
+			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="password"]').type(user.password + '{enter}');
 		});

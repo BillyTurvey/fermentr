@@ -14,7 +14,7 @@ passport.use(
 			User.findOne({email: email}, function (err, user) {
 				if (err) return done(err);
 				if (!user) return done(null, false), {message: 'Invalid credentials.'};
-				if (!user.verifyPassword(password)) return done(null, false, {message: 'Invalid credentials.'});
+				if (!user.isAuthenticated(password)) return done(null, false, {message: 'Invalid credentials.'});
 				return done(null, user);
 			});
 		}

@@ -5,15 +5,15 @@ import * as validate from '../utils/validation.js';
 const router = Router();
 
 router.get('/logIn', user.logInForm);
-router.post(
-	'/logIn', //
+router.post('/logIn',
 	validate.validateLogIn,
 	user.logIn
 );
 
+router.post('/logOut', user.logOut);
+
 router.get('/register', user.registrationForm);
-router.post(
-	'/register', //
+router.post('/register',
 	validate.sanitizeAndValidateRegistration,
 	user.register
 );

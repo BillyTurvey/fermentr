@@ -11,6 +11,11 @@ html
 				ul
 					li
 						a(href='')
+				if user
+					form(action="/user/logOut" method="POST")
+						button(value="Submit") Log Out
+				else
+					a(href="/user/logIn") Log In 
 		block messages 
 			if locals.flashes
 				.inner.inner--flashes

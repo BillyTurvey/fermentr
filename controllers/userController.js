@@ -10,7 +10,7 @@ export const logInForm = (req, res, next) => {
 	res.render('user/logIn');
 };
 
-export const logIn = async (req, res, next) => {
+export const logIn = (req, res) => {
 	passport.authenticate('local', function (err, user, info) {
 		if (err) return next(err);
 		if (!user) {
@@ -20,22 +20,23 @@ export const logIn = async (req, res, next) => {
 		req.logIn(user, function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			return res.redirect('/');
+			if (req.headers.referer === '/login') return res.redirect('/');
+			return res.redirect(req.headers.referer || '/');
 		});
-	})(req, res, next);
+	})(req, res);
 };
 
-export const register = async (req, res, next) => {
+export const logOut = (req, res) => {
+	req.logout();
+	res.redirect(req.headers.referer || '/');
+};
+
+export const register = async (req, res) => {
 	try {
 		const user = await User.create(req.body);
 		req.flash('success', `${req.body.name}, your account was successfully created.`);
 		req.flash('success', 'You are now logged in.');
-		res.cookie('Bearer', newToken(user), {
-			secure: true,
-			httpOnly: true,
-			sameSite: 'lax'
-		});
-		res.redirect('../..');
+		res.redirect('/');
 	} catch (error) {
 		console.log(`Error during user registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
