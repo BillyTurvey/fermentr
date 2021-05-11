@@ -1,3 +1,4 @@
+import passport from 'passport';
 import User from '../models/User.js';
 import {newToken, verifyToken} from '../utils/auth.js';
 
@@ -10,28 +11,18 @@ export const logInForm = (req, res, next) => {
 };
 
 export const logIn = async (req, res, next) => {
-	//find user in db
-	const user = await User.findOne({email: req.body.email}).exec();
-	// check email and password
-	if (!user || !user.isAuthenticated(req.body.password)) {
-		req.flash('error', 'Invalid login credentials.');
-		res.render('user/logIn', {
-			title: 'Log In',
-			email: req.body.email,
-			flashes: req.flash()
+	passport.authenticate('local', function (err, user, info) {
+		if (err) return next(err);
+		if (!user) {
+			req.flash('error', 'Login failed.');
+			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()}); //try render here try returning render
+		}
+		req.logIn(user, function (err) {
+			if (err) return next(err);
+			req.flash('success', 'Login successful.');
+			return res.redirect('/');
 		});
-	}
-	// give them a token
-	const token = newToken(user);
-	console.log(`Woof`);
-	res.cookie('Bearer', token, {
-		secure: true,
-		httpOnly: true,
-		sameSite: 'lax'
-	});
-	console.log(`Quack`);
-	// redirect
-	res.redirect('/');
+	})(req, res, next);
 };
 
 export const register = async (req, res, next) => {

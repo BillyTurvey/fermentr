@@ -34,7 +34,7 @@ describe('Log in page', function () {
 	});
 	it('Requires password', function () {
 		cy.get('input[name="email"]').type(`${newTestEmail()}{enter}`);
-		cy.get('.flash--error').should('contain', 'Password is a required field');
+		cy.get('.flash--error').should('contain', 'Password is not valid.');
 	});
 	it('Fails with incorrect credentials', function () {
 		cy.get('input[name="email"]').type(newTestEmail());

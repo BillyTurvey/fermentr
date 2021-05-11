@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import path from 'path';
 import logger from 'morgan';
 import flash from 'connect-flash';
-// import passport from 'passport';
+import passport from './utils/passport.js';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 const SessionStore = MongoDBStore(session);
@@ -80,9 +80,9 @@ app.use(
 	})
 );
 
-// // // Passport JS is what we use to handle our logins
-// app.use(passport.initialize());
-// app.use(passport.session());
+// // // Passport JS is what we use to handle our user session
+app.use(passport.initialize());
+app.use(passport.session());
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
