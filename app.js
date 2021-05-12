@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import path from 'path';
 import logger from 'morgan';
 import flash from 'connect-flash';
+import bodyParser from 'body-parser';
 import passport from './utils/passport.js';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
@@ -79,6 +80,8 @@ app.use(
 		saveUninitialized: false //required for where the law prohibits setting cookies without permission
 	})
 );
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 // // // Passport JS is what we use to handle our user session
 app.use(passport.initialize());

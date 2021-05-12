@@ -39,15 +39,16 @@ userSchema.pre('save', async function (next) {
 	}
 });
 
-userSchema.methods.isAuthenticated = function (password) {
-	bcrypt
-		.compare(password, this.password)
-		.then(function (resultBoolean) {
-			return resultBoolean;
-		})
-		.catch(function (err) {
-			return next(err);
-		});
+userSchema.methods.isAuthenticated = async function (password) {
+	try {
+		console.log(`KAKI,  time: ${Date.now()}`);
+		const resultBoolean = await bcrypt.compare(password, this.password);
+		console.log(`resultBoolean: ${resultBoolean}, time: ${Date.now()}`);
+		return resultBoolean;
+	} catch (error) {
+		console.log(`POMELO, time: ${Date.now()}`);
+		return next(err);
+	}
 };
 
 const User = mongoose.model('User', userSchema);

@@ -3,20 +3,41 @@ import LocalStrategy from 'passport-local';
 import User from '../models/User.js';
 
 // change these to arrows after it's working
+// passport.use(
+// 	new LocalStrategy(
+// 		{
+// 			usernameField: 'email',
+// 			passwordField: 'password'
+// 		},
+// 		function (username, password, done) {
+// 			User.findOne({email: username}, function (err, user) {
+// 				if (err) return done(err);
+// 				if (!user) return done(null, false), {message: 'Invalid credentials. u'};
+// 				if (!user.isAuthenticated(password)) return done(null, false, {message: 'Invalid credentials. p'});
+// 				return done(null, user);
+// 			});
+// 		}
+// 	)
+// );
+
 passport.use(
 	new LocalStrategy(
 		{
 			usernameField: 'email',
 			passwordField: 'password'
 		},
-		// Check here, username/email?
-		function (email, password, done) {
-			User.findOne({email: email}, function (err, user) {
+		async function (username, password, done) {
+			try {
+				var user = await User.findOne({email: username});
+				if (user.isAuthenticated(password)) {
+					return done(null, user);
+				} else {
+					if (!user) return done(null, false, {message: 'Invalid credentials. u'});
+					return done(null, false, {message: 'Invalid credentials. p'});
+				}
+			} catch (error) {
 				if (err) return done(err);
-				if (!user) return done(null, false), {message: 'Invalid credentials.'};
-				if (!user.isAuthenticated(password)) return done(null, false, {message: 'Invalid credentials.'});
-				return done(null, user);
-			});
+			}
 		}
 	)
 );

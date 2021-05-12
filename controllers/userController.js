@@ -11,13 +11,23 @@ export const logInForm = (req, res, next) => {
 };
 
 export const logIn = (req, res) => {
+	console.log(`BANANAS, time: ${Date.now()}`);
 	passport.authenticate('local', function (err, user, info) {
-		if (err) return next(err);
+		console.log(`ORANGES, time: ${Date.now()}`);
+		console.log(`user: ${user}`);
+		if (err) {
+			console.log(`MANGO`);
+			return next(err);
+		}
 		if (!user) {
+			console.log(`MELON`);
+			console.log('error:', err);
+			console.log('info:', info);
 			req.flash('error', 'Login failed.');
 			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()}); //try render here try returning render
 		}
 		req.logIn(user, function (err) {
+			console.log(`APPLES, time: ${Date.now()}`);
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
 			if (req.headers.referer === '/login') return res.redirect('/');
