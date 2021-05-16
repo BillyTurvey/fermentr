@@ -23,14 +23,15 @@ const logIn = () => {
 const logOut = () => cy.request('POST', '/user/logOut');
 
 describe('User', function () {
-	before(() => {
-		cy.request('POST', 'user/logOut');
-	});
+	before(logOut);
 	it('must be logged in to view Add Device page', function () {
-		cy.request('/device/add').then((response) => {
-			expect(response).property('status').to.equal(403);
+		cy.request({
+			method: 'GET',
+			url: '/device/add',
+			failOnStatusCode: false
+		}).should((response) => {
+			expect(response.status).to.eq(403);
 		});
-		// cy.visit('/device/add');
 	});
 });
 

@@ -8,8 +8,8 @@ router.post('/incoming', (req, res, next) => {
 });
 
 router.get('/add', (req, res, next) => {
-	passport.authenticate()
-	res.render('add-device', {title: 'Add New Device'});
+	if (req.user)	res.render('add-device', {title: 'Add New Device'});
+	res.status(403).end();
 });
 
 router.post('/add', device.add);
