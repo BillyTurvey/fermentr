@@ -10,10 +10,11 @@ html
 			nav
 				ul
 					if user
+						li PAssword: #{user.password}
 						li
-							a(href="user/dashboard") Dashboard
-					li
-						a(href='')
+							a(href="/user/dashboard") Dashboard
+					//- li
+					//- 	a(href='')
 				if user
 					form(action="/user/logOut" method="POST")
 						button(value="Submit") Log Out

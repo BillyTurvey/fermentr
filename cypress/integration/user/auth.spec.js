@@ -1,4 +1,3 @@
-import {expectCt} from 'helmet';
 import {newTestEmail, unrequireFormInputs} from '../../fixtures/testUtils.js';
 
 const visitLogInWithoutRequired = () => {
@@ -57,7 +56,7 @@ describe('If user is NOT logged in...', function () {
 });
 
 describe('If user is logged in...', function () {
-	before(() => {
+	beforeEach(() => {
 		cy.fixture('registeredUser').then((user) => {
 			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
@@ -72,6 +71,7 @@ describe('If user is logged in...', function () {
 	});
 	it('session persists', function () {
 		cy.get('nav > ul > li > a').contains('Dashboard').click();
+		cy.get('a').contains('fermentr.io').click();
 		cy.get('button').contains('Log Out').should('exist');
 	});
 });

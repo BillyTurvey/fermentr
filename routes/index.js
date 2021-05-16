@@ -11,9 +11,7 @@ router.get('/current-temp', (req, res, next) => {
 });
 
 router.post('/incoming', (req, res, next) => {
-  console.log(`🍺  INCOMING...  🌡`);
-  console.log(`Fermentor temperature: ${req.body}`);
-	res.json();
+	res.json(req);
 });
 
 export default router;

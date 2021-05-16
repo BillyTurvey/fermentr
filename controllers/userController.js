@@ -2,12 +2,16 @@ import passport from 'passport';
 import User from '../models/User.js';
 import {newToken, verifyToken} from '../utils/auth.js';
 
-export const registrationForm = (req, res, next) => {
+export const registrationForm = (req, res) => {
 	res.render('user/register');
 };
 
-export const logInForm = (req, res, next) => {
+export const logInForm = (req, res) => {
 	res.render('user/logIn');
+};
+
+export const dashboard = (req, res) => {
+	res.render('user/dashboard');
 };
 
 export const logIn = (req, res, next) => {
@@ -22,9 +26,8 @@ export const logIn = (req, res, next) => {
 		req.logIn(user, function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			// let password, userSansPassword;
-			const {password, ...userSansPassword} = req.user;
-			res.render('index', {user: userSansPassword});
+			const redirectPath = req.headers.referer === '/login' ? '/' : req.headers.referer;
+			res.redirect(redirectPath);
 		});
 	})(req, res, next);
 };
@@ -32,7 +35,7 @@ export const logIn = (req, res, next) => {
 export const logOut = (req, res) => {
 	req.logout();
 	req.flash('success', 'You have successfully logged out.');
-	res.render('index', {flashes: req.flash()});
+	res.redirect('/');
 };
 
 export const register = async (req, res) => {

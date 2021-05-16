@@ -28,9 +28,11 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// app.use(helmet({
-//   referrerPolicy: { policy: 'same-origin'}
-// }));
+app.use(
+	helmet({
+		referrerPolicy: {policy: 'same-origin'}
+	})
+);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,8 +40,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
-// Sessions allow us to store data on visitors from request to request
-// This keeps users logged in and allows us to send flash messages
+// Sessions...
 
 //// Where we will store session data
 const mongoSessionStore = new SessionStore({
@@ -55,7 +56,7 @@ const mongoSessionStore = new SessionStore({
 
 //// Catch session store errors
 mongoSessionStore.on('error', function (error) {
-	console.log(error);
+	console.error(error);
 });
 
 app.use(
@@ -74,8 +75,6 @@ app.use(
 	})
 );
 
-app.use(bodyParser.urlencoded({extended: false}));
-
 // // // Passport JS is what we use to handle user session
 app.use(passport.initialize());
 app.use(passport.session());
@@ -83,6 +82,8 @@ app.use(passport.session());
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
 	res.locals.flashes = req.flash();
+	res.locals.user = req.user || null;
+	res.locals.currentPath = req.path;
 	next();
 });
 

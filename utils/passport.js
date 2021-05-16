@@ -31,6 +31,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
 	User.findById(id, function (err, user) {
+		delete user.password;
 		done(err, user);
 	});
 });

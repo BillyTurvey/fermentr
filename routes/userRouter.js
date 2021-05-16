@@ -10,6 +10,8 @@ router.post('/logIn',
 	user.logIn
 );
 
+router.get('/dashboard', user.dashboard);
+
 router.post('/logOut', user.logOut);
 
 router.get('/register', user.registrationForm);
