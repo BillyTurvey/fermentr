@@ -3,7 +3,7 @@ import Device from '../models/Device.js';
 import Reading from '../models/Reading.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 const generateTokenAndID = (req, res, next) => {
 	res.locals.deviceID = uuidv4();
@@ -12,15 +12,18 @@ const generateTokenAndID = (req, res, next) => {
 
 const hashToken = (req, res, next) => {
 	const saltRounds = 12; //
-	bcrypt.hash('newID', saltRounds)
-	.then((hash) => {
+	bcrypt.hash('newID', saltRounds).then((hash) => {
 		res.locals.tokenHash = hash;
 		next();
 	});
 };
 
-const add = (req, res, next) => {
-	validator.escape(req.body.deviceName);
+export const addDeviceForm = (req, res, next) => {
+	if (req.user) res.render('add-device', {title: 'Add New Device'});
+	res.status(403).end();
+};
+
+export const add = (req, res, next) => {
 	const device = new Device({
 		deviceID: res.locals.deviceID,
 		name: res.body.deviceName,
@@ -28,21 +31,20 @@ const add = (req, res, next) => {
 		dateRegistered: Date.now(),
 		owner: req.user
 	});
-	device.save()
-	.then()
+	device.save().then();
 };
 
-const authenticateDevice = (req, res, next) => {
+export const authenticateDevice = (req, res, next) => {
 	//
 };
 
-const sanitiseReading = (req, res, next) => {
+export const sanitiseReading = (req, res, next) => {
 	validator.escape(req.body.deviceID);
 	validator.escape(req.body.reading);
 };
 
-const addReading = (req, res, next) => {
-	const reading = new Reading({ 
+export const addReading = (req, res, next) => {
+	const reading = new Reading({
 		value: req.body.value,
 		time: Date.now(),
 		deviceID: req.body.deviceID
@@ -50,22 +52,11 @@ const addReading = (req, res, next) => {
 	reading.save().then(res.json({message: 'thank you'}));
 };
 
-const sendTargetTemp = (req, res, next) => {
+export const sendTargetTemp = (req, res, next) => {
 	//find fermentation in DB
 	//calculate the time location
 	//send it back to the device
 };
-
-export { 
-	add, 
-	sanitiseReading, 
-	generateTokenAndID,
-	hashToken,
-	authenticateDevice, 
-	addReading, 
-	sendTargetTemp
-};
-
 
 // WRITE  TESTS FOR THIS...
 // ### Adding/Configuring a device for tracking
@@ -75,12 +66,12 @@ export {
 // 	- Device name
 // - Upon submission the form will be posted to the server and the following will happen:
 // 	- Input sanitisation.
-// 	- The device name must be unique to the user ie. multiple users may have devices 
+// 	- The device name must be unique to the user ie. multiple users may have devices
 //     with the same name but the same user may not have multiple devices with the same name.
 // 	- The user may only register 5 devices, must check how many devices the user has.
 // 	- An access token and device ID will be generated on the server and..
 // 	- device will be saved to the database in the device collection...
-// 		- with the **device name** 
-// 		- with the **deviceID** 
-// 		- with the hashed **accessToken** 
+// 		- with the **device name**
+// 		- with the **deviceID**
+// 		- with the hashed **accessToken**
 // 		- with a mutual link to the user's document.

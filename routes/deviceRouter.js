@@ -1,18 +1,18 @@
-import express from 'express';
-import passport from 'passport';
+import {Router} from 'express';
 import * as device from '../controllers/deviceController.js';
-var router = express.Router();
+import * as validate from '../utils/validation.js';
+
+const router = Router();
 
 router.post('/incoming', (req, res, next) => {
 	authenticateDevice, addReading, sendTargetTemp;
 });
 
-router.get('/add', (req, res, next) => {
-	if (req.user)	res.render('add-device', {title: 'Add New Device'});
-	res.status(403).end();
-});
+router.get('/add', device.addDeviceForm);
 
-router.post('/add', device.add);
+router.post('/add', 
+	validate.sanitizeAndValidateDeviceRegistration, 
+	device.add);
 
 router.post('device/:deviceID/reading', (req, res) => {
 	res.send(req.params);

@@ -1,6 +1,5 @@
 import passport from 'passport';
 import User from '../models/User.js';
-import {newToken, verifyToken} from '../utils/auth.js';
 
 export const registrationForm = (req, res) => {
 	res.render('user/register');
@@ -15,6 +14,10 @@ export const dashboard = (req, res) => {
 };
 
 export const logIn = (req, res, next) => {
+	console.log(`begin login controller`);
+	console.log('🌜');
+	console.log(req.body.email);
+	console.log(req.body.password);
 	passport.authenticate('local', function (err, user, info) {
 		if (err) {
 			return next(err);
@@ -26,7 +29,9 @@ export const logIn = (req, res, next) => {
 		req.logIn(user, function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
+			console.log(`${user.name} has just logged in ✅`);
 			const redirectPath = req.headers.referer === '/login' ? '/' : req.headers.referer;
+			console.log(redirectPath);
 			res.redirect(redirectPath);
 		});
 	})(req, res, next);
