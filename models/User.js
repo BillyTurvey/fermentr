@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();
-
 	try {
 		this.password = await bcrypt.hash(this.password, 12);
 		next();
@@ -39,14 +38,11 @@ userSchema.pre('save', async function (next) {
 	}
 });
 
-userSchema.methods.isAuthenticated = async function (password) {
+userSchema.methods.isAuthenticated = async function isAuthenticated(password) {
 	try {
-		console.log(`KAKI,  time: ${Date.now()}`);
 		const resultBoolean = await bcrypt.compare(password, this.password);
-		console.log(`resultBoolean: ${resultBoolean}, time: ${Date.now()}`);
 		return resultBoolean;
 	} catch (error) {
-		console.log(`POMELO, time: ${Date.now()}`);
 		return next(err);
 	}
 };

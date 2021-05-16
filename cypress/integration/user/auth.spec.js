@@ -23,7 +23,7 @@ describe('Log in page', function () {
 	it('Repopulates email after invalid submition', function () {
 		const sameEmail = newTestEmail();
 		cy.get('input[name="email"]').type(sameEmail);
-		cy.get('input[name="password"]').type('randomWORDS3453');
+		cy.get('input[name="password"]').type('randomWORD89453');
 		cy.get('form').contains('Submit').click();
 		cy.get('input[name="email"]').should('have.attr', 'value', sameEmail);
 	});
@@ -43,16 +43,16 @@ describe('Log in page', function () {
 	});
 });
 
-describe('If user is not logged in...', function () {
+describe('If user is NOT logged in...', function () {
 	before(() => {
-		cy.request('POST', 'user/logout');
+		cy.request('POST', 'user/logOut');
 		cy.visit('/');
 	});
 	it('Log in option is present in the nav', function () {
 		cy.get('a').contains('Log In').should('exist');
 	});
 	it('Log out option is not present in the nav', function () {
-		cy.get('a').contains('Log Out').should('not.exist');
+		cy.get('nav').contains('Log Out').should('not.exist');
 	});
 });
 
@@ -68,17 +68,17 @@ describe('If user is logged in...', function () {
 		cy.get('a').contains('Log In').should('not.exist');
 	});
 	it('Log Out option is present in the nav', function () {
-		cy.get('a').contains('Log Out').should('exist');
+		cy.get('button').contains('Log Out').should('exist');
 	});
 });
 
 describe('Logging out...', function () {
 	it('Log out button/link logs user out.', function () {
 		cy.fixture('registeredUser').then((user) => {
-			cy.visit(logIn);
+			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="password"]').type(user.password + '{enter}');
-			cy.get('nav > button').contains('Log Out').click();
+			cy.get('nav > form > button').contains('Log Out').click();
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
 		});
 	});

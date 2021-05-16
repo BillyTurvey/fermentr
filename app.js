@@ -81,7 +81,7 @@ app.use(
 	})
 );
 
-app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.urlencoded({extended: false}));
 
 // // // Passport JS is what we use to handle our user session
 app.use(passport.initialize());
