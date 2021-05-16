@@ -70,10 +70,14 @@ describe('If user is logged in...', function () {
 	it('Log Out option is present in the nav', function () {
 		cy.get('button').contains('Log Out').should('exist');
 	});
+	it('session persists', function () {
+		cy.get('nav > ul > li > a').contains('Dashboard').click();
+		cy.get('button').contains('Log Out').should('exist');
+	});
 });
 
 describe('Logging out...', function () {
-	it('Log out button/link logs user out.', function () {
+	it('Log out button (not a link!) logs user out.', function () {
 		cy.fixture('registeredUser').then((user) => {
 			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
@@ -82,9 +86,4 @@ describe('Logging out...', function () {
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
 		});
 	});
-	// it('Log out button is a button not an anchor link', function () {
-	// 	cy.intercept('POST', '/user/logOut', function (req) {
-	// 		expect(req.method)
-	// 	}
-	// });
 });
