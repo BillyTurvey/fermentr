@@ -10,35 +10,29 @@ export const logInForm = (req, res, next) => {
 	res.render('user/logIn');
 };
 
-export const logIn = (req, res) => {
-	console.log(`BANANAS, time: ${Date.now()}`);
+export const logIn = (req, res, next) => {
 	passport.authenticate('local', function (err, user, info) {
-		console.log(`ORANGES, time: ${Date.now()}`);
-		console.log(`user: ${user}`);
 		if (err) {
-			console.log(`MANGO`);
 			return next(err);
 		}
 		if (!user) {
-			console.log(`MELON`);
-			console.log('error:', err);
-			console.log('info:', info);
 			req.flash('error', 'Login failed.');
-			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()}); //try render here try returning render
+			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()});
 		}
 		req.logIn(user, function (err) {
-			console.log(`APPLES, time: ${Date.now()}`);
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			if (req.headers.referer === '/login') return res.redirect('/');
-			return res.redirect(req.headers.referer || '/');
+			// let password, userSansPassword;
+			const {password, ...userSansPassword} = req.user;
+			res.render('index', {user: userSansPassword});
 		});
-	})(req, res);
+	})(req, res, next);
 };
 
 export const logOut = (req, res) => {
 	req.logout();
-	res.redirect(req.headers.referer || '/');
+	req.flash('success', 'You have successfully logged out.');
+	res.render('index', {flashes: req.flash()});
 };
 
 export const register = async (req, res) => {
@@ -48,7 +42,7 @@ export const register = async (req, res) => {
 		req.flash('success', 'You are now logged in.');
 		res.redirect('/');
 	} catch (error) {
-		console.log(`Error during user registration: ${error.message}`);
+		console.error(`Error during user registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
 			error.message = 'Email already registered.';
 		}
