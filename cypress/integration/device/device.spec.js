@@ -1,6 +1,6 @@
 import {newTestEmail} from '../../fixtures/testUtils.js';
 
-const visitAddDeviceWithoutRequired = () => {
+const logInAndVisitAddDeviceWithoutRequired = () => {
 	logIn();
 	cy.visit('/device/add', {
 		onLoad: (contentWindow) => {
@@ -18,8 +18,10 @@ const logIn = () => {
 			method: 'POST',
 			url: '/user/logIn',
 			body: {
-				email: user.email,
-				password: user.password
+				email: 'nelsonthetestcustomer@testcustomer.com',
+				// email: user.email,
+				password: 'melt-Sunk-786543-Erstwhile'
+				// password: user.password
 			}
 		});
 	});
@@ -41,9 +43,9 @@ describe('User', function () {
 });
 
 describe('Device name', function () {
-	beforeEach(logIn);
+	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('is a required field', function () {
-		cy.visit();
+		cy.visit('/device/add');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Device name is a required field.');
 	});
@@ -67,7 +69,7 @@ describe('Device name', function () {
 
 // all fields are sanitized/escaped
 describe('Sanitization', function () {
-	beforeEach(visitAddDeviceWithoutRequired);
+	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
 		cy.get('input[name="deviceName"]').type('<script>alert("ALERT!")</script>');
 		cy.get('form').contains('Submit').click();
@@ -79,7 +81,7 @@ describe('Sanitization', function () {
 });
 
 describe('Success', function () {
-	beforeEach(visitAddDeviceWithoutRequired);
+	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('provides access token upon successfully registering device', function () {
 		cy.get('input[name="deviceName"]').type(`test device ${Date.now().toString()}`);
 		cy.get('form').contains('Submit').click();

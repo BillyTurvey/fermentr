@@ -76,10 +76,9 @@ export const sanitizeAndValidateDeviceRegistration = [
 				'error',
 				errors.array().map((err) => err.msg)
 			);
-			res.render('user/register', {
-				title: 'Register',
-				email: req.body.email,
-				name: req.body.name,
+			res.render('add-device', {
+				title: 'Register A New Device',
+				deviceName: req.body.deviceName,
 				flashes: req.flash()
 			});
 		} else {
