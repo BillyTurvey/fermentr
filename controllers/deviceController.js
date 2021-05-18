@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Device from '../models/Device.js';
 import Reading from '../models/Reading.js';
 import validator from 'validator';
@@ -19,11 +18,12 @@ const hashToken = (req, res, next) => {
 };
 
 export const addDeviceForm = (req, res, next) => {
-	if (req.user) res.render('add-device', {title: 'Add New Device'});
+	if (req.user) res.render('add-device', {title: 'Register A New Device'});
 	res.status(403).end();
 };
 
 export const add = (req, res, next) => {
+	console.log(`in add controller`);
 	const device = new Device({
 		deviceID: res.locals.deviceID,
 		name: res.body.deviceName,
@@ -31,7 +31,13 @@ export const add = (req, res, next) => {
 		dateRegistered: Date.now(),
 		owner: req.user
 	});
-	device.save().then();
+	device.save().then(() => {
+		req.flash('success', 'Device Registered');
+		res.render('add-device', {
+			title: 'Done!',
+			flashes: req.flash()
+		});
+	});
 };
 
 export const authenticateDevice = (req, res, next) => {

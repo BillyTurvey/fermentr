@@ -9,8 +9,6 @@ import passport from './utils/passport.js';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 const SessionStore = MongoDBStore(session);
-import debug from 'debug';
-const dbg = debug('🍺');
 
 import indexRouter from './routes/index.js';
 import deviceRouter from './routes/deviceRouter.js';

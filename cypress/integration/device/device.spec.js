@@ -45,7 +45,6 @@ describe('User', function () {
 describe('Device name', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('is a required field', function () {
-		cy.visit('/device/add');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Device name is a required field.');
 	});
