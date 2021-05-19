@@ -9,8 +9,8 @@ const deviceSchema = new mongoose.Schema({
 	},
 	tokenHash: String,
 	owner: {
-		type: String,
-		trim: true
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user'
 	},
 	dateRegistered: Number
 });

@@ -25,7 +25,13 @@ const userSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: true
-	}
+	},
+	devices: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'device'
+		}
+	]
 });
 
 userSchema.pre('save', async function (next) {

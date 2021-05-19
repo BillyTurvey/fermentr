@@ -3,6 +3,7 @@ import Reading from '../models/Reading.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
+import User from '../models/User.js';
 
 const generateTokenAndID = (req, res, next) => {
 	console.log(`in gen token and ID midleware`);
@@ -18,6 +19,12 @@ const hashToken = (req, res, next) => {
 		next();
 	});
 };
+async function checkIfUserAlreadyHasDeviceWithThisName(req, res, next) {
+	// something to do with compund indexes?
+	// Watch out maybe things arne't going to plan because devices are in an array
+	const user = await (await User.findById(req.user._id)).populate('devices').execPopulate();
+	// check if device name already exists...
+}
 
 export const addDeviceForm = (req, res, next) => {
 	if (req.user) res.render('add-device', {title: 'Register A New Device'});
@@ -26,10 +33,9 @@ export const addDeviceForm = (req, res, next) => {
 
 export const add = async (req, res, next) => {
 	console.log(`in addDevice controller`);
-	checkIfUserAlreadyHasDeviceWithThisName(req, res, next);
 	generateTokenAndID(req, res, next);
 	hashToken(req, res, next);
-
+	checkIfUserAlreadyHasDeviceWithThisName(req, res, next);
 	try {
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
