@@ -5,11 +5,13 @@ import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
 
 const generateTokenAndID = (req, res, next) => {
+	console.log(`in gen token and ID midleware`);
 	res.locals.deviceID = uuidv4();
 	res.locals.token = uuidv4();
 };
 
 const hashToken = (req, res, next) => {
+	console.log(`in hashToken middleware`);
 	const saltRounds = 12; //
 	bcrypt.hash('newID', saltRounds).then((hash) => {
 		res.locals.tokenHash = hash;
@@ -22,22 +24,39 @@ export const addDeviceForm = (req, res, next) => {
 	res.status(403).end();
 };
 
-export const add = (req, res, next) => {
-	console.log(`in add controller`);
-	const device = new Device({
-		deviceID: res.locals.deviceID,
-		name: res.body.deviceName,
-		tokenHash: res.locals.tokenHash,
-		dateRegistered: Date.now(),
-		owner: req.user
-	});
-	device.save().then(() => {
+export const add = async (req, res, next) => {
+	console.log(`in addDevice controller`);
+	checkIfUserAlreadyHasDeviceWithThisName(req, res, next);
+	generateTokenAndID(req, res, next);
+	hashToken(req, res, next);
+
+	try {
+		const device = await Device.create({
+			deviceID: res.locals.deviceID,
+			name: req.body.deviceName,
+			tokenHash: res.locals.tokenHash,
+			dateRegistered: Date.now(),
+			owner: req.user._id
+		});
+		console.log(`device registered`);
 		req.flash('success', 'Device Registered');
 		res.render('add-device', {
 			title: 'Done!',
+			flashes: req.flash(),
+			device: device
+		});
+	} catch (error) {
+		console.error(`Error during device registration: ${error.message}`);
+		if (error.message.includes('E11000')) {
+			error.message = 'Device name already in use.';
+		}
+		req.flash('error', error.message);
+		res.render('add-device', {
+			title: 'Register A New Device',
+			deviceName: req.body.deviceName,
 			flashes: req.flash()
 		});
-	});
+	}
 };
 
 export const authenticateDevice = (req, res, next) => {

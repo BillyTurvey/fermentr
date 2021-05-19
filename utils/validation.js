@@ -67,11 +67,12 @@ export const sanitizeAndValidateRegistration = [
 
 export const sanitizeAndValidateDeviceRegistration = [
 	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
-	body('deviceName', 'Your device name is tool long').isByteLength({min: 1, max: 200}),
-	body('description', 'Please shorten your description').escape().trim().isByteLength({max: 400}),
+	body('deviceName', 'Your device name is tool long').isByteLength({max: 200}),
+	body('description', 'Your description is tool long').escape().trim().isByteLength({max: 400}),
 	function handleValidationErrors(req, res, next) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			console.log(`errors not empty: ${errors}`);
 			req.flash(
 				'error',
 				errors.array().map((err) => err.msg)
@@ -82,6 +83,7 @@ export const sanitizeAndValidateDeviceRegistration = [
 				flashes: req.flash()
 			});
 		} else {
+			console.log(`errors empty so calling next from sanitisation middleware`);
 			next();
 		}
 	}

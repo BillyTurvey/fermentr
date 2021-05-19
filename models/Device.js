@@ -2,18 +2,15 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
 const deviceSchema = new mongoose.Schema({
-	deviceID: {
-		type: String,
-		required: true
-	},
 	name: {
 		type: String,
 		trim: true,
+		required: true
 	},
 	tokenHash: String,
 	owner: {
 		type: String,
-		trim: true,
+		trim: true
 	},
 	dateRegistered: Number
 });

@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "DEBUG=🍺 ,deviceController nodemon ./bin/www.js",
+		"start": "nodemon ./bin/www.js",
 		"prod": "pm2 start ./bin/www.js",
 		"cy": "cypress open"
 	},

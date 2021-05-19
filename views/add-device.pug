@@ -2,13 +2,19 @@ extends layout
 
 block content
 
-	p Use this page to register a new device to your account. 
-	form(action="/device/add" method="POST")
+	if device
+		h2 You have successfully registered #{device.name}
+		p #{device.name}'s device ID is #{device.id}, and its security token is #{device.tokenHash}
 
-		label(for="deviceName") Device Name – to help you differentiate multiple devices.
-		input(type="text", name="deviceName" required)
+	else 
+		h2 Use this page to register a new device to your account. 
+		
+		form(action="/device/add" method="POST")
 
-		label(for="deviceName") Description (optional).
-		input(type="text", name="description")
+			label(for="deviceName") Device Name – to help you differentiate multiple devices.
+			input(type="text", name="deviceName" required)
 
-		button(type="submit") Submit
+			label(for="deviceName") Description (optional).
+			input(type="text", name="description")
+
+			button(type="submit") Submit

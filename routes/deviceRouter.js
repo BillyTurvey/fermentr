@@ -11,7 +11,6 @@ router.post('/incoming', (req, res, next) => {
 router.get('/add', device.addDeviceForm);
 
 router.post('/add', 
-	(req, res, next) => {console.log('MELON'); next()},
 	validate.sanitizeAndValidateDeviceRegistration, 
 	device.add);
 
