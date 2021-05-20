@@ -25,8 +25,7 @@ export const logIn = (req, res, next) => {
 		req.logIn(user, function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			// const redirectPath = req.headers.referer === 'user/login' ? '/' : req.headers.referer;
-			res.redirect('/');
+			res.redirect('/user/dashboard');
 		});
 	})(req, res, next);
 };
