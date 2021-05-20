@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './User.js';
 mongoose.Promise = global.Promise;
 
 const deviceSchema = new mongoose.Schema({
@@ -14,6 +15,21 @@ const deviceSchema = new mongoose.Schema({
 	},
 	dateRegistered: Number
 });
+
+deviceSchema.index(
+	{
+		owner: 1,
+		name: 1
+	},
+	{
+		unique: true
+	}
+);
+
+// Need to add middleware to update users' 'devices' array when a new device is created or deleted
+// deviceSchema.post('save', function (device, next) {
+// 	User.findById('device.owner.id').devices.push(device).exec();
+// });
 
 const Device = mongoose.model('Device', deviceSchema);
 
