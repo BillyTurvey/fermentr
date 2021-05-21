@@ -12,7 +12,10 @@ router.get('/add', device.addDeviceForm);
 
 router.post('/add', 
 	validate.sanitizeAndValidateDeviceRegistration, 
-	device.add);
+	device.generateTokenAndID,
+	device.hashToken,
+	device.addDeviceToDatabase
+	);
 
 router.post('device/:deviceID/reading', (req, res) => {
 	res.send(req.params);

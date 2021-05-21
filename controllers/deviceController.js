@@ -5,13 +5,14 @@ import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
 import User from '../models/User.js';
 
-const generateTokenAndID = (req, res, next) => {
+export const generateTokenAndID = (req, res, next) => {
 	console.log(`in gen token and ID midleware`);
 	res.locals.deviceID = uuidv4();
 	res.locals.token = uuidv4();
+	next();
 };
 
-const hashToken = (req, res, next) => {
+export const hashToken = (req, res, next) => {
 	console.log(`in hashToken middleware`);
 	const saltRounds = 12; //
 	bcrypt.hash('newID', saltRounds).then((hash) => {
@@ -20,15 +21,7 @@ const hashToken = (req, res, next) => {
 	});
 };
 
-export const addDeviceForm = (req, res, next) => {
-	if (req.user) res.render('add-device', {title: 'Register A New Device'});
-	res.status(403).end();
-};
-
-export const add = async (req, res, next) => {
-	console.log(`in addDevice controller`);
-	generateTokenAndID(req, res, next);
-	hashToken(req, res, next);
+export const addDeviceToDatabase = async (req, res) => {
 	try {
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
@@ -60,6 +53,11 @@ export const add = async (req, res, next) => {
 			flashes: req.flash()
 		});
 	}
+};
+
+export const addDeviceForm = (req, res, next) => {
+	if (req.user) res.render('add-device', {title: 'Register A New Device'});
+	res.status(403).end();
 };
 
 export const authenticateDevice = (req, res, next) => {
