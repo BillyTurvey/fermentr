@@ -66,6 +66,21 @@ describe('Device name', function () {
 	});
 });
 
+describe('Device description', function () {
+	beforeEach(logInAndVisitAddDeviceWithoutRequired);
+	it('must be shorter than 100 chars', function () {
+		cy.get('input[name="deviceName"]').type('Neville XIV');
+		cy.get('input[name="description"]').type(
+			'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut libero eget quam volutpat sodales. Praesent aliquam elit ut dui pharetra convallis.'
+		);
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should(
+			'contain',
+			`Description is too long, please limit to fewer than 100 characters.`
+		);
+	});
+});
+
 // all fields are sanitized/escaped
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);

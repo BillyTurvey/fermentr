@@ -33,13 +33,17 @@ export const add = async (req, res, next) => {
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
 			name: req.body.deviceName,
+			description: req.body.description,
 			tokenHash: res.locals.tokenHash,
 			dateRegistered: Date.now(),
 			owner: req.user._id
 		});
-		console.log(`device registered`);
+		console.log(
+			`device registered`,
+			`Device Name: ${device.name}, Description: ${device.description}, Owner: ${device.owner}`
+		);
 		req.flash('success', 'Device Registered');
-		res.render('add-device', {
+		return res.render('add-device', {
 			title: 'Done!',
 			flashes: req.flash(),
 			device: device

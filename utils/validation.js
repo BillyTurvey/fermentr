@@ -67,8 +67,13 @@ export const sanitizeAndValidateRegistration = [
 
 export const sanitizeAndValidateDeviceRegistration = [
 	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
-	body('deviceName', 'Your device name is tool long').isByteLength({max: 200}),
-	body('description', 'Your description is tool long').escape().trim().isByteLength({max: 400}),
+	body('deviceName', 'Device name is too long, please limit to fewer than 20 characters.').isByteLength({
+		max: 25
+	}),
+	body('description', 'Description is too long, please limit to fewer than 100 characters.')
+		.escape()
+		.trim()
+		.isByteLength({max: 400}),
 	function handleValidationErrors(req, res, next) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
