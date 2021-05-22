@@ -56,12 +56,12 @@ describe('Device name', function () {
 			`You already have a device named \'Arduino One\', please choose a new name.`
 		);
 	});
-	it('must be shorter than 20 chars', function () {
+	it('must be shorter than 30 chars', function () {
 		cy.get('input[name="deviceName"]').type('This string is too long for a device name');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`Device name is too long, please limit to fewer than 20 characters.`
+			`Device name is too long, please limit to fewer than 30 characters.`
 		);
 	});
 });
@@ -85,7 +85,7 @@ describe('Device description', function () {
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
-		cy.get('input[name="deviceName"]').type('<script>alert("ALERT!")</script>');
+		cy.get('input[name="deviceName"]').type('<script>alert("!")</script>');
 		cy.get('form').contains('Submit').click();
 		cy.get('p').should(
 			'contain',

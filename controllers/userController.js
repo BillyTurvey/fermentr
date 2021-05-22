@@ -22,9 +22,11 @@ export const logIn = (req, res, next) => {
 			req.flash('error', 'Login failed.');
 			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()});
 		}
-		req.logIn(user, function (err) {
+		req.logIn(user, async function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
+			const boi = await User.findById(user.id).exec();
+			console.log(`🏓`, boi);
 			res.redirect('/user/dashboard');
 		});
 	})(req, res, next);

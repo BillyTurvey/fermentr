@@ -67,14 +67,16 @@ export const sanitizeAndValidateRegistration = [
 
 export const sanitizeAndValidateDeviceRegistration = [
 	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
-	body('deviceName', 'Device name is too long, please limit to fewer than 20 characters.').isByteLength({
-		max: 25
+	body('deviceName', 'Device name is too long, please limit to fewer than 30 characters.').isByteLength({
+		max: 30
 	}),
 	body('description', 'Description is too long, please limit to fewer than 100 characters.')
 		.escape()
 		.trim()
-		.isByteLength({max: 400}),
+		.isByteLength({max: 100}),
 	function handleValidationErrors(req, res, next) {
+		console.log(`🎾 in handle validation errors, for device named: ${req.body.deviceName}`);
+		console.log(`🎾 device description: ${req.body.description}`);
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			console.log(`errors not empty: ${errors}`);
@@ -84,6 +86,7 @@ export const sanitizeAndValidateDeviceRegistration = [
 			);
 			res.render('add-device', {
 				title: 'Register A New Device',
+				device: null,
 				deviceName: req.body.deviceName,
 				flashes: req.flash()
 			});
