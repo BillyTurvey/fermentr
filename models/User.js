@@ -53,6 +53,15 @@ userSchema.methods.isAuthenticated = async function isAuthenticated(password) {
 	}
 };
 
+// User must have embedded documents (ie. devices) populated during
+// the query fot this method to work.
+userSchema.methods.deviceNameIsUniqueToUser = function (device) {
+	for (name of this.devices) {
+		if (name == device.name) return false;
+	}
+	return true;
+};
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

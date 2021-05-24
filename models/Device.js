@@ -17,6 +17,10 @@ const deviceSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user'
 	},
+	currentFermentation: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user'
+	},
 	dateRegistered: Number
 });
 
@@ -30,16 +34,23 @@ deviceSchema.index(
 	}
 );
 
-//Need to add middleware to update users' 'devices' array when a new device is created or deleted
-deviceSchema.post('save', async function (device, next) {
-	console.log(`in device post save middleware`);
-	console.log(`device: ${device}`);
-	console.log(`user: ${device.owner}`);
+deviceSchema.pre('save', async function (device, next) {
 	const user = await User.findById(device.owner);
-	console.log(`user having device added: ${user.name}`);
-	user.devices.push(device.id);
-	await user.save();
-	next();
+	if (user.deviceNameIsUniqueToUser(device)) {
+		user.devices.push(device.id);
+		await user.save();
+		next();
+	} else {
+		const err = new Error('Device name already in use.');
+		next(err);
+	}
+
+	// function deviceNameIsUniqueToUser(device, user) {
+	// 	for (name of user.devices) {
+	// 		if (name == device.name) return false;
+	// 	}
+	// 	return true;
+	// }
 });
 
 const Device = mongoose.model('Device', deviceSchema);
