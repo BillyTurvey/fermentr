@@ -75,11 +75,8 @@ export const sanitizeAndValidateDeviceRegistration = [
 		.trim()
 		.isByteLength({max: 100}),
 	function handleValidationErrors(req, res, next) {
-		console.log(`🎾 in handle validation errors, for device named: ${req.body.deviceName}`);
-		console.log(`🎾 device description: ${req.body.description}`);
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			console.log(`errors not empty: ${errors}`);
 			req.flash(
 				'error',
 				errors.array().map((err) => err.msg)
@@ -91,7 +88,6 @@ export const sanitizeAndValidateDeviceRegistration = [
 				flashes: req.flash()
 			});
 		} else {
-			console.log(`errors empty so calling next from sanitisation middleware`);
 			next();
 		}
 	}

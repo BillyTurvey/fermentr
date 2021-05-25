@@ -53,9 +53,14 @@ userSchema.methods.isAuthenticated = async function isAuthenticated(password) {
 	}
 };
 
-// User must have embedded documents (ie. devices) populated during
-// the query fot this method to work.
-userSchema.methods.deviceNameIsUniqueToUser = function (device) {
+userSchema.methods.deviceNameIsUniqueToUser = async function (device) {
+	console.log(`device passed to uniquecheck middleware: ${device}`);
+	console.log(`user: ${this.name}`);
+	console.log(`user's devices: ${this.devices}`);
+	// if (!this.populated('devices.device')) {
+	// 	console.log(`attempting to populate devices`);
+	// 	await this.populate('devices.device').execPopulate();
+	// }
 	for (name of this.devices) {
 		if (name == device.name) return false;
 	}

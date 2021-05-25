@@ -25,8 +25,8 @@ export const logIn = (req, res, next) => {
 		req.logIn(user, async function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			const boi = await User.findById(user.id).exec();
-			console.log(`🏓`, boi);
+			// const boi = await User.findById(user.id).exec();
+			// console.log(`🏓`, boi);
 			res.redirect('/user/dashboard');
 		});
 	})(req, res, next);
