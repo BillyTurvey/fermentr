@@ -19,9 +19,8 @@ const logIn = () => {
 			url: '/user/logIn',
 			body: {
 				email: 'nelsonthetestcustomer@testcustomer.com',
-				// email: user.email,
+				email: user.email,
 				password: 'melt-Sunk-786543-Erstwhile'
-				// password: user.password
 			}
 		});
 	});
@@ -53,7 +52,7 @@ describe('Device name', function () {
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`You already have a device named \'Arduino One\', please choose a new name.`
+			`You already have a device named 'Arduino One', please choose a new name.`
 		);
 	});
 	it('must be shorter than 30 chars', function () {
@@ -85,12 +84,9 @@ describe('Device description', function () {
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
-		cy.get('input[name="deviceName"]').type('<script>alert("!")</script>');
+		cy.get('input[name="deviceName"]').type('<script> testDeviceName');
 		cy.get('form').contains('Submit').click();
-		cy.get('p').should(
-			'contain',
-			'Your device \'<script>alert("ALERT!")</script>\' was successfully registered.'
-		);
+		cy.get('p').should('contain', "Your device '<script> testDeviceName' was successfully registered.");
 	});
 });
 

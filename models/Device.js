@@ -35,23 +35,18 @@ deviceSchema.index(
 );
 
 deviceSchema.pre('save', async function (next) {
-	console.log(`🔵 device.owner: ${this.owner}`);
 	try {
-		const user = await User.findById(this.owner).exec();
-		// const user = await User.findById(this.owner).populate('devices').exec();
-		console.log(`🔵 user found: ${user.name}`);
-		console.log(`🔵 user's devices: ${user.devices}`);
-		console.log(`🔵 POPULATED: ${user.populated('devices.device')}`);
+		const user = await User.findById(this.owner).populate('device').exec();
 		if (user.deviceNameIsUniqueToUser(this)) {
 			user.devices.push(this._id);
 			await user.save();
 			next();
 		} else {
-			const err = new Error('Device name already in use.');
+			const err = new Error(`Device name already in use.`);
 			next(err);
 		}
 	} catch (error) {
-		const err = new Error('Could not find user to check if device name already in use.');
+		const err = new Error('Could not check if device name already in use.');
 		next(err);
 	}
 });

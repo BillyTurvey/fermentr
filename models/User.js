@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import Device from './Device.js';
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -29,7 +30,7 @@ const userSchema = new mongoose.Schema({
 	devices: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'device'
+			ref: 'Device'
 		}
 	]
 });

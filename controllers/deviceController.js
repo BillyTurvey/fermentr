@@ -42,7 +42,7 @@ export const addDeviceToDatabase = async (req, res) => {
 	} catch (error) {
 		console.error(`Error during device registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
-			error.message = 'Device name already in use.';
+			error.message = `You already have a device named '${req.body.deviceName}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
 		res.render('add-device', {
