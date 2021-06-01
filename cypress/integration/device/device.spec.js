@@ -56,11 +56,11 @@ describe('Device name', function () {
 		);
 	});
 	it('must be shorter than 30 chars', function () {
-		cy.get('input[name="deviceName"]').type('This string is too long for a device name');
+		cy.get('input[name="deviceName"]').type('This string really is far far far too long for a device name');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`Device name is too long, please limit to fewer than 30 characters.`
+			`Device name is too long, please limit to fewer than 30 alphanumeric characters.`
 		);
 	});
 });
@@ -84,9 +84,12 @@ describe('Device description', function () {
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
-		cy.get('input[name="deviceName"]').type('<script> testDeviceName');
+		cy.get('input[name="deviceName"]').type('<script>&');
 		cy.get('form').contains('Submit').click();
-		cy.get('p').should('contain', "Your device '<script> testDeviceName' was successfully registered.");
+		cy.get('.flash--error').should(
+			'contain',
+			`You already have a device named '<script>&', please choose a new name.`
+		);
 	});
 });
 
@@ -95,14 +98,5 @@ describe('Success', function () {
 	it('provides access token upon successfully registering device', function () {
 		cy.get('input[name="deviceName"]').type(`test device ${Date.now().toString()}`);
 		cy.get('form').contains('Submit').click();
-	});
-	it('User is logged in after registration', function () {
-		cy.fixture('registeredUser').then((user) => {
-			cy.get('input[name="email"]').type(newTestEmail());
-			cy.get('input[name="name"]').type(user.name);
-			cy.get('input[name="password"]').type(user.password);
-			cy.get('input[name="passwordConfirm"]').type(user.password + '{enter}');
-			cy.get('.flash--success').should('contain', `${user.name}, your account was successfully created.`);
-		});
 	});
 });
