@@ -3,7 +3,7 @@ extends layout
 block content
 
 	if device
-		h2 You have successfully registered #{device.name}
+		h2 You have successfully registered !{device.name}. 
 		p #{device.name}'s device ID is #{device.id}, and its security token is #{device.tokenHash}
 
 	else 
