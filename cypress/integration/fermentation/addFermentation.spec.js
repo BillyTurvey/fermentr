@@ -1,7 +1,7 @@
 // fermentation/add exhists
 // fermentation/add must be logged in to view
 // form with the following inputs:
-// title
+// name
 // Description
 // Malt bill
 // Hops

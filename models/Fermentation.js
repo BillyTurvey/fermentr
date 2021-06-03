@@ -9,12 +9,21 @@ const fermentationSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		trim: true,
+		required: true
 	},
 	temperature: {
-		actual: [{
-			time: Number,
-			value: Number
-		}]
+		target: [
+			{
+				time: Number, //hours since pitching
+				temp: Number //degrees C
+			}
+		],
+		actual: [
+			{
+				time: Number,
+				temp: Number
+			}
+		]
 	}
 });
 
