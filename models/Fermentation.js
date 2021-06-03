@@ -11,6 +11,16 @@ const fermentationSchema = new mongoose.Schema({
 		trim: true,
 		required: true
 	},
+	description: {
+		type: String,
+		trim: true
+	},
+	recipe: {
+		malt: String,
+		hops: String,
+		yeast: String
+	},
+	startTime: Number,
 	temperature: {
 		target: [
 			{
