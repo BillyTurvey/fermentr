@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+
+	if (fermentation)
+		h1 Edit Fermentation 
+	else 
+		h1 Add New Fermentation
+
+	form(action=`fermentation?${fermentation.id}/update` method="PUT") 
+
+		label(for="name") Name
+		input(type="text" name="name" value=fermentation.name||'' required)
+		br
+		label(for="description") Description
+		textarea(name="description" rows=5 columns=33 value=fermentation.description||'' required)
+		br
+		label(for="targetOG") Target OG
+		input(type="text" name="targetOG" value=fermentation.gravity.targetOG||'' required)
+		br		
+		label(for="actualOG") Actual OG
+		input(type="text" name="actualOG" value=fermentation.gravity.actualOG||'' required)
+		br		
+		label(for="targetFG") Target FG
+		input(type="text" name="targetFG" value=fermentation.gravity.targetFG||'' required)
+		br
+
+		if (fermentation)
+			label(for="actualFG") actual FG
+			input(type="text" name="actualFG" value=fermentation.gravity.actualFG||'' required)
+			br
+		
+
+		

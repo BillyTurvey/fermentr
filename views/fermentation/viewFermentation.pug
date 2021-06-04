@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+
+	h1 fermentation.name 
+
+	if (fermentation.description)
+		p fermentation.description
+	
+	article
+		h2 Fermentation Thermal Profile
+
+		.graph-container
+
+	if (fermentation.recipe) 
+		article
+			h2 Recipe
+
+	

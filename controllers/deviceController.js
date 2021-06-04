@@ -81,21 +81,3 @@ export const sendTargetTemp = (req, res, next) => {
 	//calculate the time location
 	//send it back to the device
 };
-
-// WRITE  TESTS FOR THIS...
-// ### Adding/Configuring a device for tracking
-// - User navigates to 'Add Device' page
-// - User must be logged in
-// - There is a form to fill out which collects the following:
-// 	- Device name
-// - Upon submission the form will be posted to the server and the following will happen:
-// 	- Input sanitisation.
-// 	- The device name must be unique to the user ie. multiple users may have devices
-//     with the same name but the same user may not have multiple devices with the same name.
-// 	- The user may only register 5 devices, must check how many devices the user has.
-// 	- An access token and device ID will be generated on the server and..
-// 	- device will be saved to the database in the device collection...
-// 		- with the **device name**
-// 		- with the **deviceID**
-// 		- with the hashed **accessToken**
-// 		- with a mutual link to the user's document.
