@@ -32,7 +32,8 @@ export const addDeviceToDatabase = async (req, res) => {
 		return res.render('add-device', {
 			title: 'Done!',
 			flashes: req.flash(),
-			device: device
+			device: device,
+			deviceToken: res.locals.token
 		});
 	} catch (error) {
 		console.error(`Error during device registration: ${error.message}`);

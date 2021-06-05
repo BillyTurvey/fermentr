@@ -105,7 +105,7 @@ describe('Success', function () {
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
 			cy.get('input[name="passwordConfirm"]').type(user.password + '{enter}');
-			cy.get('.flash--success').should('contain', `${user.name}, your account was successfully created.`);
+			cy.get('nav').should('contain', `Dashboard`);
 		});
 	});
 });

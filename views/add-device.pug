@@ -4,7 +4,7 @@ block content
 
 	if device
 		h2 You have successfully registered !{device.name}. 
-		p #{device.name}'s device ID is #{device.id}, and its security token is #{device.tokenHash}
+		p #{device.name}'s device ID is #{device.id}, and its security token is #{deviceToken}
 
 	else 
 		h2 Use this page to register a new device to your account. 
@@ -18,3 +18,4 @@ block content
 			input(type="text", name="description")
 
 			button(type="submit") Submit
+
