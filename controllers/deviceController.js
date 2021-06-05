@@ -53,9 +53,9 @@ export const addDeviceForm = (req, res, next) => {
 	res.status(401).end();
 };
 
-export const findAndAuthenticate = (req, res, next, id) => {
+export const findAndAuthenticate = async (req, res, next, id) => {
 	try {
-		const device = Device.findById(id);
+		const device = await Device.findById(id);
 		const key = req.getHeader('device-key');
 		if (device.isAuthenticated(key)) {
 			req.device = device;
@@ -74,7 +74,7 @@ export const sanitiseReading = (req, res, next) => {
 	validator.escape(req.body.reading);
 };
 
-export const addReading = (req, res, next) => {
+export const logReading = (req, res, next) => {
 	const reading = new Reading({
 		value: req.body.value,
 		time: Date.now(),

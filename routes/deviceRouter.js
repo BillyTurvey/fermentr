@@ -6,7 +6,7 @@ import Device from '../models/Device.js';
 
 const router = Router();
 
-device.param('deviceID', device.findAndAuthenticate);
+router.param('deviceID', device.findAndAuthenticate);
 
 router.get('/add', device.addDeviceForm);
 
@@ -18,9 +18,7 @@ device.addDeviceToDatabase
 );
 
 router.post('device/:deviceID/log',
-	device.authenticate, 
-	device.logReading, 
-	device.respond
+	device.logReading 
 );
 
 
