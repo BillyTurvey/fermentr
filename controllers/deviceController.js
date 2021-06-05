@@ -70,18 +70,17 @@ export const findAndAuthenticate = async (req, res, next, id) => {
 	}
 };
 
-export const sanitiseReading = (req, res, next) => {
-	validator.escape(req.body.deviceID);
-	validator.escape(req.body.reading);
-};
-
 export const logReading = (req, res, next) => {
-	const reading = new Reading({
-		value: req.body.value,
-		time: Date.now(),
-		deviceID: req.body.deviceID
-	});
-	reading.save().then(res.json({message: 'thank you'}));
+	try {
+		const fermentation = await Fermentation.findById(req.device.activeFermenation); //Populate the fermentation when the device is retreived from the database?
+		fermentation.temmperature.actual.push({
+			time: Date.now(),
+			temp: req.body.temmperature
+		});
+
+	} catch (error) {
+		
+	}
 };
 
 export const sendTargetTemp = (req, res, next) => {
