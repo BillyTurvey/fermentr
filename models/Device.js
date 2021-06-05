@@ -12,14 +12,14 @@ const deviceSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
-	tokenHash: String,
+	keyHash: String,
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user'
 	},
 	currentFermentation: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'user'
+		ref: 'fermentation'
 	},
 	dateRegistered: Number
 });
@@ -50,6 +50,15 @@ deviceSchema.pre('save', async function (next) {
 		next(err);
 	}
 });
+
+deviceSchema.methods.isAuthenticated = async function isAuthenticated(key) {
+	try {
+		const resultBoolean = await bcrypt.compare(key, this.keyHash);
+		return resultBoolean;
+	} catch (error) {
+		return next(err);
+	}
+};
 
 const Device = mongoose.model('Device', deviceSchema);
 

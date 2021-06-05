@@ -3,7 +3,6 @@ import Reading from '../models/Reading.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
-import User from '../models/User.js';
 
 export const generateTokenAndID = (req, res, next) => {
 	res.locals.deviceID = uuidv4();
@@ -29,10 +28,6 @@ export const addDeviceToDatabase = async (req, res) => {
 			dateRegistered: Date.now(),
 			owner: req.user._id
 		});
-		// console.log(
-		// 	`device registered`,
-		// 	`Device Name: ${device.name}, Description: ${device.description}, Owner: ${device.owner}`
-		// );
 		req.flash('success', 'Device Registered');
 		return res.render('add-device', {
 			title: 'Done!',
@@ -55,11 +50,23 @@ export const addDeviceToDatabase = async (req, res) => {
 
 export const addDeviceForm = (req, res, next) => {
 	if (req.user) res.render('add-device', {title: 'Register A New Device'});
-	res.status(403).end();
+	res.status(401).end();
 };
 
-export const authenticateDevice = (req, res, next) => {
-	//
+export const findAndAuthenticate = (req, res, next, id) => {
+	try {
+		const device = Device.findById(id);
+		const key = req.getHeader('device-key');
+		if (device.isAuthenticated(key)) {
+			req.device = device;
+			next();
+		} else {
+			throw new Error('Device authentication failed.');
+		}
+	} catch (error) {
+		console.error(error);
+		res.status(401).end();
+	}
 };
 
 export const sanitiseReading = (req, res, next) => {

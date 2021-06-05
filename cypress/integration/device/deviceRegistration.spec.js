@@ -36,7 +36,7 @@ describe('User', function () {
 			url: '/device/add',
 			failOnStatusCode: false
 		}).should((response) => {
-			expect(response.status).to.eq(403);
+			expect(response.status).to.eq(401);
 		});
 	});
 });

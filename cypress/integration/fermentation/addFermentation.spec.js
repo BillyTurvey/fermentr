@@ -10,6 +10,7 @@
 // Yeast & Pitch Rate
 // Water additions
 
+// Updates the device's entry in the databse to show its active fermentation
 // Users' registered devices will show up on the page with a checkbox to use the device for this fermentation
 // Fermentation name must be unique to user
 // Fermentation name must be escaped

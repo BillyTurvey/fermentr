@@ -1,12 +1,12 @@
 import {Router} from 'express';
 import * as device from '../controllers/deviceController.js';
 import * as validate from '../utils/validation.js';
+import Device from '../models/Device.js';
+
 
 const router = Router();
 
-router.post('/incoming', (req, res, next) => {
-	authenticateDevice, addReading, sendTargetTemp;
-});
+device.param('deviceID', device.findAndAuthenticate);
 
 router.get('/add', device.addDeviceForm);
 
@@ -17,8 +17,11 @@ device.hashToken,
 device.addDeviceToDatabase
 );
 
-router.post('device/:deviceID/reading', (req, res) => {
-	res.send(req.params);
-});
+router.post('device/:deviceID/log',
+	device.authenticate, 
+	device.logReading, 
+	device.respond
+);
+
 
 export default router;
