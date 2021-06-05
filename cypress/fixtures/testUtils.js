@@ -1,4 +1,4 @@
-export const newTestEmail = () => `testemail${Date.now().toString()}@test.com`;
+export const newTestEmail = () => `testemail${Date.now().toString()}@temporarytestuser.com`;
 
 const scheme = 'http://';
 const host = 'localhost:3000';

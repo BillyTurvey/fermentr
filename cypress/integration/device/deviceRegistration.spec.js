@@ -13,14 +13,13 @@ const logInAndVisitAddDeviceWithoutRequired = () => {
 };
 
 const logIn = () => {
-	cy.fixture('registeredUser').then((user) => {
+	cy.fixture('testUser1.json').then((user) => {
 		cy.request({
 			method: 'POST',
 			url: '/user/logIn',
 			body: {
-				email: 'nelsonthetestcustomer@testcustomer.com',
 				email: user.email,
-				password: 'melt-Sunk-786543-Erstwhile'
+				password: user.password
 			}
 		});
 	});

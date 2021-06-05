@@ -9,13 +9,14 @@ html
 				h1 fermentr.io
 			nav
 				ul
-					if user
+					if (user)
 						li
 							a(href="/user/dashboard") Dashboard
-					//- li
-					//- 	a(href='')
-				if user
-					P Logged in as #{user.name}.
+					else
+						li 
+							a(href="/user/register") User Registration
+				if (user)
+					p Logged in as #{user.name}.
 					form(action="/user/logOut" method="POST")
 						button(value="Submit") Log Out
 				else
