@@ -70,17 +70,14 @@ export const findAndAuthenticate = async (req, res, next, id) => {
 	}
 };
 
-export const logReading = (req, res, next) => {
+export const logReading = async (req, res, next) => {
 	try {
 		const fermentation = await Fermentation.findById(req.device.activeFermenation); //Populate the fermentation when the device is retreived from the database?
 		fermentation.temmperature.actual.push({
 			time: Date.now(),
 			temp: req.body.temmperature
 		});
-
-	} catch (error) {
-		
-	}
+	} catch (error) {}
 };
 
 export const sendTargetTemp = (req, res, next) => {

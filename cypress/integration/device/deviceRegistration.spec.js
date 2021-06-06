@@ -95,10 +95,9 @@ describe('Sanitization', function () {
 describe('Success', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('provides access token upon successfully registering device', function () {
+		const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
 		cy.get('input[name="deviceName"]').type(`test device ${Date.now().toString()}`);
 		cy.get('form').contains('Submit').click();
-		cy.get('p')
-			.contains('and its security token is')
-			.should('contain', /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/); //regex for a uuID V4 Need to confirm this TODO
+		cy.get('p').contains(uuidRegEx).should('exist');
 	});
 });
