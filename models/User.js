@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Device'
 		}
+	],
+	fermentations: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Fermentation'
+		}
 	]
 });
 
