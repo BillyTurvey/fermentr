@@ -1,23 +1,10 @@
-// fermentation/add exhists
-// fermentation/add must be logged in to view
-// form with the following inputs:
-// name
-// Description
-// Malt bill
-// Hops
-// OG
-// Target FG
-// Yeast & Pitch Rate
-// Water additions
-
 // Updates the device's entry in the databse to show its active fermentation
 // Users' registered devices will show up on the page with a checkbox to use the device for this fermentation
 // Fermentation name must be unique to user
 // Fermentation name must be escaped
 // Description must be escaped
-import {logIn, logOut} from '../../fixtures/testUtils.js';
 
-// const logOut = () => cy.request('POST', '/user/logOut');
+import {logIn, logOut} from '../../fixtures/testUtils.js';
 
 describe('Auth', function () {
 	before(logOut);
@@ -30,17 +17,22 @@ describe('Auth', function () {
 			expect(response.status).to.eq(401);
 		});
 	});
+	it('loads for logged in user', function () {
+		logIn();
+		cy.visit('fermentation/add');
+		cy.get('h1').contains('Add New Fermentation');
+	});
 });
 
-describe('Auth', function () {
-	before(logIn);
-	it('Page loads for logged in user', function () {
-		cy.request({
-			method: 'GET',
-			url: '/fermentation/add',
-			failOnStatusCode: false
-		}).should((response) => {
-			expect(response.status).to.eq(200);
-		});
+describe('Page', function () {
+	beforeEach(() => {
+		logIn();
+	});
+	it('contains form with correct inputs', function () {
+		cy.visit('fermentation/add');
+		cy.get('form')
+			.should('contain', 'Name') //
+			.should('contain', 'Description')
+			.should('contain', 'Target FG');
 	});
 });
