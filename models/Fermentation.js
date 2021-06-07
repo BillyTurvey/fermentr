@@ -40,7 +40,13 @@ const fermentationSchema = new mongoose.Schema({
 				temp: Number
 			}
 		]
-	}
+	},
+	notes: [
+		{
+			time: Number,
+			note: String
+		}
+	]
 });
 
 const Fermentation = mongoose.model('Fermentation', fermentationSchema);

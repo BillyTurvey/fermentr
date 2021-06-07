@@ -7,28 +7,29 @@ block content
 	else 
 		h1 Add New Fermentation
 
-	form(action=`fermentation?${fermentation.id}/update` method="PUT") 
+	form(action=`fermentation/?${fermentation.id}/update` method="PUT") 
 
 		label(for="name") Name
 		input(type="text" name="name" value=fermentation.name||'' required)
 		br
 		label(for="description") Description
-		textarea(name="description" rows=5 columns=33 value=fermentation.description||'' required)
+		textarea(name="description" rows=5 columns=33 value=fermentation.description||'')
 		br
-		label(for="targetOG") Target OG
-		input(type="text" name="targetOG" value=fermentation.gravity.targetOG||'' required)
+		label(for="targetOG") Target OG (please match format 1.XXX)
+		input(type="number" name="targetOG" value=fermentation.gravity.targetOG||'')
 		br		
 		label(for="actualOG") Actual OG
-		input(type="text" name="actualOG" value=fermentation.gravity.actualOG||'' required)
+		input(type="number" name="actualOG" value=fermentation.gravity.actualOG||'')
 		br		
 		label(for="targetFG") Target FG
-		input(type="text" name="targetFG" value=fermentation.gravity.targetFG||'' required)
+		input(type="number" name="targetFG" value=fermentation.gravity.targetFG||'')
 		br
 
 		if (fermentation)
 			label(for="actualFG") actual FG
-			input(type="text" name="actualFG" value=fermentation.gravity.actualFG||'' required)
+			input(type="number" name="actualFG" value=fermentation.gravity.actualFG||'')
 			br
 		
+		button(type="submit") 
 
 		

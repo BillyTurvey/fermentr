@@ -1,5 +1,4 @@
 import Device from '../models/Device.js';
-import Reading from '../models/Reading.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
@@ -20,6 +19,8 @@ export const hashToken = (req, res, next) => {
 
 export const addDeviceToDatabase = async (req, res) => {
 	try {
+		// pre-save middleware on the device model checks if device name is unique to user
+		//				 and adds the device id to the user db entry
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
 			name: req.body.deviceName,
@@ -77,10 +78,11 @@ export const logReading = async (req, res, next) => {
 			time: Date.now(),
 			temp: req.body.temmperature
 		});
+		next();
 	} catch (error) {}
 };
 
-export const sendTargetTemp = (req, res, next) => {
+export const sendTargetTemp = (req, res) => {
 	//find fermentation in DB
 	//calculate the time location
 	//send it back to the device

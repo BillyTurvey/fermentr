@@ -1,7 +1,6 @@
 import {Router} from 'express';
 import * as device from '../controllers/deviceController.js';
 import * as validate from '../utils/validation.js';
-import Device from '../models/Device.js';
 
 
 const router = Router();
