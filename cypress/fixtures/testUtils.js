@@ -11,6 +11,21 @@ export const unrequireFormInputs = (contentWindow) => {
 	}
 };
 
+export const logOut = () => cy.request('POST', '/user/logOut');
+
+export const logIn = () => {
+	cy.fixture('testUser1.json').then((user) => {
+		cy.request({
+			method: 'POST',
+			url: '/user/logIn',
+			body: {
+				email: user.email,
+				password: user.password
+			}
+		});
+	});
+};
+
 export const visitURLAndRemoveRequiredAttributes = (url) => cy.visit(url, {onLoad: unrequireFormInputs});
 
 // nice idea, maybe work on this later

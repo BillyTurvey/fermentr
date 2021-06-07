@@ -2,34 +2,38 @@ extends ../layout
 
 block content
 
-	if (fermentation)
+	if (editingExhisitngFermentation)
 		h1 Edit Fermentation 
 	else 
 		h1 Add New Fermentation
 
-	form(action=`fermentation/?${fermentation.id}/update` method="PUT") 
+	- const actionPath = fermentation ? `?${fermentation.id}/update` : 'add';
 
-		label(for="name") Name
-		input(type="text" name="name" value=fermentation.name||'' required)
-		br
-		label(for="description") Description
-		textarea(name="description" rows=5 columns=33 value=fermentation.description||'')
-		br
-		label(for="targetOG") Target OG (please match format 1.XXX)
-		input(type="number" name="targetOG" value=fermentation.gravity.targetOG||'')
-		br		
-		label(for="actualOG") Actual OG
-		input(type="number" name="actualOG" value=fermentation.gravity.actualOG||'')
-		br		
-		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" value=fermentation.gravity.targetFG||'')
-		br
+	form(action=`fermentation/${actionPath}` method="PUT") 
 
 		if (fermentation)
+			label(for="name") Name
+			input(type="text" name="name" value=fermentation.name||'' required)
+			br
+			label(for="description") Description
+			textarea(name="description" rows=5 columns=33 value=fermentation.description||'')
+			br
+			label(for="targetFG") Target FG
+			input(type="number" name="targetFG" value=fermentation.gravity.targetFG||'')
+			br
 			label(for="actualFG") actual FG
 			input(type="number" name="actualFG" value=fermentation.gravity.actualFG||'')
 			br
-		
-		button(type="submit") 
 
-		
+		else
+			label(for="name") Name
+			input(type="text" name="name" required)
+			br
+			label(for="description") Description
+			textarea(name="description" rows=5 columns=33 )
+			br
+			label(for="targetFG") Target FG
+			input(type="number" name="targetFG")
+			br
+
+		button(type="submit") Submit

@@ -7,20 +7,22 @@ block content
 	article 
 		h2 Fermentations
 			ul 
-				each fermentation in fermentations
-					li
-						a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
-						a(href=`fermentation/${fermentation._id}/edit`) Edit
+				if (user.fermentations.length > 0)
+					each fermentation in fermentations
+						li
+							a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
+							a(href=`fermentation/${fermentation._id}/edit`) Edit
 				li
 					a(href="/fermentation/add") + Add new fermentation
 
 	article 
 		h2 Devices
 			ul 
-				each device in devices
-					li
-						a(href=`device/${device._id}`) #{device.name} |
-						a(href=`device/${device._id}/edit`) Edit
+				if (user.devices > 0)
+					each device in devices
+						li
+							a(href=`device/${device._id}`) #{device.name} |
+							a(href=`device/${device._id}/edit`) Edit
 				li
 					a(href="/device/add") + Register a new device
 
