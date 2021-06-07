@@ -95,3 +95,34 @@ export const sanitizeAndValidateDeviceRegistration = [
 		}
 	}
 ];
+
+export const sanitizeAndValidateFermentation = [
+	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
+	body(
+		'deviceName',
+		'Device name is too long, please limit to fewer than 30 alphanumeric characters.'
+	).isLength({
+		max: 30
+	}),
+	body('description', 'Description is too long, please limit to fewer than 100 characters.')
+		.escape()
+		.trim()
+		.isLength({max: 100}),
+	function handleValidationErrors(req, res, next) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			req.flash(
+				'error',
+				errors.array().map((err) => err.msg)
+			);
+			res.render('add-device', {
+				title: 'Register A New Device',
+				device: null,
+				deviceName: req.body.deviceName,
+				flashes: req.flash()
+			});
+		} else {
+			next();
+		}
+	}
+];

@@ -12,6 +12,7 @@ const SessionStore = MongoDBStore(session);
 
 import indexRouter from './routes/index.js';
 import deviceRouter from './routes/deviceRouter.js';
+import fermentationRouter from './routes/fermentationRouter.js';
 import userRouter from './routes/userRouter.js';
 
 import {fileURLToPath} from 'url';

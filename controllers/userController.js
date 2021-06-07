@@ -10,6 +10,7 @@ export const logInForm = (req, res) => {
 };
 
 export const dashboard = (req, res) => {
+	// TODO: need to ensure the user is passed to pug with fermentations and devices populated
 	res.render('user/dashboard');
 };
 
