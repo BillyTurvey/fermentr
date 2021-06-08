@@ -24,6 +24,7 @@ const deviceSchema = new mongoose.Schema({
 	dateRegistered: Number
 });
 
+// Compound index ensures device name must be unique to user
 deviceSchema.index(
 	{
 		owner: 1,
@@ -34,20 +35,15 @@ deviceSchema.index(
 	}
 );
 
-deviceSchema.pre('save', async function (next) {
+deviceSchema.pre('save', async function saveDeviceToUserIfDeviceNameIsUniqueToUser(next) {
 	try {
 		const user = await User.findById(this.owner).populate('device').exec();
-		if (user.deviceNameIsUniqueToUser(this)) {
-			user.devices.push(this._id);
-			await user.save();
-			next();
-		} else {
-			const err = new Error(`Device name already in use.`);
-			next(err);
-		}
+		user.devices.push(this._id);
+		await user.save();
+		next();
 	} catch (error) {
-		const err = new Error('Could not check if device name already in use.');
-		next(err);
+		console.error(`Error during ${error.message}`);
+		next(error);
 	}
 });
 

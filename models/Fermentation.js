@@ -23,10 +23,11 @@ const fermentationSchema = new mongoose.Schema({
 		actualFG: Number
 	},
 	startTime: Number,
+	dateRegistered: Number,
 	temperature: {
 		target: [
 			{
-				time: Number, //hours since pitching
+				time: Number, //minutes since pitching
 				temp: Number //degrees C
 			}
 		],
@@ -37,12 +38,34 @@ const fermentationSchema = new mongoose.Schema({
 			}
 		]
 	},
+	co2Activity: [
+		{
+			time: Number,
+			value: Number //bubbles per minutef
+		}
+	],
 	notes: [
 		{
 			time: Number,
 			note: String
 		}
 	]
+});
+
+fermentationSchema.pre('save', async function (next) {
+	try {
+		const user = await User.findById(this.owner).populate('device').exec();
+		if (user.fermentationNameIsUniqueToUser(this)) {
+			user.fermentations.push(this._id);
+			await user.save();
+			next();
+		} else {
+			const err = new Error(`Fermentation name already in use.`);
+			next(err);
+		}
+	} catch (error) {
+		next(error);
+	}
 });
 
 const Fermentation = mongoose.model('Fermentation', fermentationSchema);

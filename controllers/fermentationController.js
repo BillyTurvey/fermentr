@@ -20,6 +20,34 @@ export const renderPopulatedEditForm = (req, res) => {
 
 export const update = (req, res, next) => {};
 
-export const addToDatabase = (req, res, next) => {};
+export const addToDatabase = async (req, res, next) => {
+	try {
+		// pre-save middleware on the device model checks if device name is unique to user
+		//				 and adds the device id to the user db entry
+		const fermentation = await Fermentation.create({
+			name: req.body.name,
+			description: req.body.description,
+			dateRegistered: Date.now(),
+			owner: req.user._id
+		});
+		req.flash('success', 'Fermentation registered.');
+		return res.render('viewfermentation', {
+			title: 'Done!',
+			flashes: req.flash(),
+			fermentation: fermentation
+		});
+	} catch (error) {
+		console.error(`Error during fermentation registration: ${error.message}`);
+		if (error.message.includes('E11000')) {
+			error.message = `You already have a fermentation named '${req.body.fermentationName}', please choose a new name.`;
+		}
+		req.flash('error', error.message);
+		res.render('addfermentation', {
+			title: 'Register A New fermentation',
+			fermentationName: req.body.fermentationName,
+			flashes: req.flash()
+		});
+	}
+};
 
 export const viewFermentation = (req, res, next) => {};

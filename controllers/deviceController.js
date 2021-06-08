@@ -29,7 +29,7 @@ export const addDeviceToDatabase = async (req, res) => {
 			dateRegistered: Date.now(),
 			owner: req.user._id
 		});
-		req.flash('success', 'Device Registered');
+		req.flash('success', 'Device registered.');
 		return res.render('addDevice', {
 			title: 'Done!',
 			flashes: req.flash(),

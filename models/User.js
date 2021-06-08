@@ -60,13 +60,6 @@ userSchema.methods.isAuthenticated = async function isAuthenticated(password) {
 	}
 };
 
-userSchema.methods.deviceNameIsUniqueToUser = async function (device) {
-	for (const name of this.devices) {
-		if (name == device.name) return false;
-	}
-	return true;
-};
-
 const User = mongoose.model('User', userSchema);
 
 export default User;
