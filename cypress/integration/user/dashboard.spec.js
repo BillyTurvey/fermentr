@@ -3,19 +3,7 @@
 // Shows a list of devices
 // links to manage account
 
-const logIn = () => {
-	cy.fixture('registeredUser').then((user) => {
-		cy.request({
-			method: 'POST',
-			url: '/user/logIn',
-			body: {
-				email: 'nelsonthetestcustomer@testcustomer.com',
-				email: user.email,
-				password: 'melt-Sunk-786543-Erstwhile'
-			}
-		});
-	});
-};
+import {logIn, logOut} from '../../fixtures/testUtils.js';
 
 describe('Dashboard', function () {
 	before(logOut);
