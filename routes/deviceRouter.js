@@ -10,7 +10,7 @@ router.param('deviceID', device.findAndAuthenticate);
 router.get('/add', device.addDeviceForm);
 
 router.post('/add', 
-validate.sanitizeAndValidateDeviceRegistration, 
+validate.sanitizeAndValidateDevice, 
 device.generateTokenAndID,
 device.hashToken,
 device.addDeviceToDatabase

@@ -13,16 +13,23 @@ block content
 	form(action=`fermentation/${actionPath}` method="PUT") 
 
 		label(for="name") Name
-		input(type="text" name="name" value= f ? f.name : '' required)
+		input(type="text" name="name" value= name || f ? f.name : '' required)
 		br
 		label(for="description") Description
-		textarea(name="description" rows=5 columns=33 value= f ? f.description : '')
+		textarea(name="description" rows=5 columns=33 value= description || f ? f.description : '')
+		br
+		label(for="targetFG") Target OG
+		input(type="number" name="targetOG" value= targetOG || f ? f.gravity.targetOG : '')
+		br
+		label(for="actualFG") Actual OG
+		input(type="number" name="actualOG" value= actualOG || f ? f.gravity.actualOG : '')
 		br
 		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" value= f ? f.gravity.targetFG : '')
+		input(type="number" name="targetFG" value= targetFG || f ? f.gravity.targetFG : '')
 		br
-		label(for="actualFG") actual FG
-		input(type="number" name="actualFG" value= f ? f.gravity.actualFG : '')
-		br
+		if (editingExhisitngFermentation)
+			label(for="actualFG") Actual FG
+			input(type="number" name="actualFG" value= actualFG || f ? f.gravity.actualFG : '')
+			br
 
 		button(type="submit") Submit

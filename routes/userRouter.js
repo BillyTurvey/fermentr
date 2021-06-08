@@ -16,7 +16,7 @@ router.post('/logOut', user.logOut);
 
 router.get('/register', user.registrationForm);
 router.post('/register',
-	validate.sanitizeAndValidateRegistration,
+	validate.sanitizeAndValidateUser,
 	user.register
 );
 
