@@ -11,6 +11,10 @@ const fermentationSchema = new mongoose.Schema({
 		type: String,
 		trim: true
 	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user'
+	},
 	recipe: {
 		malt: String,
 		hops: String,
@@ -51,6 +55,17 @@ const fermentationSchema = new mongoose.Schema({
 		}
 	]
 });
+
+// Compound index ensures fermentation name is unique to user
+fermentationSchema.index(
+	{
+		user: 1,
+		name: 1
+	},
+	{
+		unique: true
+	}
+);
 
 fermentationSchema.pre('save', async function (next) {
 	try {

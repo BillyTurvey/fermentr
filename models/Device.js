@@ -24,7 +24,7 @@ const deviceSchema = new mongoose.Schema({
 	dateRegistered: Number
 });
 
-// Compound index ensures device name must be unique to user
+// Compound index ensures device name is unique to user
 deviceSchema.index(
 	{
 		owner: 1,
