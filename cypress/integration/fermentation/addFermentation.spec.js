@@ -1,10 +1,19 @@
 // Updates the device's entry in the databse to show its active fermentation
 // Users' registered devices will show up on the page with a checkbox to use the device for this fermentation
-// Fermentation name must be unique to user
-// Fermentation name must be escaped
-// Description must be escaped
 
 import {logIn, logOut} from '../../fixtures/testUtils.js';
+
+const logInAndVisitAddFermentationWithoutRequired = () => {
+	logIn();
+	cy.visit('/fermentation/add', {
+		onLoad: (contentWindow) => {
+			let inputFields = contentWindow.document.getElementsByTagName('input');
+			for (let i = 0; i < inputFields.length; i++) {
+				inputFields.item(i).required = false;
+			}
+		}
+	});
+};
 
 describe('Auth', function () {
 	before(logOut);
@@ -24,7 +33,7 @@ describe('Auth', function () {
 	});
 });
 
-describe('Page', function () {
+describe('Add fermantation page', function () {
 	beforeEach(() => {
 		logIn();
 	});
@@ -36,3 +45,35 @@ describe('Page', function () {
 			.should('contain', 'Target FG');
 	});
 });
+
+describe('Fermentation name', function () {
+	beforeEach(logInAndVisitAddFermentationWithoutRequired);
+	it('is a required field', function () {
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should('contain', 'Fermentation name is a required field.');
+	});
+	it('must be unique to user', function () {
+		cy.get('input[name="fermentationName"]').type('Arduino One');
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should(
+			'contain',
+			`You already have a Fermentation named 'Arduino One', please choose a new name.`
+		);
+	});
+	it('must be shorter than 30 chars', function () {
+		cy.get('input[name="fermentationName"]').type(
+			'This string really is far far far too long for a Fermentation name'
+		);
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should(
+			'contain',
+			`Fermentation name is too long, please limit to fewer than 30 alphanumeric characters.`
+		);
+	});
+});
+
+// Fermentation name must be unique to user
+// Fermentation name must be escaped
+// Description must be escaped
+
+// User's devices must be shown on the page to select which one will controll this fermentation
