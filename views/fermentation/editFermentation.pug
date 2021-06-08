@@ -2,15 +2,15 @@ extends ../layout
 
 block content
 
-	if (editingExhisitngFermentation)
+	if (editingExhistingFermentation)
 		h1 Edit Fermentation 
 	else 
 		h1 Add New Fermentation
 
 	- const f = fermentation ? fermentation : false;
-	- const actionPath = fermentation ? `?${fermentation.id}/update` : 'add';
+	- const actionPath = fermentation ? `/?${fermentation.id}/update` : '/fermentation/add';
 
-	form(action=`fermentation/${actionPath}` method="PUT") 
+	form(action= actionPath method="PUT") 
 
 		label(for="name") Name
 		input(type="text" name="name" value= name || f ? f.name : '' required)
