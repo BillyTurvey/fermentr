@@ -10,7 +10,7 @@ block content
 	- const f = fermentation ? fermentation : false;
 	- const actionPath = fermentation ? `/?${fermentation.id}/update` : '/fermentation/add';
 
-	form(action= actionPath method="PUT") 
+	form(action= actionPath method= f ? 'PUT' : 'POST') 
 
 		label(for="name") Name
 		input(type="text" name="name" value= name || f ? f.name : '' required)

@@ -21,6 +21,7 @@ export const renderPopulatedEditForm = (req, res) => {
 export const update = (req, res, next) => {};
 
 export const addToDatabase = async (req, res, next) => {
+	console.log(`👑`);
 	try {
 		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
 		const fermentation = await Fermentation.create({

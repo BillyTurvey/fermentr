@@ -127,8 +127,9 @@ function handleFermentationValidationErrors(req, res, next) {
 			'error',
 			errors.array().map((err) => err.msg)
 		);
-		res.render('addFermentation', {
+		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
+			editingExhistingFermentation: false,
 			name: req.body.name,
 			description: req.body.description,
 			targetOG: parseFloat(req.body.targetOG),
@@ -143,9 +144,9 @@ function handleFermentationValidationErrors(req, res, next) {
 }
 
 function stringifyNumericFormInputs(req, res, next) {
-	req.body.targetOG.toString();
-	req.body.actualOG.toString();
-	req.body.targetFG.toString();
-	req.body.actualFG.toString();
+	if (req.body.targetOG) req.body.targetOG.toString();
+	if (req.body.actualOG) req.body.actualOG.toString();
+	if (req.body.targetFG) req.body.targetFG.toString();
+	if (req.body.actualFG) req.body.actualFG.toString();
 	next();
 }
