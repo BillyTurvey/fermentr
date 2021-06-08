@@ -45,7 +45,7 @@ const fermentationSchema = new mongoose.Schema({
 	co2Activity: [
 		{
 			time: Number,
-			value: Number //bubbles per minutef
+			value: Number //bubbles per minute
 		}
 	],
 	notes: [
@@ -67,17 +67,12 @@ fermentationSchema.index(
 	}
 );
 
-fermentationSchema.pre('save', async function (next) {
+fermentationSchema.pre('save', async function linkFermentationToUserAndDevice(next) {
 	try {
 		const user = await User.findById(this.owner).populate('device').exec();
-		if (user.fermentationNameIsUniqueToUser(this)) {
-			user.fermentations.push(this._id);
-			await user.save();
-			next();
-		} else {
-			const err = new Error(`Fermentation name already in use.`);
-			next(err);
-		}
+		user.fermentations.push(this._id);
+		await user.save();
+		next();
 	} catch (error) {
 		next(error);
 	}
