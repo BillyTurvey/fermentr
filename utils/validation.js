@@ -101,7 +101,7 @@ function handleDeviceValidationErrors(req, res, next) {
 }
 
 export const sanitizeAndValidateFermentation = [
-	stringifyNumericFormInputs,
+	// stringifyNumericFormInputs,
 	body('name', 'Fermentation name is a required field.').escape().trim().notEmpty(),
 	body(
 		'name',
@@ -113,15 +113,21 @@ export const sanitizeAndValidateFermentation = [
 		.escape()
 		.trim()
 		.isLength({max: 100}),
-	body('targetOG').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
-	body('actualOG').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
-	body('targetFG').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
-	body('actualFG').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
+	// body('targetOG', 'targetOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
+	// body('actualOG', 'actualOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
+	// body('targetFG', 'targetFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
+	// body('actualFG', 'actualFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
+	body('targetOG', 'targetOG ... something').escape(),
+	body('actualOG', 'actualOG ... something').escape(),
+	body('targetFG', 'targetFG ... something').escape(),
+	body('actualFG', 'actualFG ... something').escape(),
 	handleFermentationValidationErrors
 ];
 
 function handleFermentationValidationErrors(req, res, next) {
 	const errors = validationResult(req);
+	console.log(`🦞 Fermentation errors:`);
+	console.log(errors);
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
@@ -143,10 +149,22 @@ function handleFermentationValidationErrors(req, res, next) {
 	}
 }
 
+// function stringifyNumericFormInputs(req, res, next) {
+// 	console.log(`🐳 in stringifyNumericFormInputs`);
+// 	if (req.body.targetOG) req.body.targetOG.toString();
+// 	if (req.body.actualOG) req.body.actualOG.toString();
+// 	if (req.body.targetFG) req.body.targetFG.toString();
+// 	if (req.body.actualFG) req.body.actualFG.toString();
+// 	next();
+// }
+
 function stringifyNumericFormInputs(req, res, next) {
-	if (req.body.targetOG) req.body.targetOG.toString();
-	if (req.body.actualOG) req.body.actualOG.toString();
-	if (req.body.targetFG) req.body.targetFG.toString();
-	if (req.body.actualFG) req.body.actualFG.toString();
+	for (let input in req.body) {
+		console.log(`----------------------------------------------------------`);
+		console.log(`🐛 input ${input} was: ${req.body[input]}, and was of type ${typeof req.body[input]}`);
+		req.body[input] = req.body[input] ? req.body[input] : '';
+		req.body[input] = typeof req.body[input] == 'number' ? req.body[input].toString() : req.body[input];
+		console.log(`🦋 input ${input} is now: ${req.body[input]}, and is of type ${typeof req.body[input]}`);
+	}
 	next();
 }

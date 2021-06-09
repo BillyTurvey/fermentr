@@ -28,7 +28,7 @@ export const addToDatabase = async (req, res, next) => {
 			name: req.body.name,
 			description: req.body.description,
 			dateRegistered: Date.now(),
-			owner: req.user._id
+			user: req.user._id
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect('/user/dashboard');
@@ -43,7 +43,7 @@ export const addToDatabase = async (req, res, next) => {
 			error.message = `You already have a fermentation named '${req.body.fermentationName}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
-		res.render('addfermentation', {
+		res.render('fermentation/editFermentation', {
 			title: 'Register A New fermentation',
 			fermentationName: req.body.fermentationName,
 			flashes: req.flash()

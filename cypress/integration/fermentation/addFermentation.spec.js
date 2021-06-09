@@ -53,11 +53,11 @@ describe('Fermentation name', function () {
 		cy.get('.flash--error').should('contain', 'Fermentation name is a required field.');
 	});
 	it('must be unique to user', function () {
-		cy.get('input[name="fermentationName"]').type('Arduino One');
+		cy.get('input[name="name"]').type('Just Another IPA');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`You already have a Fermentation named 'Arduino One', please choose a new name.`
+			`You already have a Fermentation named 'Just Another IPA', please choose a new name.`
 		);
 	});
 	it('must be shorter than 30 chars', function () {

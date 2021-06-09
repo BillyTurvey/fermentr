@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
+import User from './User.js';
 
 const fermentationSchema = new mongoose.Schema({
 	name: {
@@ -69,7 +70,8 @@ fermentationSchema.index(
 
 fermentationSchema.pre('save', async function linkFermentationToUserAndDevice(next) {
 	try {
-		const user = await User.findById(this.owner).populate('device').exec();
+		const user = await User.findById(this.user).populate('device').exec();
+		console.log(`in fermentation pre save middleware, user: ${user}`);
 		user.fermentations.push(this._id);
 		await user.save();
 		next();
