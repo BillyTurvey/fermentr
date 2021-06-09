@@ -126,6 +126,8 @@ export const sanitizeAndValidateFermentation = [
 
 function handleFermentationValidationErrors(req, res, next) {
 	const errors = validationResult(req);
+	console.log(`🦞 Fermentation errors:`);
+	console.log(errors);
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
@@ -146,6 +148,15 @@ function handleFermentationValidationErrors(req, res, next) {
 		next();
 	}
 }
+
+// function stringifyNumericFormInputs(req, res, next) {
+// 	console.log(`🐳 in stringifyNumericFormInputs`);
+// 	if (req.body.targetOG) req.body.targetOG.toString();
+// 	if (req.body.actualOG) req.body.actualOG.toString();
+// 	if (req.body.targetFG) req.body.targetFG.toString();
+// 	if (req.body.actualFG) req.body.actualFG.toString();
+// 	next();
+// }
 
 function stringifyNumericFormInputs(req, res, next) {
 	// may need this when validating gravity values
