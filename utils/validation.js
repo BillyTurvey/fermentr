@@ -112,7 +112,7 @@ export const sanitizeAndValidateFermentation = [
 	body('description', 'Description is too long, please limit to fewer than 100 characters.')
 		.escape()
 		.trim()
-		.isLength({max: 100}),
+		.isLength({max: 200}),
 	// body('targetOG', 'targetOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('actualOG', 'actualOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('targetFG', 'targetFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
@@ -126,8 +126,6 @@ export const sanitizeAndValidateFermentation = [
 
 function handleFermentationValidationErrors(req, res, next) {
 	const errors = validationResult(req);
-	console.log(`🦞 Fermentation errors:`);
-	console.log(errors);
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
@@ -150,7 +148,6 @@ function handleFermentationValidationErrors(req, res, next) {
 }
 
 // function stringifyNumericFormInputs(req, res, next) {
-// 	console.log(`🐳 in stringifyNumericFormInputs`);
 // 	if (req.body.targetOG) req.body.targetOG.toString();
 // 	if (req.body.actualOG) req.body.actualOG.toString();
 // 	if (req.body.targetFG) req.body.targetFG.toString();

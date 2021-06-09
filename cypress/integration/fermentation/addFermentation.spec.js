@@ -45,6 +45,7 @@ describe('Add fermantation page', function () {
 			.should('contain', 'Target FG');
 	});
 });
+// User's devices must be shown on the page to select which one will controll this fermentation
 
 describe('Fermentation name', function () {
 	beforeEach(logInAndVisitAddFermentationWithoutRequired);
@@ -69,18 +70,62 @@ describe('Fermentation name', function () {
 			`Fermentation name is too long, please limit to fewer than 30 alphanumeric characters.`
 		);
 	});
-	// 	it('input is escaped', function () {
-	// 		cy.get('input[name="name"]').type('<script>&');
-	// 		cy.get('form').contains('Submit').click();
-	// 		cy.get('.flash--error').should(
-	// 			'contain',
-	// 			`You already have a fermentation named '<script>&', please choose a new name.`
-	// 		);
-	// 	});
+	it('input is escaped', function () {
+		cy.get('input[name="name"]').type('<script>&');
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should(
+			'contain',
+			`You already have a fermentation named '<script>&', please choose a new name.`
+		);
+	});
 });
 
-// Fermentation name must be escaped
-// Description must be escaped
-// User's devices must be shown on the page to select which one will controll this fermentation
+describe('Fermentation description', function () {
+	beforeEach(logInAndVisitAddFermentationWithoutRequired);
+	it('must be shorter than 200 chars', function () {
+		cy.get('input[name="name"]').type(`test ${Math.random().toString().slice(2, 9)} fermentation`);
+		cy.get('textarea[name="description"]') //
+			.type(
+				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut libero eget quam volutpat sodales. Praesent aliquam elit ut dui pharetra convallis.'
+			);
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--error').should(
+			'contain',
+			`Description is too long, please limit to fewer than 100 characters.`
+		);
+	});
+	it('input is escaped', function () {
+		const testFermentationName = `testName ${Math.random().toString().slice(2, 9)}`;
+		cy.get('input[name="name"]').type(testFermentationName);
+		cy.get('textarea[name="description"]').type('<script>alert("Gotcha!")</script>');
+		cy.get('form').contains('Submit').click();
+		cy.get('a').contains('Dashboard').click();
+		cy.get('a').contains(testFermentationName).click();
+		cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
+	});
+});
+
+describe('Add fermentation page: Devices...', function () {
+	it('contains a list of available devices owned by the user', function () {
+		cy.visit('fermentation/add');
+		cy.get('form')
+			.should('contain', 'Name') //
+			.should('contain', 'Description')
+			.should('contain', 'Target FG');
+	});
+});
+
+describe('Successfully adding a fermentation', function () {
+	beforeEach(logInAndVisitAddFermentationWithoutRequired);
+	it('redirects to the user dashboard', function () {
+		expect(true).to.be.false;
+	});
+	it("causes the fermentation to appear on the user's dashboard", function () {
+		expect(true).to.be.false;
+	});
+	it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
+		expect(true).to.be.false;
+	});
+});
 
 // gravity readings must be formatted correctly}
