@@ -4,16 +4,16 @@ block content
 
 	h1 Dashboard
 
-	article 
-		h2 Fermentations
-			ul 
-				if (user.fermentations.length > 0)
-					each fermentation in fermentations
-						li
-							a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
-							a(href=`fermentation/${fermentation._id}/edit`) Edit
-				li
-					a(href="/fermentation/add") + Add new fermentation
+	//- article 
+	//- 	h2 Fermentations
+	//- 		ul 
+	//- 			if (user.fermentations.length > 0)
+	//- 				each fermentation in fermentations
+	//- 					li
+	//- 						a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
+	//- 						a(href=`fermentation/${fermentation._id}/edit`) Edit
+	//- 			li
+	//- 				a(href="/fermentation/add") + Add new fermentation
 
 	article 
 		h2 Devices

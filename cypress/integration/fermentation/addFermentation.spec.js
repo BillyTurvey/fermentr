@@ -53,27 +53,34 @@ describe('Fermentation name', function () {
 		cy.get('.flash--error').should('contain', 'Fermentation name is a required field.');
 	});
 	it('must be unique to user', function () {
-		cy.get('input[name="fermentationName"]').type('Arduino One');
+		cy.get('input[name="name"]').type('Just Another IPA');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`You already have a Fermentation named 'Arduino One', please choose a new name.`
+			`You already have a fermentation named 'Just Another IPA', please choose a new name.`
 		);
 	});
 	it('must be shorter than 30 chars', function () {
-		cy.get('input[name="fermentationName"]').type(
-			'This string really is far far far too long for a Fermentation name'
-		);
+		cy.get('input[name="name"]') //
+			.type('This string really is far far far too long for a Fermentation name');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
 			`Fermentation name is too long, please limit to fewer than 30 alphanumeric characters.`
 		);
 	});
+	// 	it('input is escaped', function () {
+	// 		cy.get('input[name="name"]').type('<script>&');
+	// 		cy.get('form').contains('Submit').click();
+	// 		cy.get('.flash--error').should(
+	// 			'contain',
+	// 			`You already have a fermentation named '<script>&', please choose a new name.`
+	// 		);
+	// 	});
 });
 
-// Fermentation name must be unique to user
 // Fermentation name must be escaped
 // Description must be escaped
-
 // User's devices must be shown on the page to select which one will controll this fermentation
+
+// gravity readings must be formatted correctly}
