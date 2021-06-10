@@ -13,8 +13,21 @@ export const unrequireFormInputs = (contentWindow) => {
 
 export const logOut = () => cy.request('POST', '/user/logOut');
 
-export const logIn = () => {
+export const logInAsNelson = () => {
 	cy.fixture('testUser1.json').then((user) => {
+		cy.request({
+			method: 'POST',
+			url: '/user/logIn',
+			body: {
+				email: user.email,
+				password: user.password
+			}
+		});
+	});
+};
+
+export const logInAsJeanette = () => {
+	cy.fixture('testUser2.json').then((user) => {
 		cy.request({
 			method: 'POST',
 			url: '/user/logIn',
