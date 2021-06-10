@@ -9,9 +9,16 @@ export const logInForm = (req, res) => {
 	res.render('user/logIn');
 };
 
-export const dashboard = (req, res) => {
-	// TODO: need to ensure the user is passed to pug with fermentations and devices populated
-	res.render('user/dashboard');
+export const dashboard = async (req, res) => {
+	if (req.user) {
+		await req.user.populate('devices').populate('fermentations').execPopulate();
+		res.render('user/dashboard', {
+			title: 'Dashboard',
+			fermentations: req.user.fermentations || [],
+			devices: req.user.devices || []
+		});
+	}
+	res.status(401).end();
 };
 
 export const logIn = (req, res, next) => {

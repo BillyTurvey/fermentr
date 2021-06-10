@@ -134,6 +134,7 @@ function handleFermentationValidationErrors(req, res, next) {
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
 			editingExhistingFermentation: false,
+			devices: req.user.devices || [],
 			name: req.body.name,
 			description: req.body.description,
 			targetOG: parseFloat(req.body.targetOG),
@@ -146,14 +147,6 @@ function handleFermentationValidationErrors(req, res, next) {
 		next();
 	}
 }
-
-// function stringifyNumericFormInputs(req, res, next) {
-// 	if (req.body.targetOG) req.body.targetOG.toString();
-// 	if (req.body.actualOG) req.body.actualOG.toString();
-// 	if (req.body.targetFG) req.body.targetFG.toString();
-// 	if (req.body.actualFG) req.body.actualFG.toString();
-// 	next();
-// }
 
 function stringifyNumericFormInputs(req, res, next) {
 	// may need this when validating gravity values

@@ -32,4 +32,14 @@ block content
 			input(type="number" name="actualFG" value= actualFG || f ? f.gravity.actualFG : '')
 			br
 
+
+		if (devices.length > 0)
+			h3 Select a device to monitor/control this fermentation
+			each device in devices
+				.deviceRadio
+					input(type="radio" id=device.name name="device" value=device._id)
+					label(for=device.name) #{device.name}
+						span.device-description  - #{device.description}
+
+
 		button(type="submit") Submit

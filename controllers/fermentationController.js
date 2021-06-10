@@ -2,19 +2,28 @@ import Fermentation from '../models/Fermentation.js';
 
 export const view = (req, res, next) => {};
 
-export const renderEmptyEditFermentationForm = (req, res) => {
+export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
+		await req.user.populate('devices').execPopulate();
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
+			devices: req.user.devices || [],
 			editingExhisitngFermentation: false
 		});
 	}
 	res.status(401).end();
 };
 
-export const renderPopulatedEditForm = (req, res) => {
-	if (req.user)
-		res.render('fermentation/editFermentation', {title: 'Add New Fermentation', fermentation: {}});
+export const renderPopulatedEditForm = async (req, res) => {
+	if (req.user) {
+		await req.user.populate('devices').execPopulate();
+		res.render('fermentation/editFermentation', {
+			title: 'Edit Fermentation',
+			devices: req.user.devices || [],
+			editingExhisitngFermentation: true,
+			fermentation: {}
+		});
+	}
 	res.status(401).end();
 };
 
@@ -31,11 +40,6 @@ export const addToDatabase = async (req, res, next) => {
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect('/user/dashboard');
-		// return res.render('viewfermentation', {
-		// 	title: fermentation.name,
-		// 	flashes: req.flash(),
-		// 	fermentation: fermentation
-		// });
 	} catch (error) {
 		console.error(`Error during fermentation registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
@@ -44,6 +48,7 @@ export const addToDatabase = async (req, res, next) => {
 		req.flash('error', error.message);
 		res.render('fermentation/editFermentation', {
 			title: 'Register A New fermentation',
+			devices: req.user.devices || [],
 			fermentationName: req.body.fermentationName,
 			flashes: req.flash()
 		});
