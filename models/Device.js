@@ -38,6 +38,7 @@ deviceSchema.index(
 deviceSchema.pre('save', async function saveDeviceToUserIfDeviceNameIsUniqueToUser(next) {
 	try {
 		const user = await User.findById(this.owner).populate('device').exec();
+		if (user.devices.includes(this._id)) next();
 		user.devices.push(this._id);
 		await user.save();
 		next();
