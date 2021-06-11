@@ -1,7 +1,7 @@
-import {newTestEmail} from '../../fixtures/testUtils.js';
+import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.js';
 
 const logInAndVisitAddDeviceWithoutRequired = () => {
-	logIn();
+	logInAsNelson();
 	cy.visit('/device/add', {
 		onLoad: (contentWindow) => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
@@ -11,21 +11,6 @@ const logInAndVisitAddDeviceWithoutRequired = () => {
 		}
 	});
 };
-
-const logIn = () => {
-	cy.fixture('testUser1.json').then((user) => {
-		cy.request({
-			method: 'POST',
-			url: '/user/logIn',
-			body: {
-				email: user.email,
-				password: user.password
-			}
-		});
-	});
-};
-
-const logOut = () => cy.request('POST', '/user/logOut');
 
 describe('User', function () {
 	before(logOut);
@@ -92,12 +77,36 @@ describe('Sanitization', function () {
 	});
 });
 
+const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(9, 12)}`;
+
 describe('Success', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('provides access token upon successfully registering device', function () {
 		const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
-		cy.get('input[name="deviceName"]').type(`test device ${Date.now().toString()}`);
+		cy.get('input[name="deviceName"]').type(temporaryTestDeviceName);
 		cy.get('form').contains('Submit').click();
 		cy.get('p').contains(uuidRegEx).should('exist');
+	});
+});
+
+describe('Successfully adding a Device', function () {
+	beforeEach(logInAsNelson);
+	it("causes the device to appear in a list on the user's dashboard", function () {
+		cy.visit('user/dashboard');
+		cy.get('article.devices > ul > li > a') //
+			.contains(temporaryTestDeviceName)
+			.should('exist');
+	});
+	it('Device can be removed using a button next to the device name on the list on the dashboard', function () {
+		cy.visit('user/dashboard');
+		cy.get('article.devices > button') //
+			.contains(`Delete ${temporaryTestDeviceName}`)
+			.click();
+		cy.get('article.devices > a') //
+			.contains(temporaryTestDeviceName)
+			.should('not.exist');
+	});
+	it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
+		expect(true).to.be.false;
 	});
 });

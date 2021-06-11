@@ -4,7 +4,7 @@ block content
 
 	h1 Dashboard
 
-	article 
+	article.fermentations
 		h2 Fermentations
 			ul 
 				if (fermentations.length > 0)
@@ -15,14 +15,16 @@ block content
 				li
 					a(href="/fermentation/add") + Add new fermentation
 
-	article 
+	article.devices
 		h2 Devices
-			ul 
-				if (devices.length > 0)
-					each device in devices
-						li
-							a(href=`device/${device._id}`) #{device.name} |
-							a(href=`device/${device._id}/edit`) Edit
-				li
-					a(href="/device/add") + Register a new device
+		ul 
+			if (devices.length > 0)
+				each device in devices
+					li
+						a(href=`device/${device._id}`) #{device.name} |
+						a(href=`device/${device._id}/edit`) Edit
+						form(action=`/device/${device._id}` method="DELETE")
+							button(value="Submit") Delete #{device.name}
+			li
+				a(href="/device/add") + Register a new device
 
