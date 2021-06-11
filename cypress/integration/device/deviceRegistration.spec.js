@@ -97,12 +97,17 @@ describe('Successfully adding a Device', function () {
 			.contains(temporaryTestDeviceName)
 			.should('exist');
 	});
-	it('Device can be removed using a button next to the device name on the list on the dashboard', function () {
+	it('Device can be deleted using a button on the "edit device" page', function () {
 		cy.visit('user/dashboard');
-		cy.get('article.devices > button') //
+		cy.get('article.devices > ul > li') //
+			.contains(temporaryTestDeviceName)
+			.contains('edit')
+			.click();
+		cy.get('button') //
 			.contains(`Delete ${temporaryTestDeviceName}`)
 			.click();
-		cy.get('article.devices > a') //
+		cy.visit('user/dashboard');
+		cy.get('article.devices > ul > li') //
 			.contains(temporaryTestDeviceName)
 			.should('not.exist');
 	});
