@@ -30,7 +30,7 @@ export const addDeviceToDatabase = async (req, res) => {
 			owner: req.user._id
 		});
 		req.flash('success', 'Device registered.');
-		return res.render('addDevice', {
+		return res.render('device/addDevice', {
 			title: 'Done!',
 			flashes: req.flash(),
 			device: device,
@@ -42,7 +42,7 @@ export const addDeviceToDatabase = async (req, res) => {
 			error.message = `You already have a device named '${req.body.deviceName}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
-		res.render('addDevice', {
+		res.render('device/addDevice', {
 			title: 'Register A New Device',
 			deviceName: req.body.deviceName,
 			flashes: req.flash()
@@ -51,7 +51,7 @@ export const addDeviceToDatabase = async (req, res) => {
 };
 
 export const addDeviceForm = (req, res, next) => {
-	if (req.user) res.render('addDevice', {title: 'Register A New Device'});
+	if (req.user) res.render('device/addDevice', {title: 'Register A New Device'});
 	res.status(401).end();
 };
 

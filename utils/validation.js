@@ -89,7 +89,7 @@ function handleDeviceValidationErrors(req, res, next) {
 			'error',
 			errors.array().map((err) => err.msg)
 		);
-		res.render('addDevice', {
+		res.render('device/addDevice', {
 			title: 'Register A New Device',
 			device: null,
 			deviceName: req.body.deviceName,
