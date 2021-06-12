@@ -51,8 +51,14 @@ export const addDeviceToDatabase = async (req, res) => {
 	}
 };
 
-export const addDeviceForm = (req, res, next) => {
-	if (req.user) res.render('device/addDevice', {title: 'Register A New Device'});
+export const addDeviceForm = async (req, res, next) => {
+	await req.user.populate('fermentations').execPopulate();
+	if (req.user) {
+		res.render('device/addDevice', {
+			title: 'Register A New Device',
+			fermentations: req.user.fermentations
+		});
+	}
 	res.status(401).end();
 };
 
