@@ -90,9 +90,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', indexRouter);
+app.use('/user', userRouter);
 app.use('/device', deviceRouter);
 app.use('/fermentation', fermentationRouter);
-app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -5,8 +5,6 @@ import * as validate from '../utils/validation.js';
 
 const router = Router();
 
-router.param('deviceID', device.findAndAuthenticate);
-
 router.get('/add', device.addDeviceForm);
 
 router.post('/add', 
@@ -16,7 +14,11 @@ device.hashToken,
 device.addDeviceToDatabase
 );
 
-router.post('device/:deviceID/log',
+router.param('id', function(req, res, next, id) {console.log('🦄', id)});
+
+router.get('/:id/edit', device.editDevice);
+
+router.post('device/:id/log',
 	device.logReading 
 );
 

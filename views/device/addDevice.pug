@@ -17,5 +17,13 @@ block content
 			label(for="description") Description (optional).
 			input(type="text", name="description")
 
+			if (user.fermentations.length > 0)
+				h3 Assign this device to a fermentation
+				each fermentation in fermentations
+					.fermentationRadio
+						input(type="radio" id=fermentation.name name="fermentation" value=fermentation._id)
+						label(for=fermentation.name) #{fermentation.name}
+							span.fermentation-description  - #{fermentation.description}
+
 			button(type="submit") Submit
 

@@ -6,6 +6,7 @@ import {v4 as uuidv4} from 'uuid';
 export const generateTokenAndID = (req, res, next) => {
 	res.locals.deviceID = uuidv4();
 	res.locals.token = uuidv4();
+	console.log(`change this`);
 	next();
 };
 
@@ -44,7 +45,7 @@ export const addDeviceToDatabase = async (req, res) => {
 		req.flash('error', error.message);
 		res.render('device/addDevice', {
 			title: 'Register A New Device',
-			deviceName: req.body.deviceName,
+			deviceName: req.body.deviceName, //TODO This is out of date
 			flashes: req.flash()
 		});
 	}
@@ -55,19 +56,43 @@ export const addDeviceForm = (req, res, next) => {
 	res.status(401).end();
 };
 
-export const findAndAuthenticate = async (req, res, next, id) => {
-	try {
-		const device = await Device.findById(id);
-		const key = req.getHeader('device-key');
-		if (device.isAuthenticated(key)) {
+export const editDevice = async (req, res, next) => {
+	await req.user.populate('fermentations').execPopulate();
+	res.render('device/editDevice', {
+		title: `Edit ${req.device.name}`,
+		device: req.device,
+		fermentations: req.user.fermentations
+	});
+};
+
+export const authenticateAndAttachToReq = async (req, res, next, id) => {
+	console.log(`🙉`);
+	if (req.user && req.user.devices.contains('id')) {
+		//user logged in trying to view or edit device
+		try {
+			const device = await Device.findById(id).exec();
+			// const device = await (await Device.findById(id).populate('currentFermentation')).execPopulate();
 			req.device = device;
 			next();
-		} else {
-			throw new Error('Device authentication failed.');
+		} catch (error) {
+			console.error(error);
+			res.status(401).end();
 		}
-	} catch (error) {
-		console.error(error);
-		res.status(401).end();
+	} else {
+		// device posting data to be logged
+		try {
+			const device = await Device.findById(id);
+			const key = req.getHeader('device-key');
+			if (device.isAuthenticated(key)) {
+				req.device = device;
+				next();
+			} else {
+				throw new Error('Device authentication failed.');
+			}
+		} catch (error) {
+			console.error(error);
+			res.status(401).end();
+		}
 	}
 };
 

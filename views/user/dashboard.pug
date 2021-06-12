@@ -23,8 +23,7 @@ block content
 					li
 						a(href=`device/${device._id}`) #{device.name} |
 						a(href=`device/${device._id}/edit`) Edit
-						form(action=`/device/${device._id}` method="DELETE")
-							button(value="Submit") Delete #{device.name}
+
 			li
 				a(href="/device/add") + Register a new device
 
