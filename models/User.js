@@ -4,42 +4,47 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import Device from './Device.js';
 
-const userSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: 'Please provide a name!',
-		trim: true
+const userSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: 'Please provide a name!',
+			trim: true
+		},
+		email: {
+			type: String,
+			required: 'Please provide a valid email address!',
+			trim: true,
+			unique: true,
+			lowercase: true,
+			validate: [validator.isEmail, 'Invalid email address.']
+		},
+		isAdmin: {
+			type: Boolean,
+			default: false,
+			required: true
+		},
+		password: {
+			type: String,
+			required: true
+		},
+		devices: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Device'
+			}
+		],
+		fermentations: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Fermentation'
+			}
+		]
 	},
-	email: {
-		type: String,
-		required: 'Please provide a valid email address!',
-		trim: true,
-		unique: true,
-		lowercase: true,
-		validate: [validator.isEmail, 'Invalid email address.']
-	},
-	isAdmin: {
-		type: Boolean,
-		default: false,
-		required: true
-	},
-	password: {
-		type: String,
-		required: true
-	},
-	devices: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Device'
-		}
-	],
-	fermentations: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Fermentation'
-		}
-	]
-});
+	{
+		timestamps: true
+	}
+);
 
 userSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) return next();

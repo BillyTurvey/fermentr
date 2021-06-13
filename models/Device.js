@@ -4,27 +4,31 @@ mongoose.Promise = global.Promise;
 import User from './User.js';
 import bcrypt from 'bcrypt';
 
-const deviceSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		trim: true,
-		required: true
+const deviceSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			trim: true,
+			required: true
+		},
+		description: {
+			type: String,
+			trim: true
+		},
+		keyHash: String,
+		owner: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'user'
+		},
+		currentFermentation: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'fermentation'
+		}
 	},
-	description: {
-		type: String,
-		trim: true
-	},
-	keyHash: String,
-	owner: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'user'
-	},
-	currentFermentation: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'fermentation'
-	},
-	dateRegistered: Number
-});
+	{
+		timestamps: true
+	}
+);
 
 // Compound index ensures device name is unique to user
 deviceSchema.index(
