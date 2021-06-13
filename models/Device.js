@@ -54,15 +54,17 @@ deviceSchema.pre('save', async function saveDeviceToUserIfDeviceNameIsUniqueToUs
 	}
 });
 
-deviceSchema.pre('deleteOne', async function removeDeviceFromUser(next) {
+deviceSchema.pre('findOneAndDelete', async function removeFromUser(next) {
+	// In pre('findOneAndDelete') 'this' refers to the query object rather than the document being updated.
+	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
-		const user = await User.findById(this.owner).populate('device').exec();
-		user.devices.pull(this._id);
+		const device = await this.model.findOne(this.getQuery());
+		const user = await User.findById(device.owner).populate('devices').exec();
+		user.devices.pull(device._id);
 		await user.save();
 		next();
 	} catch (error) {
 		console.error(`Error during device deletion, could not remove device from user: ${error.message}`);
-		next(error);
 	}
 });
 

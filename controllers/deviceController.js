@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
+import {populateForm} from '../cypress/fixtures/testUtils.js';
 
 export const generateTokenAndID = (req, res, next) => {
 	res.locals.token = uuidv4();
@@ -19,7 +20,7 @@ export const hashToken = (req, res, next) => {
 
 export const addToDatabase = async (req, res) => {
 	try {
-		// pre-save middleware on the device model checks if device name is unique to user
+		// pre-save hook on the device model checks if device name is unique to user
 		// and adds the device id to the user db entry if not already present
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
@@ -52,7 +53,7 @@ export const addToDatabase = async (req, res) => {
 
 export const update = async (req, res) => {
 	try {
-		// pre-save middleware on the device model checks if device name is unique to user
+		// pre-save hook on the device model checks if device name is unique to user
 		// and adds the device id to the user db entry if not already present
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
@@ -94,6 +95,7 @@ export const addDeviceForm = async (req, res, next) => {
 };
 
 export const editDevice = async (req, res, next) => {
+	// if (!req.device) res.status()
 	res.render('device/editDevice', {
 		title: `Edit ${req.device.name}`,
 		device: req.device,
@@ -101,7 +103,8 @@ export const editDevice = async (req, res, next) => {
 	});
 };
 
-export const deleteDevice = async (req, res, next) => {
+export const deleteDevice = async function (req, res, next) {
+	// pre delete hook on the device model removes the device id from the user's db entry
 	try {
 		await Device.findByIdAndDelete(req.device._id).exec();
 		req.flash('success', `Device: ${req.device.name} was successfully deleted.`);
@@ -127,7 +130,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	if (req.user && req.user.ownsDevice(id)) {
 		//user logged in trying to view or edit device
 		try {
-			const device = await Device.findById(id).exec();
+			const device = await Device.findById(id).populate('currentFermentation').exec();
 			// const device = await (await Device.findById(id).populate('currentFermentation')).execPopulate();
 			req.device = device;
 			next();

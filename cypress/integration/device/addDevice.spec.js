@@ -89,7 +89,7 @@ describe('Sanitization', function () {
 });
 
 {
-	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(9, 12)}`;
+	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(8, 12)}`;
 
 	describe('Success', function () {
 		before(logInAsJeanette);
@@ -118,6 +118,10 @@ describe('Sanitization', function () {
 				.contains(temporaryTestDeviceName)
 				.click();
 		});
+	});
+
+	describe('Deleting a device', function () {
+		beforeEach(logInAsJeanette);
 		it('Device can be deleted using a button on the "edit device" page', function () {
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li') //
@@ -130,6 +134,12 @@ describe('Sanitization', function () {
 				.click();
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li') //
+				.contains(temporaryTestDeviceName)
+				.should('not.exist');
+		});
+		it("causes the device to be removed from the user's DB entry", function () {
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li > a') //
 				.contains(temporaryTestDeviceName)
 				.should('not.exist');
 		});
