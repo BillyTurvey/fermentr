@@ -32,17 +32,9 @@ passport.serializeUser(function (user, done) {
 	done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		delete user.password;
-		done(err, user);
-	});
-});
-
 passport.deserializeUser(async function (id, done) {
 	try {
-		const user = User.findById(id).populate('devices').populate('fermentations').exec();
-		delete user.password;
+		const user = await User.findById(id).populate('devices').populate('fermentations').exec();
 		done(null, user);
 	} catch (error) {
 		done(error);
