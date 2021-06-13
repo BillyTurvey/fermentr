@@ -4,7 +4,6 @@ export const view = (req, res, next) => {};
 
 export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
-		await req.user.populate('devices').execPopulate();
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
 			devices: req.user.devices || [],
@@ -16,7 +15,6 @@ export const renderEmptyEditFermentationForm = async (req, res) => {
 
 export const renderPopulatedEditForm = async (req, res) => {
 	if (req.user) {
-		await req.user.populate('devices').execPopulate();
 		res.render('fermentation/editFermentation', {
 			title: 'Edit Fermentation',
 			devices: req.user.devices || [],

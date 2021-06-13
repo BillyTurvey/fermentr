@@ -19,7 +19,7 @@ block content
 
 			if (user.fermentations.length > 0)
 				h3 Assign this device to a fermentation
-				each fermentation in fermentations
+				each fermentation in user.fermentations
 					.fermentationRadio
 						input(type="radio" id=fermentation.name name="fermentation" value=fermentation._id)
 						label(for=fermentation.name) #{fermentation.name}

@@ -1,5 +1,15 @@
 {
 	"name": "Jeanette",
 	"email": "testuser2@persistenttestuser.com",
-	"password": "bunk-5684-Ermine"
+	"password": "bunk-5684-Ermine",
+	"Devices": [
+		{
+			"name": "Arduino MKR",
+			"_id": "60c1b4271d8a36ac22863109"
+		},
+		{
+			"name": "Raspberry",
+			"_id": "60c1b4581d8a36ac2286310a"
+		}
+	]
 }

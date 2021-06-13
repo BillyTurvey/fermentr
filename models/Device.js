@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
-import User from './User.js';
 mongoose.Promise = global.Promise;
+
+import User from './User.js';
+import bcrypt from 'bcrypt';
 
 const deviceSchema = new mongoose.Schema({
 	name: {
@@ -53,7 +55,8 @@ deviceSchema.methods.isAuthenticated = async function isAuthenticated(key) {
 		const resultBoolean = await bcrypt.compare(key, this.keyHash);
 		return resultBoolean;
 	} catch (error) {
-		return next(err);
+		console.error(error);
+		return false;
 	}
 };
 

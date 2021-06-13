@@ -64,6 +64,16 @@ describe('Device description', function () {
 	});
 });
 
+describe('Add device page lists fermentations', function () {
+	before(logInAsJeanette);
+	it("contains a list of user's fermentations", function () {
+		cy.visit('device/add');
+		cy.get('form > .fermentationRadio > label') //
+			.contains('NEIPA 21')
+			.should('exist');
+	});
+});
+
 // all fields are sanitized/escaped
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
@@ -77,41 +87,78 @@ describe('Sanitization', function () {
 	});
 });
 
-const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(9, 12)}`;
+{
+	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(9, 12)}`;
 
-describe('Success', function () {
-	beforeEach(logInAndVisitAddDeviceWithoutRequired);
-	it('provides access token upon successfully registering device', function () {
-		const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
-		cy.get('input[name="deviceName"]').type(temporaryTestDeviceName);
-		cy.get('form').contains('Submit').click();
-		cy.get('p').contains(uuidRegEx).should('exist');
+	describe('Success', function () {
+		beforeEach(logInAndVisitAddDeviceWithoutRequired);
+		it('provides access token upon successfully registering device', function () {
+			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
+			cy.get('input[name="deviceName"]').type(temporaryTestDeviceName);
+			cy.get('form').contains('Submit').click();
+			cy.get('p').contains(uuidRegEx).should('exist');
+		});
 	});
-});
 
-describe('Successfully adding a Device', function () {
-	beforeEach(logInAsNelson);
-	it("causes the device to appear in a list on the user's dashboard", function () {
-		cy.visit('user/dashboard');
-		cy.get('article.devices > ul > li > a') //
-			.contains(temporaryTestDeviceName)
-			.should('exist');
+	describe('Successfully adding a Device', function () {
+		beforeEach(logInAsNelson);
+		it("causes the device to appear in a list on the user's dashboard", function () {
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li > a') //
+				.contains(temporaryTestDeviceName)
+				.should('exist');
+		});
+		it('Device can be deleted using a button on the "edit device" page', function () {
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li') //
+				.contains(temporaryTestDeviceName)
+				.contains('edit')
+				.click();
+			cy.get('button') //
+				.contains(`Delete ${temporaryTestDeviceName}`)
+				.click();
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li') //
+				.contains(temporaryTestDeviceName)
+				.should('not.exist');
+		});
+		it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
+			expect(true).to.be.false;
+		});
 	});
-	it('Device can be deleted using a button on the "edit device" page', function () {
-		cy.visit('user/dashboard');
-		cy.get('article.devices > ul > li') //
-			.contains(temporaryTestDeviceName)
-			.contains('edit')
-			.click();
-		cy.get('button') //
-			.contains(`Delete ${temporaryTestDeviceName}`)
-			.click();
-		cy.visit('user/dashboard');
-		cy.get('article.devices > ul > li') //
-			.contains(temporaryTestDeviceName)
-			.should('not.exist');
+}
+
+describe('Viewing a device', function () {
+	before(logOut);
+	it('User must be logged in.', function () {
+		cy.request({
+			method: 'GET',
+			url: '/device/60c1b4581d8a36ac2286310a',
+			failOnStatusCode: false
+		}).should((response) => {
+			expect(response.status).to.eq(401);
+		});
 	});
-	it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
-		expect(true).to.be.false;
+	it('If logged in, user must also own the Device they request to view.', function () {
+		logInAsNelson();
+		cy.request({
+			method: 'GET',
+			url: '/device/60c1b4581d8a36ac2286310a',
+			failOnStatusCode: false
+		}).should((response) => {
+			expect(response.status).to.eq(401);
+		});
+	});
+	it('If logged in, user is able to view one of thier own devices.', function () {
+		cy.fixture('testUser1.json').then((user) => {
+			logInAsJeanette();
+			cy.visit('/dashboard');
+			cy.get('article.devices > ul > li') //
+				.contains(user.devices[0].name)
+				.click();
+			cy.get('h2') //
+				.contains(`Device: ${user.devices[0].name}`)
+				.should('exist');
+		});
 	});
 });
