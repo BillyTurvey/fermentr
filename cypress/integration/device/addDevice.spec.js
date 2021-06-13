@@ -84,6 +84,7 @@ describe('Sanitization', function () {
 			'contain',
 			`You already have a device named '<script>&', please choose a new name.`
 		);
+		logOut();
 	});
 });
 
@@ -91,22 +92,31 @@ describe('Sanitization', function () {
 	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(9, 12)}`;
 
 	describe('Success', function () {
-		beforeEach(logInAndVisitAddDeviceWithoutRequired);
+		before(logInAsJeanette);
 		it('provides access token upon successfully registering device', function () {
 			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
+			cy.visit('device/add');
 			cy.get('input[name="deviceName"]').type(temporaryTestDeviceName);
+			cy.get('form > .fermentationRadio > input[id="NEIPA 21"]') //
+				.click();
 			cy.get('form').contains('Submit').click();
 			cy.get('p').contains(uuidRegEx).should('exist');
 		});
 	});
 
 	describe('Successfully adding a Device', function () {
-		beforeEach(logInAsNelson);
+		beforeEach(logInAsJeanette);
 		it("causes the device to appear in a list on the user's dashboard", function () {
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li > a') //
 				.contains(temporaryTestDeviceName)
 				.should('exist');
+		});
+		it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li > a') //
+				.contains(temporaryTestDeviceName)
+				.click();
 		});
 		it('Device can be deleted using a button on the "edit device" page', function () {
 			cy.visit('user/dashboard');
@@ -122,9 +132,6 @@ describe('Sanitization', function () {
 			cy.get('article.devices > ul > li') //
 				.contains(temporaryTestDeviceName)
 				.should('not.exist');
-		});
-		it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
-			expect(true).to.be.false;
 		});
 	});
 }
