@@ -9,10 +9,11 @@ passport.use(
 			passwordField: 'password'
 		},
 		async function findAndAuthenticateUser(username, password, done) {
-			User.findOne({email: username}, async function (err, user) {
-				if (err) {
-					return done(err);
-				}
+			try {
+				const user = await User.findOne({email: username})
+					.populate('devices')
+					.populate('fermentations')
+					.exec();
 				if (!user) {
 					return done(null, false, {message: 'Invalid credentials.'});
 				}
@@ -20,7 +21,9 @@ passport.use(
 					return done(null, false, {message: 'Invalid credentials.'});
 				}
 				return done(null, user);
-			});
+			} catch (error) {
+				return done(error);
+			}
 		}
 	)
 );
