@@ -7,8 +7,8 @@ block content
 	article.fermentations
 		h2 Fermentations
 			ul 
-				if (fermentations.length > 0)
-					each fermentation in fermentations
+				if (user.fermentations.length > 0)
+					each fermentation in user.fermentations
 						li
 							a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
 							a(href=`fermentation/${fermentation._id}/edit`) Edit
@@ -18,8 +18,8 @@ block content
 	article.devices
 		h2 Devices
 		ul 
-			if (devices.length > 0)
-				each device in devices
+			if (user.devices.length > 0)
+				each device in user.devices
 					li
 						a(href=`/device/${device._id}`) #{device.name} |
 						a(href=`/device/${device._id}/edit`) Edit

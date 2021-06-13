@@ -49,7 +49,19 @@ deviceSchema.pre('save', async function saveDeviceToUserIfDeviceNameIsUniqueToUs
 		await user.save();
 		next();
 	} catch (error) {
-		console.error(`Error during ${error.message}`);
+		console.error(`Error during device registration: ${error.message}`);
+		next(error);
+	}
+});
+
+deviceSchema.pre('deleteOne', async function removeDeviceFromUser(next) {
+	try {
+		const user = await User.findById(this.owner).populate('device').exec();
+		user.devices.pull(this._id);
+		await user.save();
+		next();
+	} catch (error) {
+		console.error(`Error during device deletion, could not remove device from user: ${error.message}`);
 		next(error);
 	}
 });

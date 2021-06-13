@@ -112,7 +112,8 @@ describe('Sanitization', function () {
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li') //
 				.contains(temporaryTestDeviceName)
-				.contains('edit')
+				.next('a')
+				.contains('Edit')
 				.click();
 			cy.get('button') //
 				.contains(`Delete ${temporaryTestDeviceName}`)

@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
 
@@ -9,13 +9,15 @@ block content
 		label(for="deviceName") Device Name – to help you differentiate multiple devices.
 		input(type="text", name="deviceName" value=device.name||'' required)
 
+		br
+
 		label(for="description") Description (optional).
 		input(type="text", name="description" value=device.description||'') 
 
 
 
-		if (fermentations.length > 0) //if owner has fermentations
-			if (device.currentFermentation) // if device is  currently assigned to a fermentation
+		if (fermentations.length > 0)
+			if (device.currentFermentation)
 				h3 #{device.name} is currently assigned to #{device.currentFermentation.name}
 			else
 				h3 Assign this device to a fermentation
@@ -27,5 +29,9 @@ block content
 					label(for=fermentation.name) #{fermentation.name}
 						span.fermentation-description - #{fermentation.description}
 
-		button(type="submit") Submit
+		button(type="submit") Update
+
+	form(action=`/device/${device._id}/delete` method="POST")
+		button(type="submit") Delete #{device.name}
+
 

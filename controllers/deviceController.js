@@ -17,10 +17,43 @@ export const hashToken = (req, res, next) => {
 	});
 };
 
-export const addDeviceToDatabase = async (req, res) => {
+export const addToDatabase = async (req, res) => {
 	try {
 		// pre-save middleware on the device model checks if device name is unique to user
-		// and adds the device id to the user db entry
+		// and adds the device id to the user db entry if not already present
+		const device = await Device.create({
+			deviceID: res.locals.deviceID,
+			name: req.body.deviceName,
+			description: req.body.description,
+			tokenHash: res.locals.tokenHash,
+			dateRegistered: Date.now(),
+			owner: req.user._id
+		});
+		req.flash('success', 'Device registered.');
+		return res.render('device/addDevice', {
+			title: 'Done!',
+			flashes: req.flash(),
+			device: device,
+			deviceToken: res.locals.token
+		});
+	} catch (error) {
+		console.error(`Error during device registration: ${error.message}`);
+		if (error.message.includes('E11000')) {
+			error.message = `You already have a device named '${req.body.deviceName}', please choose a new name.`;
+		}
+		req.flash('error', error.message);
+		res.render('device/addDevice', {
+			title: 'Register A New Device',
+			name: req.body.name,
+			flashes: req.flash()
+		});
+	}
+};
+
+export const update = async (req, res) => {
+	try {
+		// pre-save middleware on the device model checks if device name is unique to user
+		// and adds the device id to the user db entry if not already present
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
 			name: req.body.deviceName,
@@ -66,6 +99,21 @@ export const editDevice = async (req, res, next) => {
 		device: req.device,
 		fermentations: req.user.fermentations
 	});
+};
+
+export const deleteDevice = async (req, res, next) => {
+	try {
+		await Device.findByIdAndDelete(req.device._id).exec();
+		req.flash('success', `Device: ${req.device.name} was successfully deleted.`);
+		res.render('user/dashboard', {
+			title: 'Dashboard',
+			user: req.user,
+			flashes: req.flash()
+		});
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
 };
 
 export const view = async (req, res) => {
