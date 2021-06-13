@@ -39,4 +39,14 @@ passport.deserializeUser(function (id, done) {
 	});
 });
 
+passport.deserializeUser(async function (id, done) {
+	try {
+		const user = User.findById(id).populate('devices').populate('fermentations').exec();
+		delete user.password;
+		done(null, user);
+	} catch (error) {
+		done(error);
+	}
+});
+
 export default passport;
