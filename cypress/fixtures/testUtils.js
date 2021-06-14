@@ -14,7 +14,7 @@ export const unrequireFormInputs = (contentWindow) => {
 export const logOut = () => cy.request('POST', '/user/logOut');
 
 export const logInAsNelson = () => {
-	cy.fixture('testUser1.json').then((user) => {
+	cy.fixture('testUserNelson.json').then((user) => {
 		cy.request({
 			method: 'POST',
 			url: '/user/logIn',
@@ -27,7 +27,7 @@ export const logInAsNelson = () => {
 };
 
 export const logInAsJeanette = () => {
-	cy.fixture('testUser2.json').then((user) => {
+	cy.fixture('testUserJeanette.json').then((user) => {
 		cy.request({
 			method: 'POST',
 			url: '/user/logIn',
