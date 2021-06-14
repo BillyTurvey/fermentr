@@ -127,7 +127,7 @@ export const view = async (req, res) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
-	if (req.user && req.user.ownsDevice(id)) {
+	if (req.user && (await req.user.ownsDevice(id))) {
 		//user logged in trying to view or edit device
 		try {
 			const device = await Device.findById(id).populate('currentFermentation').exec();
@@ -138,7 +138,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 			console.error(error);
 			res.status(401).end();
 		}
-	} else {
+	} else if (req.header('device-key')) {
 		// device posting data to be logged
 		try {
 			const device = await Device.findById(id);
@@ -153,6 +153,8 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 			console.error(error);
 			res.status(401).end();
 		}
+	} else {
+		res.status(401).end();
 	}
 };
 
