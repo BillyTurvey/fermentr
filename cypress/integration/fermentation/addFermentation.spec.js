@@ -148,5 +148,30 @@ describe('Add fermentation page: Devices...', function () {
 			cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
 		});
 	});
+
+	describe('Deleting a device', function () {
+		beforeEach(logInAsJeanette);
+		it('Device can be deleted using a button on the "edit device" page', function () {
+			cy.visit('user/dashboard');
+			cy.get('article.fermentations > ul > li') //
+				.contains(temporaryTestFermentationeName)
+				.next('a')
+				.contains('Edit')
+				.click();
+			cy.get('button') //
+				.contains(`Delete ${temporaryTestFermentationName}`)
+				.click();
+			cy.visit('user/dashboard');
+			cy.get('article.fermentations > ul > li') //
+				.contains(temporaryTestFermentationName)
+				.should('not.exist');
+		});
+		it("causes the device to be removed from the user's DB entry", function () {
+			cy.visit('user/dashboard');
+			cy.get('article.fermentations > ul > li > a') //
+				.contains(temporaryTestFermentationName)
+				.should('not.exist');
+		});
+	});
 }
 // gravity readings must be formatted correctly}
