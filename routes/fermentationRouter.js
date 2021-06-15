@@ -13,7 +13,9 @@ fermentation.addToDatabase
 
 router.param('id', fermentation.authenticateAndAttachToReq);
 
-router.get('/:id', fermentation.view); 
+router.get('/:id', fermentation.view);
+
+router.post('/:id/delete', fermentation.deleteFermentation);
 
 router.get('/:id/edit', fermentation.renderPopulatedEditForm); 
 

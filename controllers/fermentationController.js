@@ -52,6 +52,22 @@ export const addToDatabase = async (req, res, next) => {
 	}
 };
 
+export const deleteFermentation = async function (req, res, next) {
+	// pre delete hook on the fermentation model removes the fermentation id from the user's db entry
+	try {
+		await Fermentation.findByIdAndDelete(req.fermentation._id).exec();
+		req.flash('success', `Fermentation: ${req.fermentation.name} was successfully deleted.`);
+		res.render('user/dashboard', {
+			title: 'Dashboard',
+			user: req.user,
+			flashes: req.flash()
+		});
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+};
+
 export const view = (req, res, next) => {
 	res.render('fermentation/viewFermentation', {
 		title: req.fermentation.name,

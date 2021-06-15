@@ -43,3 +43,6 @@ block content
 
 
 		button(type="submit") Submit
+
+	form(action=`/device/${fermentation._id}/delete` method="POST")
+		button(type="submit") Delete #{fermentation.name}
