@@ -110,10 +110,10 @@ export const sanitizeAndValidateFermentation = [
 	).isLength({
 		max: 30
 	}),
-	body('description', 'Description is too long, please limit to fewer than 100 characters.')
+	body('description', 'Description is too long, please limit to fewer than 300 characters.')
 		.escape()
 		.trim()
-		.isLength({max: 200}),
+		.isLength({max: 300}),
 	// body('targetOG', 'targetOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('actualOG', 'actualOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('targetFG', 'targetFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
