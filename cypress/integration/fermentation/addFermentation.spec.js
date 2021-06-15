@@ -76,32 +76,6 @@ describe('Fermentation name', function () {
 	});
 });
 
-describe('Fermentation description', function () {
-	beforeEach(logInAndVisitAddFermentationWithoutRequired);
-	it('must be shorter than 200 chars', function () {
-		cy.get('input[name="name"]').type(`test ${Math.random().toString().slice(2, 9)} fermentation`);
-		cy.get('textarea[name="description"]') //
-			.type(
-				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut libero eget quam volutpat sodales. Praesent aliquam elit ut dui pharetra convallis.'
-			);
-		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should(
-			'contain',
-			`Description is too long, please limit to fewer than 100 characters.`
-		);
-	});
-	it('input is escaped', function () {
-		const testFermentationName = `testName ${Math.random().toString().slice(2, 9)}`;
-		cy.get('input[name="name"]').type(testFermentationName);
-		cy.get('textarea[name="description"]').type('<script>alert("Gotcha!")</script>');
-		cy.get('form').contains('Submit').click();
-		cy.get('a').contains('Dashboard').click();
-		cy.get('a').contains(testFermentationName).click();
-		cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
-	});
-});
-
-// Updates the device's entry in the databse to show its active fermentation
 describe('Add fermentation page: Devices...', function () {
 	before(logInAsJeanette);
 	it('contains a list of available devices owned by the user', function () {
@@ -112,17 +86,60 @@ describe('Add fermentation page: Devices...', function () {
 	});
 });
 
-describe('Successfully adding a fermentation', function () {
-	beforeEach(logInAndVisitAddFermentationWithoutRequired);
-	it('redirects to the user dashboard', function () {
-		expect(true).to.be.false;
-	});
-	it("causes the fermentation to appear on the user's dashboard", function () {
-		expect(true).to.be.false;
-	});
-	it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
-		expect(true).to.be.false;
-	});
-});
+{
+	const temporaryTestFermentationName = `Test Fermentation${Date.now().toString().slice(8, 11)}`;
 
+	describe('Fermentation description', function () {
+		beforeEach(logInAsJeanette);
+		it('must be shorter than 300 chars', function () {
+			cy.visit('fermentation/add');
+			cy.get('input[name="name"]').type(temporaryTestFermentationName);
+			cy.get('textarea[name="description"]') //
+				.type(
+					'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+				);
+			cy.get('form').contains('Submit').click();
+			cy.get('.flash--error').should(
+				'contain',
+				`Description is too long, please limit to fewer than 300 characters.`
+			);
+		});
+	});
+	// Updates the device's entry in the databse to show its active fermentation
+
+	describe('Successfully adding a fermentation', function () {
+		beforeEach(logInAsJeanette);
+		it('redirects to the user dashboard', function () {
+			cy.fixture('testUserJeanette.json').then((jeanette) => {
+				cy.visit('fermentation/add');
+				cy.get('input[name="name"]').type(temporaryTestFermentationName);
+				cy.get('textarea[name="description"]').type(
+					'This block of text is the description for a test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>'
+				);
+				cy.get(`form > .deviceRadio > input[id="${jeanette.devices[0].name}"]`).click();
+				cy.get('form').contains('Submit').click();
+				cy.location('pathname').should('eq', '/user/dashboard');
+			});
+		});
+		it("causes the fermentation to appear on the user's dashboard", function () {
+			cy.get('article.fermentations > ul > li > a') //
+				.contains(temporaryTestFermentationName)
+				.should('exist');
+		});
+		it('causes the chosen device to have the selected device listed as its assigned device', function () {
+			expect(true).to.be.false;
+		});
+	});
+
+	describe('Sanitization', function () {
+		it('input is escaped', function () {
+			cy.get('input[name="name"]').type(temporaryTestFermentationName);
+			cy.get('textarea[name="description"]').type('<script>alert("Gotcha!")</script>');
+			cy.get('form').contains('Submit').click();
+			cy.get('a').contains('Dashboard').click();
+			cy.get('a').contains(temporaryTestFermentationName).click();
+			cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
+		});
+	});
+}
 // gravity readings must be formatted correctly}
