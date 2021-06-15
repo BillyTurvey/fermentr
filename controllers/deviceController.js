@@ -128,10 +128,9 @@ export const view = async (req, res) => {
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	if (req.user && (await req.user.ownsDevice(id))) {
-		//user logged in trying to view or edit device
+		//user is logged in and is trying to view or edit device they own
 		try {
 			const device = await Device.findById(id).populate('currentFermentation').exec();
-			// const device = await (await Device.findById(id).populate('currentFermentation')).execPopulate();
 			req.device = device;
 			next();
 		} catch (error) {

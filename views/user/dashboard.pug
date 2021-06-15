@@ -10,8 +10,8 @@ block content
 			if (user.fermentations.length > 0)
 				each fermentation in user.fermentations
 					li
-						a(href=`fermentation/${fermentation._id}`) #{fermentation.name} | 
-						a(href=`fermentation/${fermentation._id}/edit`) Edit
+						a(href=`/fermentation/${fermentation._id}`) #{fermentation.name} | 
+						a(href=`/fermentation/${fermentation._id}/edit`) Edit
 			li
 				a(href="/fermentation/add") + Add new fermentation
 

@@ -1,7 +1,5 @@
 import Fermentation from '../models/Fermentation.js';
 
-export const view = (req, res, next) => {};
-
 export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
 		res.render('fermentation/editFermentation', {
@@ -53,4 +51,25 @@ export const addToDatabase = async (req, res, next) => {
 	}
 };
 
-export const viewFermentation = (req, res, next) => {};
+export const view = (req, res, next) => {
+	res.render('fermentation/viewFermentation', {
+		title: req.fermentation.name,
+		fermentation: req.fermentation
+	});
+};
+
+export const authenticateAndAttachToReq = async (req, res, next, id) => {
+	if (req.user && (await req.user.ownsFermentation(id))) {
+		try {
+			// const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
+			const fermentation = await Fermentation.findById(id).exec();
+			req.fermentation = fermentation;
+			next();
+		} catch (error) {
+			console.error(error);
+			res.status(500).end();
+		}
+	} else {
+		res.status(401).end();
+	}
+};

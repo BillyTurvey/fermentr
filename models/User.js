@@ -74,6 +74,15 @@ userSchema.methods.ownsDevice = async function ownsDevice(deviceID) {
 	return false;
 };
 
+userSchema.methods.ownsFermentation = async function ownsFermentation(fermentationID) {
+	for (const fermentation in this.fermentations) {
+		if (this.fermentations[fermentation].id === fermentationID) {
+			return true;
+		}
+	}
+	return false;
+};
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

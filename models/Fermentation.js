@@ -17,6 +17,10 @@ const fermentationSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'user'
 		},
+		assignedDevice: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'device'
+		},
 		recipe: {
 			malt: String,
 			hops: String,
@@ -29,7 +33,6 @@ const fermentationSchema = new mongoose.Schema(
 			actualFG: Number
 		},
 		startTime: Number,
-		dateRegistered: Number,
 		temperature: {
 			target: [
 				{

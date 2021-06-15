@@ -4,20 +4,23 @@ import * as validate from '../utils/validation.js';
 
 const router = Router();
 
-// router.get('/:fermentationID', fermentation.view); 
-
 router.get('/add', fermentation.renderEmptyEditFermentationForm);
-
-router.get('/:fermentationID/edit', fermentation.renderPopulatedEditForm); 
-
-router.put('/:fermentationID/update', 
-validate.sanitizeAndValidateFermentation,
-fermentation.update
-);
 
 router.post('/add', 
 validate.sanitizeAndValidateFermentation, 
 fermentation.addToDatabase 
 );
+
+router.param('id', fermentation.authenticateAndAttachToReq);
+
+router.get('/:id', fermentation.view); 
+
+router.get('/:id/edit', fermentation.renderPopulatedEditForm); 
+
+router.put('/:id/update', 
+validate.sanitizeAndValidateFermentation,
+fermentation.update
+);
+
 
 export default router;
