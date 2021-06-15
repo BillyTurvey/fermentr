@@ -126,8 +126,13 @@ describe('Add fermentation page: Devices...', function () {
 				.contains(temporaryTestFermentationName)
 				.should('exist');
 		});
-		it('causes the chosen device to have the selected device listed as its assigned device', function () {
-			expect(true).to.be.false;
+		it("causes the selected device to be listed as the fermentation's assigned device", function () {
+			cy.get('article.fermentations > ul > li > a') //
+				.contains(temporaryTestFermentationName)
+				.click();
+			cy.get('p')
+				.contains(`Device ${jeanette.devices[0].name} is assigned to ${temporaryTestFermentationName}.`)
+				.should('exist');
 		});
 	});
 
