@@ -32,7 +32,8 @@ export const addToDatabase = async (req, res, next) => {
 			name: req.body.name,
 			description: req.body.description,
 			dateRegistered: Date.now(),
-			user: req.user._id
+			user: req.user._id,
+			assignedDevice: req.body.device
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect('/user/dashboard');
@@ -62,7 +63,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	if (req.user && (await req.user.ownsFermentation(id))) {
 		try {
 			// const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
-			const fermentation = await Fermentation.findById(id).exec();
+			const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
 			req.fermentation = fermentation;
 			next();
 		} catch (error) {

@@ -15,11 +15,11 @@ const fermentationSchema = new mongoose.Schema(
 		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user'
+			ref: 'User'
 		},
 		assignedDevice: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'device'
+			ref: 'Device'
 		},
 		recipe: {
 			malt: String,
