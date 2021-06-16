@@ -104,7 +104,7 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 // });
 
 {
-	const temporaryTestFermentationName = `Test Fermentation<br>${Date.now().toString().slice(8, 10)}`;
+	const temporaryTestFermentationName = `Test Fermentation<br>${Math.random().toString().slice(9, 12)}`;
 
 	// Updates the device's entry in the databse to show its active fermentation
 

@@ -78,7 +78,7 @@ describe('Email validation', function () {
 		cy.get('.flash--error').should('contain', 'Email is not valid.');
 	});
 	it('Rejects already registered emails', function () {
-		cy.fixture('testUser1').then((user) => {
+		cy.fixture('testUserNelson').then((user) => {
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
@@ -91,7 +91,7 @@ describe('Email validation', function () {
 describe('Success', function () {
 	beforeEach(visitRegisterWithoutRequired);
 	it('redirects to home after registration with success flashes', function () {
-		cy.fixture('testUser1').then((user) => {
+		cy.fixture('testUserNelson').then((user) => {
 			cy.get('input[name="email"]').type(newTestEmail());
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
@@ -100,7 +100,7 @@ describe('Success', function () {
 		});
 	});
 	it('User is logged in after registration', function () {
-		cy.fixture('testUser1').then((user) => {
+		cy.fixture('testUserNelson').then((user) => {
 			cy.get('input[name="email"]').type(newTestEmail());
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
