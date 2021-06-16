@@ -12,12 +12,13 @@ export const renderEmptyEditFermentationForm = async (req, res) => {
 };
 
 export const renderPopulatedEditForm = async (req, res) => {
+	console.log(`🟠`);
 	if (req.user) {
 		res.render('fermentation/editFermentation', {
 			title: 'Edit Fermentation',
 			devices: req.user.devices || [],
-			editingExhisitngFermentation: true,
-			fermentation: {}
+			editingExhistingFermentation: true,
+			fermentation: req.fermentation
 		});
 	}
 	res.status(401).end();
