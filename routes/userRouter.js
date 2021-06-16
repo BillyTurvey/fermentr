@@ -17,7 +17,8 @@ router.post('/logOut', user.logOut);
 router.get('/register', user.registrationForm);
 router.post('/register',
 	validate.sanitizeAndValidateUser,
-	user.register
+	user.register,
+	user.logIn
 );
 
 export default router;

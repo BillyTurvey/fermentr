@@ -43,12 +43,11 @@ export const logOut = (req, res) => {
 	res.redirect('/');
 };
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
 	try {
 		const user = await User.create(req.body);
 		req.flash('success', `${req.body.name}, your account was successfully created.`);
-		req.flash('success', 'You are now logged in.');
-		res.redirect('/');
+		next();
 	} catch (error) {
 		console.error(`Error during user registration: ${error.message}`);
 		if (error.message.includes('E11000')) {

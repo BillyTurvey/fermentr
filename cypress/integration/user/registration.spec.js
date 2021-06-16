@@ -52,18 +52,6 @@ describe('Invalid Form Submission', function () {
 	});
 });
 
-describe('Sanitization', function () {
-	beforeEach(visitRegisterWithoutRequired);
-	it('escapes form inputs', function () {
-		cy.get('input[name="email"]').type(newTestEmail());
-		cy.get('input[name="name"]').type('<script>alert("ALERT!")</script>');
-		cy.get('input[name="password"]').type('randomP@55word');
-		cy.get('input[name="passwordConfirm"]').type('randomP@55word');
-		cy.get('form').contains('Submit').click();
-		cy.get('.flash--success').should('contain', '<script>');
-	});
-});
-
 describe('Email validation', function () {
 	beforeEach(visitRegisterWithoutRequired);
 	it('Email cannot be blank', function () {
@@ -90,13 +78,13 @@ describe('Email validation', function () {
 
 describe('Success', function () {
 	beforeEach(visitRegisterWithoutRequired);
-	it('redirects to home after registration with success flashes', function () {
+	it('Redirects to user dashboard after registration with success flashes', function () {
 		cy.fixture('testUserNelson').then((user) => {
 			cy.get('input[name="email"]').type(newTestEmail());
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
 			cy.get('input[name="passwordConfirm"]').type(user.password + '{enter}');
-			cy.location('pathname').should('eq', '/');
+			cy.location('pathname').should('eq', '/user/dashboard');
 		});
 	});
 	it('User is logged in after registration', function () {
@@ -107,5 +95,17 @@ describe('Success', function () {
 			cy.get('input[name="passwordConfirm"]').type(user.password + '{enter}');
 			cy.get('nav').should('contain', `Dashboard`);
 		});
+	});
+});
+
+describe('Sanitization', function () {
+	beforeEach(visitRegisterWithoutRequired);
+	it("User's name is escaped", function () {
+		cy.get('input[name="email"]').type(newTestEmail());
+		cy.get('input[name="name"]').type('<script>alert("ALERT!")</script>');
+		cy.get('input[name="password"]').type('randomP@55word');
+		cy.get('input[name="passwordConfirm"]').type('randomP@55word');
+		cy.get('form').contains('Submit').click();
+		cy.get('.flash--success').should('contain', '<script>');
 	});
 });
