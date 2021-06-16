@@ -4,7 +4,7 @@ block content
 
 	if device
 		h2 You have successfully registered !{device.name}. 
-		p #{device.name}'s device ID is #{device.id}, and its security token is #{deviceToken}
+		p !{device.name}'s device ID is !{device.id}, and its security token is !{deviceToken}
 
 	else 
 		h2 Use this page to register a new device to your account. 
@@ -22,8 +22,8 @@ block content
 				each fermentation in user.fermentations
 					.fermentationRadio
 						input(type="radio" id=fermentation.name name="fermentation" value=fermentation._id)
-						label(for=fermentation.name) #{fermentation.name}
-							span.fermentation-description  - #{fermentation.description}
+						label(for=fermentation.name) !{fermentation.name}
+							span.fermentation-description  - !{fermentation.description}
 				.fermentationRadio
 						input(type="radio" id=None name="fermentation" value=null)
 						label(for=None) None

@@ -16,7 +16,7 @@ html
 						li 
 							a(href="/user/register") User Registration
 				if (user)
-					p Logged in as #{user.name}.
+					p Logged in as !{user.name}.
 					form(action="/user/logOut" method="POST")
 						button(value="Submit") Log Out
 				else

@@ -38,11 +38,12 @@ block content
 			each device in devices
 				.deviceRadio
 					input(type="radio" id=device.name name="device" value=device._id)
-					label(for=device.name) #{device.name}
-						span.device-description  - #{device.description}
+					label(for=device.name) !{device.name}
+						span.device-description  - !{device.description}
 
 
 		button(type="submit") Submit
 
-	form(action=`/device/${fermentation._id}/delete` method="POST")
-		button(type="submit") Delete #{fermentation.name}
+	if (editingExhistingFermentation)
+		form(action=`/device/${fermentation._id}/delete` method="POST")
+			button(type="submit") Delete !{fermentation.name}

@@ -3,7 +3,7 @@ extends ../layout
 block content
 
 
-	h1 #{fermentation.name}
+	h1 !{fermentation.name}
 
 	if (fermentation.description)
 		p !{fermentation.description}
@@ -20,7 +20,7 @@ block content
 	if (fermentation.assignedDevice) 
 		article
 			h2 Device
-			p Device #{fermentation.assignedDevice.name} is assigned to #{fermentation.name}.
+			p Device !{fermentation.assignedDevice.name} is assigned to !{fermentation.name}.
 
 	//- script(src="https://d3js.org/d3.v6.min.js")
 	//- include clientScripts/drawGraph.js

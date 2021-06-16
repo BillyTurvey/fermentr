@@ -2,7 +2,7 @@ extends ../layout
 
 block content
 
-	h2 Edit Device: #{device.name} 
+	h2 Edit Device: !{device.name} 
 	
 	form(action="/device/add" method="PUT")
 
@@ -18,7 +18,7 @@ block content
 
 		if (fermentations.length > 0)
 			if (device.currentFermentation)
-				h3 #{device.name} is currently assigned to #{device.currentFermentation.name}
+				h3 !{device.name} is currently assigned to !{device.currentFermentation.name}
 			else
 				h3 Assign this device to a fermentation
 
@@ -26,12 +26,12 @@ block content
 				.fermentationRadio
 					- const isChecked = device.currentFermentation === fermentation._id
 					input(type="radio" id=fermentation.name name="fermentation" value=fermentation._id checked=isChecked)
-					label(for=fermentation.name) #{fermentation.name}
-						span.fermentation-description - #{fermentation.description}
+					label(for=fermentation.name) !{fermentation.name}
+						span.fermentation-description - !{fermentation.description}
 
 		button(type="submit") Update
 
 	form(action=`/device/${device._id}/delete` method="POST")
-		button(type="submit") Delete #{device.name}
+		button(type="submit") Delete !{device.name}
 
 
