@@ -7,29 +7,39 @@ block content
 	else 
 		h1 Add New Fermentation
 
-	- const f = fermentation ? fermentation : false;
-	- const actionPath = fermentation ? `/?${fermentation.id}/update` : '/fermentation/add';
+	- 
+		const f = fermentation ? fermentation : null;
+		const actionPath = fermentation ? `/?${fermentation.id}/update` : '/fermentation/add';
+		// optional chaining doesn't work inline, hence this values object
+		const values = {
+			name: f?.name || '',
+			description: f?.description || '', 
+			targetOG: f?.gravity?.targetOG || '', 
+			actualOG: f?.gravity?.actualOG || '', 
+			targetFG: f?.gravity?.targetFG || '', 
+			actualFG: f?.gravity?.actualFG || ''
+		};
 
 	form(action= actionPath method= f ? 'PUT' : 'POST') 
 
 		label(for="name") Name
-		input(type="text" name="name" value= name || f ? f.name : '' required)
+		input(type="text" name="name" value=values.name required)
 		br
 		label(for="description") Description
-		textarea(name="description" rows=5 columns=33 value= description || f ? f.description : '')
+		textarea(name="description" rows=5 columns=33 value=values.description)
 		br
 		label(for="targetFG") Target OG
-		input(type="number" name="targetOG" value= targetOG || f ? f.gravity.targetOG : '')
+		input(type="number" name="targetOG" value=values.targetOG)
 		br
 		label(for="actualFG") Actual OG
-		input(type="number" name="actualOG" value= actualOG || f ? f.gravity.actualOG : '')
+		input(type="number" name="actualOG" value=values.actualOG)
 		br
 		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" value= targetFG || f ? f.gravity.targetFG : '')
+		input(type="number" name="targetFG" value=values.targetFG)
 		br
 		if (editingExhisitngFermentation)
 			label(for="actualFG") Actual FG
-			input(type="number" name="actualFG" value= actualFG || f ? f.gravity.actualFG : '')
+			input(type="number" name="actualFG" value=values.actualFG)
 			br
 
 
@@ -45,5 +55,5 @@ block content
 		button(type="submit") Submit
 
 	if (editingExhistingFermentation)
-		form(action=`/device/${fermentation._id}/delete` method="POST")
+		form(action=`/fermentation/${f.id}/delete` method="POST")
 			button(type="submit") Delete !{fermentation.name}

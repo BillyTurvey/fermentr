@@ -12,7 +12,6 @@ export const renderEmptyEditFermentationForm = async (req, res) => {
 };
 
 export const renderPopulatedEditForm = async (req, res) => {
-	console.log(`🟠`);
 	if (req.user) {
 		res.render('fermentation/editFermentation', {
 			title: 'Edit Fermentation',

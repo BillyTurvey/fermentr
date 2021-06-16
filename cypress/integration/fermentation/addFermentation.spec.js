@@ -1,4 +1,6 @@
 import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.js';
+import nelson from '../../fixtures/testUserNelson.json';
+import jeanette from '../../fixtures/testUserJeanette.json';
 
 const logInAndVisitAddFermentationWithoutRequired = () => {
 	logInAsNelson();
@@ -105,22 +107,21 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 
 {
 	const temporaryTestFermentationName = `Test Fermentation<br>${Math.random().toString().slice(9, 12)}`;
+	const jeanettesDevice = jeanette.devices[0].name;
 
 	// Updates the device's entry in the databse to show its active fermentation
 
 	describe('Successfully adding a fermentation', function () {
 		beforeEach(logInAsJeanette);
 		it('redirects to the user dashboard', function () {
-			cy.fixture('testUserJeanette.json').then((jeanette) => {
-				cy.visit('fermentation/add');
-				cy.get('input[name="name"]').type(temporaryTestFermentationName);
-				cy.get('textarea[name="description"]').type(
-					'This block of text is the description for a test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
-				);
-				cy.get(`form > .deviceRadio > input[id="${jeanette.devices[0].name}"]`).click();
-				cy.get('form').contains('Submit').click();
-				cy.location('pathname').should('eq', '/user/dashboard');
-			});
+			cy.visit('fermentation/add');
+			cy.get('input[name="name"]').type(temporaryTestFermentationName);
+			cy.get('textarea[name="description"]').type(
+				'This block of text is the description for a test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
+			);
+			cy.get(`form > .deviceRadio > input[id="${jeanettesDevice}"]`).click();
+			cy.get('form').contains('Submit').click();
+			cy.location('pathname').should('eq', '/user/dashboard');
 		});
 		it("causes the fermentation to appear on the user's dashboard", function () {
 			cy.get('article.fermentations > ul > li > a') //
@@ -128,14 +129,12 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 				.should('exist');
 		});
 		it("causes the selected device to be listed as the fermentation's assigned device", function () {
-			cy.fixture('testUserJeanette.json').then((jeanette) => {
-				cy.get('article.fermentations > ul > li > a') //
-					.contains(temporaryTestFermentationName)
-					.click();
-				cy.get('p')
-					.contains(`Device ${jeanette.devices[0].name} is assigned to ${temporaryTestFermentationName}.`)
-					.should('exist');
-			});
+			cy.get('article.fermentations > ul > li > a') //
+				.contains(temporaryTestFermentationName)
+				.click();
+			cy.get('p')
+				.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
+				.should('exist');
 		});
 	});
 
@@ -152,12 +151,12 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 		});
 	});
 
-	describe('Deleting a device', function () {
+	describe('Deleting a fermentation', function () {
 		beforeEach(logInAsJeanette);
-		it('Device can be deleted using a button on the "edit device" page', function () {
+		it('Fermentation can be deleted using a button on the "edit fermentation" page', function () {
 			cy.visit('user/dashboard');
 			cy.get('article.fermentations > ul > li') //
-				.contains(temporaryTestFermentationeName)
+				.contains(temporaryTestFermentationName)
 				.next('a')
 				.contains('Edit')
 				.click();
@@ -169,11 +168,20 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 				.contains(temporaryTestFermentationName)
 				.should('not.exist');
 		});
-		it("causes the device to be removed from the user's DB entry", function () {
+		it("causes the fermentation to be removed from the user's DB entry", function () {
 			cy.visit('user/dashboard');
 			cy.get('article.fermentations > ul > li > a') //
 				.contains(temporaryTestFermentationName)
 				.should('not.exist');
+		});
+		it("causes the fermentation's active device to no longer have an active fermentation", function () {
+			cy.visit('user/dashboard');
+			cy.get('article.devices > ul > li > a') //
+				.contains(jeanettesDevice)
+				.click();
+			cy.get('p') //
+				.contains(`${jeanettesDevice} is not currently assigned to a fermentation.`)
+				.should('exist');
 		});
 	});
 }
