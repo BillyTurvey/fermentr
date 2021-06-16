@@ -3,7 +3,7 @@
 // Shows a list of devices
 // links to manage account
 
-import {logIn, logOut} from '../../fixtures/testUtils.js';
+import {logInAsNelson, logOut} from '../../fixtures/testUtils.js';
 
 describe('Dashboard', function () {
 	before(logOut);
@@ -19,7 +19,19 @@ describe('Dashboard', function () {
 });
 
 describe("Users' fermentations", function () {
-	before(logIn);
-	it("shows a list of user's fermentations ", function () {});
-	it('contains a link to create new fermentation', function () {});
+	beforeEach(logInAsNelson);
+	it('contains a link to create new fermentation', function () {
+		cy.visit('user/dashboard');
+		cy.get('a') //
+			.contains('Add a new fermentation')
+			.click();
+		cy.location('pathname').should('include', 'fermentation/add');
+	});
+	it('contains a link to register a new device', function () {
+		cy.visit('user/dashboard');
+		cy.get('a') //
+			.contains('Register a new device')
+			.click();
+		cy.location('pathname').should('include', 'device/add');
+	});
 });

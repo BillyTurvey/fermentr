@@ -92,7 +92,7 @@ describe('Fermentation description', function () {
 	beforeEach(logInAsJeanette);
 	it('must be shorter than 300 chars', function () {
 		cy.visit('fermentation/add');
-		cy.get('input[name="name"]').type(temporaryTestFermentationName);
+		cy.get('input[name="name"]').type('Test Fermentation');
 		cy.get('textarea[name="description"]') //
 			.type(
 				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
