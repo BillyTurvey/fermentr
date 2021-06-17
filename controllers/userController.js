@@ -11,7 +11,7 @@ export const logInForm = (req, res) => {
 
 export const dashboard = async (req, res) => {
 	if (req.user) {
-		res.render('user/dashboard', {
+		return res.render('user/dashboard', {
 			title: 'Dashboard',
 			fermentations: req.user.fermentations || [],
 			devices: req.user.devices || []
