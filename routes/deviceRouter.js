@@ -28,9 +28,9 @@ router.put('/:id',
 
 router.get('/:id/edit', device.editDevice);
 
-// router.post('/:id/log',
-// 	device.logReading 
-// );
+router.post('/:id/log',
+	device.logReading 
+);
 
 
 export default router;
