@@ -57,11 +57,12 @@ export const deleteFermentation = async function (req, res, next) {
 	try {
 		await Fermentation.findByIdAndDelete(req.fermentation._id).exec();
 		req.flash('success', `Fermentation: ${req.fermentation.name} was successfully deleted.`);
-		res.render('user/dashboard', {
-			title: 'Dashboard',
-			user: req.user,
-			flashes: req.flash()
-		});
+		res.redirect('/user/dashboard');
+		// res.render('user/dashboard', {
+		// 	title: 'Dashboard',
+		// 	user: req.user,
+		// 	flashes: req.flash()
+		// });
 	} catch (error) {
 		console.error(error);
 		next(error);
