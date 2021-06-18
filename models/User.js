@@ -3,6 +3,7 @@ mongoose.Promise = global.Promise;
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import Device from './Device.js';
+import Fermentation from './Fermentation.js';
 
 const userSchema = new mongoose.Schema(
 	{
@@ -53,6 +54,21 @@ userSchema.pre('save', async function (next) {
 		next();
 	} catch (error) {
 		return next(err);
+	}
+});
+
+userSchema.pre('findOneAndDelete', async function deleteFermentationsAndDevices(next) {
+	try {
+		const user = await this.model.findOne(this.getQuery());
+		user.fermentations.forEach(async fermentation => {
+			await Fermentation.findByIdAndDelete(fermentation._id).exec(); //TESTTHIS
+		});
+		user.devices.forEach(async device => {
+			await Device.findByIdAndDelete(device._id).exec(); //TESTTHIS
+		});
+		next();
+	} catch (error) {
+		console.error(`Error during device deletion, could not remove device from user: ${error.message}`);
 	}
 });
 

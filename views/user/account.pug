@@ -1,0 +1,21 @@
+extends ../layout 
+
+block content
+
+	h1 Register
+
+	a(href="/user/logIn") Already have an account? Log in here.
+
+	form(action="/user/register" method="POST")
+
+		label(for="name") Name
+		input(type="text" name="name" value=name||'' required)
+		br
+
+		label(for="email") Email
+		input(type="text" name="email" value=email||'' required)
+		br
+
+		button(value="Submit") Update Account Details
+
+	a(href=`/user/deleteAcount`) Delete your account.

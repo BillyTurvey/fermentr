@@ -12,6 +12,12 @@ router.post('/logIn',
 
 router.get('/dashboard', user.dashboard);
 
+router.get('/account', user.account);
+router.post('/account', user.updateAccount);
+
+router.get('/deleteAccount', user.confirmDelete);
+router.post('/deleteAccount', user.deleteAccount);
+
 router.post('/logOut', user.logOut);
 
 router.get('/register', user.registrationForm);

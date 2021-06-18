@@ -66,7 +66,7 @@ describe('Email validation', function () {
 		cy.get('.flash--error').should('contain', 'Email is not valid.');
 	});
 	it('Rejects already registered emails', function () {
-		cy.fixture('testUserNelson').then((user) => {
+		cy.fixture('testUserNelson').then(user => {
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
@@ -79,7 +79,7 @@ describe('Email validation', function () {
 describe('Success', function () {
 	beforeEach(visitRegisterWithoutRequired);
 	it('Redirects to user dashboard after registration with success flashes', function () {
-		cy.fixture('testUserNelson').then((user) => {
+		cy.fixture('testUserNelson').then(user => {
 			cy.get('input[name="email"]').type(newTestEmail());
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
@@ -88,7 +88,7 @@ describe('Success', function () {
 		});
 	});
 	it('User is logged in after registration', function () {
-		cy.fixture('testUserNelson').then((user) => {
+		cy.fixture('testUserNelson').then(user => {
 			cy.get('input[name="email"]').type(newTestEmail());
 			cy.get('input[name="name"]').type(user.name);
 			cy.get('input[name="password"]').type(user.password);
@@ -109,3 +109,10 @@ describe('Sanitization', function () {
 		cy.get('.flash--success').should('contain', '<script>');
 	});
 });
+
+//User account has link to delete account
+//folloeing user account deletiion link takes user to a confirmation of deletion page
+//confirm deletion page has a button to delete user account
+// user's account is deleted
+// users fermentations are deleted
+// users devices are deleted

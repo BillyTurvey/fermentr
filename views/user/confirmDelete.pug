@@ -1,0 +1,9 @@
+extends ../layout 
+
+block content
+
+	h1 Are you sure you would like to delete your account?
+	p All of your data will be lost, this cannot be undone.
+
+	form(action=`/user/deleteAccount` method="POST")
+		button(type="submit") Delete my account forever
