@@ -128,20 +128,22 @@ describe('Email validation', function () {
 			cy.get('a').contains('Delete your account.').click();
 			cy.get('button[method="POST"]').contains('Delete my account forever').should('exist');
 		});
-		it("user's account is deleted", function () {
+		it("User's account is deleted", function () {
 			logInAs(temporaryTestUser1);
 			cy.visit('/user/deleteAccount');
 			cy.get('button[method="POST"]').contains('Delete my account forever').click();
 			cy.visit('/user/logIn');
+			cy.get('nav > p').contains('Logged in as Temporary <br>Tony').should('not.exist');
+			cy.get('input[name="email"]').type(temporaryTestUser1.email);
+			cy.get('input[name="password"]').type(temporaryTestUser1.password + '{enter}');
 		});
-		it('users fermentations are deleted', function () {
-			cy.visit('/user/account');
-			cy.get('input[name="email"]').type(user.email);
-			cy.get('input[name="password"]').type(user.password + '{enter}');
-		});
-		// users devices are deleted
-		it('', function () {
-			cy.visit('/user/account');
-		});
+		// it('users fermentations are deleted', function () {
+		// 	cy.visit('/user/account');
+		// 	cy.get('input[name="email"]').type(user.email);
+		// 	cy.get('input[name="password"]').type(user.password + '{enter}');
+		// });
+		// it('users devices are deleted', function () {
+		// 	cy.visit('/user/account');
+		// });
 	});
 }
