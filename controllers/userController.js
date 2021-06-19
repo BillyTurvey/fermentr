@@ -64,7 +64,6 @@ export const register = async (req, res, next) => {
 };
 
 export const account = (req, res) => {
-	console.log(`🟡`);
 	res.render('user/account');
 };
 
@@ -72,16 +71,18 @@ export const confirmDelete = (req, res) => {
 	res.render('user/confirmDelete');
 };
 
-export const updateAccount = (req, res) => {
-	console.log(`❌`);
-};
+export const updateAccount = (req, res) => {};
 
-export const deleteAccount = async (req, res) => {
+export const deleteAccount = async (req, res, next) => {
 	// pre delete hook on the user model deletes the user's devices and fermentations.
 	try {
-		await User.findByIdAndDelete(req.user._id).exec();
-		req.flash('success', `User: ${req.user.name} was successfully deleted.`);
-		res.redirect('/');
+		if (req.user) {
+			await User.findByIdAndDelete(req.user._id).exec();
+			req.flash('success', `User: ${req.user.name} was successfully deleted.`);
+			res.redirect('/');
+		} else {
+			res.status(401).end();
+		}
 	} catch (error) {
 		console.error(error);
 		next(error);
