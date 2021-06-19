@@ -2,20 +2,18 @@ extends ../layout
 
 block content
 
-	h1 Register
-
-	a(href="/user/logIn") Already have an account? Log in here.
+	h1 Edit Account Information
 
 	form(action="/user/register" method="POST")
 
 		label(for="name") Name
-		input(type="text" name="name" value=name||'' required)
+		input(type="text" name="name" value=user.name||'' required)
 		br
 
 		label(for="email") Email
-		input(type="text" name="email" value=email||'' required)
+		input(type="text" name="email" value=user.email||'' required)
 		br
 
-		button(value="Submit") Update Account Details
+		button(type="submit") Update Account Details
 
-	a(href=`/user/deleteAcount`) Delete your account.
+	a(href=`/user/deleteAccount`) Delete your account.

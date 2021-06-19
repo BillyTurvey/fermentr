@@ -64,11 +64,12 @@ export const register = async (req, res, next) => {
 };
 
 export const account = (req, res) => {
-	res.render('/user/account');
+	console.log(`🟡`);
+	res.render('user/account');
 };
 
 export const confirmDelete = (req, res) => {
-	res.render('/user/confirmDelete');
+	res.render('user/confirmDelete');
 };
 
 export const updateAccount = (req, res) => {
