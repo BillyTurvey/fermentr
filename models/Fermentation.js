@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import User from './User.js';
 import Device from './Device.js';
+import ThermalProfile from './ThermalProfile.js';
 
 const fermentationSchema = new mongoose.Schema(
 	{
@@ -34,19 +35,9 @@ const fermentationSchema = new mongoose.Schema(
 			actualFG: Number
 		},
 		startTime: Number,
-		temperature: {
-			target: [
-				{
-					time: Number, //minutes since pitching
-					temp: Number //degrees C
-				}
-			],
-			actual: [
-				{
-					time: Number,
-					temp: Number
-				}
-			]
+		thermalProfile: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'ThermalProfile'
 		},
 		co2Activity: [
 			{
@@ -76,6 +67,17 @@ fermentationSchema.index(
 		unique: true
 	}
 );
+
+fermentationSchema.pre('validate', async function createLinkedThermalProfile(next) {
+	if (!this.isNew) return next();
+	try {
+		const thermalProfile = await ThermalProfile.create({target: [], actual: []});
+		this.ThermalProfile = thermalProfile._id;
+		next();
+	} catch (error) {
+		next(error);
+	}
+});
 
 fermentationSchema.pre('save', async function linkFermentationToUserAndDevice(next) {
 	try {
