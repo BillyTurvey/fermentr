@@ -3,7 +3,7 @@ import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.j
 const logInAndVisitAddDeviceWithoutRequired = () => {
 	logInAsNelson();
 	cy.visit('/device/add', {
-		onLoad: (contentWindow) => {
+		onLoad: contentWindow => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
 			for (let i = 0; i < inputFields.length; i++) {
 				inputFields.item(i).required = false;
@@ -19,7 +19,7 @@ describe('User', function () {
 			method: 'GET',
 			url: '/device/add',
 			failOnStatusCode: false
-		}).should((response) => {
+		}).should(response => {
 			expect(response.status).to.eq(401);
 		});
 	});
@@ -153,29 +153,29 @@ describe('Viewing a device', function () {
 			method: 'GET',
 			url: '/device/60c1b4581d8a36ac2286310a',
 			failOnStatusCode: false
-		}).should((response) => {
+		}).should(response => {
 			expect(response.status).to.eq(401);
 		});
 	});
 	it('If logged in, user must also own the Device they request to view.', function () {
-		cy.fixture('testUserJeanette.json').then((jeanette) => {
+		cy.fixture('testUserJeanette.json').then(jeanette => {
 			logInAsNelson();
 			cy.request({
 				method: 'GET',
 				url: `/device/${jeanette.devices[0]._id}`,
 				failOnStatusCode: false
-			}).should((response) => {
+			}).should(response => {
 				expect(response.status).to.eq(401);
 			});
 		});
 	});
 	it('If logged in, user is able to view one of thier own devices.', function () {
-		cy.fixture('testUserJeanette.json').then((jeanette) => {
+		cy.fixture('testUserJeanette.json').then(jeanette => {
 			logInAsJeanette();
 			cy.request({
 				method: 'GET',
 				url: `/device/${jeanette.devices[0]._id}`
-			}).should((response) => {
+			}).should(response => {
 				expect(response.status).to.eq(200);
 			});
 		});

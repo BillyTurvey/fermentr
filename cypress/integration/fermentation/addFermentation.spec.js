@@ -5,7 +5,7 @@ import jeanette from '../../fixtures/testUserJeanette.json';
 const logInAndVisitAddFermentationWithoutRequired = () => {
 	logInAsNelson();
 	cy.visit('/fermentation/add', {
-		onLoad: (contentWindow) => {
+		onLoad: contentWindow => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
 			for (let i = 0; i < inputFields.length; i++) {
 				inputFields.item(i).required = false;
@@ -21,7 +21,7 @@ describe('Auth', function () {
 			method: 'GET',
 			url: '/fermentation/add',
 			failOnStatusCode: false
-		}).should((response) => {
+		}).should(response => {
 			expect(response.status).to.eq(401);
 		});
 	});
