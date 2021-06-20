@@ -7,15 +7,15 @@ export const validateLogIn = [
 		gmail_remove_subaddress: false
 	}),
 	body('password', 'Password is not valid.').escape().notEmpty(),
-	handleLoginValidationErrors
+	handleLogInValidationErrors
 ];
 
-function handleLoginValidationErrors(req, res, next) {
+function handleLogInValidationErrors(req, res, next) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
-			errors.array().map((err) => err.msg)
+			errors.array().map(err => err.msg)
 		);
 		res.render('user/logIn', {
 			title: 'Log In',
@@ -53,7 +53,7 @@ export const sanitizeAndValidateUser = [
 		if (!errors.isEmpty()) {
 			req.flash(
 				'error',
-				errors.array().map((err) => err.msg)
+				errors.array().map(err => err.msg)
 			);
 			res.render('user/register', {
 				title: 'Register',
@@ -88,7 +88,7 @@ function handleDeviceValidationErrors(req, res, next) {
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
-			errors.array().map((err) => err.msg)
+			errors.array().map(err => err.msg)
 		);
 		res.render('device/addDevice', {
 			title: 'Register A New Device',
@@ -130,7 +130,7 @@ function handleFermentationValidationErrors(req, res, next) {
 	if (!errors.isEmpty()) {
 		req.flash(
 			'error',
-			errors.array().map((err) => err.msg)
+			errors.array().map(err => err.msg)
 		);
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
