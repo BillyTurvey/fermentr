@@ -1,7 +1,7 @@
 import jeanette from '../fixtures/testUserJeanette.json';
 import nelson from '../fixtures/testUserNelson.json';
 
-Cypress.Commands.add('logInAs', userObject => {
+Cypress.Commands.add('logInAs', user => {
 	if (user === 'Jeanette') user = jeanette;
 	if (user === 'Nelson') user = nelson;
 	cy.request({
@@ -13,3 +13,30 @@ Cypress.Commands.add('logInAs', userObject => {
 		}
 	});
 });
+
+Cypress.Commands.add('logOut', () => cy.request('POST', '/user/logOut'));
+
+Cypress.Commands.add('deleteFermentation', (fermentationName, fermentationOwner) => {
+	if (fermentationOwner) {
+		cy.request({
+			method: 'POST',
+			url: '/user/logIn',
+			body: {
+				email: fermentationOwner.email,
+				password: fermentationOwner.password
+			}
+		});
+	}
+	cy.visit('/user/dashboard');
+	cy.get('article.fermentations > ul > li') //
+		.contains(fermentationName)
+		.next('a')
+		.contains('Edit')
+		.click();
+	cy.get('button') //
+		.contains(`Delete ${fermentationName}`)
+		.click();
+});
+
+// Cypress.Commands.add('', () => );
+// Cypress.Commands.add('', () => );
