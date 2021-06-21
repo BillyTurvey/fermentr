@@ -25,6 +25,8 @@ export const renderPopulatedEditForm = async (req, res) => {
 
 export const update = async (req, res, next) => {
 	console.log(`🟠 body`, req.body);
+	if (req.body.assignedDevice === 'none') req.body.assignedDevice = null;
+	console.log(`🟣 body`, req.body);
 	await Fermentation.findByIdAndUpdate(req.fermentation._id, req.body, {runValidators: true});
 	res.redirect(`/fermentation/${req.fermentation._id}`);
 };
