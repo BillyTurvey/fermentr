@@ -3,7 +3,7 @@ extends ../layout
 block content
 
 	if (editingExhistingFermentation)
-		h1 Edit Fermentation 
+		h1 Edit Fermentation: !{fermentation.name} 
 	else 
 		h1 Add New Fermentation
 
@@ -26,7 +26,7 @@ block content
 		input(type="text" name="name" value=values.name required)
 		br
 		label(for="description") Description
-		textarea(name="description" rows=5 columns=33 value=values.description)
+		textarea(name="description" rows=5 columns=33) !{values.description}
 		br
 		label(for="targetFG") Target OG
 		input(type="number" name="targetOG" value=values.targetOG)
