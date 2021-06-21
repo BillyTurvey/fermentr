@@ -12,7 +12,7 @@ export const generateTokenAndID = (req, res, next) => {
 
 export const hashToken = (req, res, next) => {
 	const saltRounds = 12; //
-	bcrypt.hash('newID', saltRounds).then((hash) => {
+	bcrypt.hash('newID', saltRounds).then(hash => {
 		res.locals.tokenHash = hash;
 		next();
 	});
@@ -160,7 +160,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 export const logReading = async (req, res, next) => {
 	try {
 		const fermentation = await Fermentation.findById(req.device.activeFermenation); //Populate the fermentation when the device is retreived from the database?
-		fermentation.temmperature.actual.push({
+		fermentation.thermalProfile.actual.push({
 			time: Date.now(),
 			temp: req.body.temmperature
 		});

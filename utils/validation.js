@@ -67,6 +67,18 @@ export const sanitizeAndValidateUser = [
 	}
 ];
 
+export const sanitizeAndValidateDeviceLog = [
+	body('temperature').escape().trim().notEmpty().isNumeric(),
+	function sanitizeAndValidateDeviceLog(req, res, next) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			res.status(400).json({errors: errors.array().map(err => err.msg)});
+		} else {
+			next();
+		}
+	}
+];
+
 export const sanitizeAndValidateDevice = [
 	body('deviceName', 'Device name is a required field.').escape().trim().notEmpty(),
 	body(
