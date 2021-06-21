@@ -29,17 +29,17 @@ block content
 		textarea(name="description" rows=5 columns=33) !{values.description}
 		br
 		label(for="targetFG") Target OG
-		input(type="number" name="targetOG" value=values.targetOG)
+		input(type="number" name="targetOG" step=0.001 value=values.targetOG)
 		br
 		label(for="actualFG") Actual OG
-		input(type="number" name="actualOG" value=values.actualOG)
+		input(type="number" name="actualOG" step=0.001 value=values.actualOG)
 		br
 		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" value=values.targetFG)
+		input(type="number" name="targetFG" step=0.001 value=values.targetFG)
 		br
 		if (editingExhisitngFermentation)
 			label(for="actualFG") Actual FG
-			input(type="number" name="actualFG" value=values.actualFG)
+			input(type="number" name="actualFG" step=0.001 value=values.actualFG)
 			br
 
 
