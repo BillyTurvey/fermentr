@@ -19,7 +19,7 @@ router.post('/:id/delete', fermentation.deleteFermentation);
 
 router.get('/:id/edit', fermentation.renderPopulatedEditForm); 
 
-router.put('/:id/update', 
+router.post('/:id/update', 
 validate.sanitizeAndValidateFermentation,
 fermentation.update
 );

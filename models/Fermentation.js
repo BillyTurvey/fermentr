@@ -28,12 +28,10 @@ const fermentationSchema = new mongoose.Schema(
 			hops: String,
 			yeast: String
 		},
-		gravity: {
-			targetOG: Number,
-			actualOG: Number,
-			targetFG: Number,
-			actualFG: Number
-		},
+		targetOG: Number,
+		actualOG: Number,
+		targetFG: Number,
+		actualFG: Number,
 		startTime: Number,
 		thermalProfile: {
 			type: mongoose.Schema.Types.ObjectId,

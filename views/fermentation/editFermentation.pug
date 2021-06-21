@@ -9,8 +9,8 @@ block content
 
 	- 
 		const f = fermentation ? fermentation : null;
-		const actionPath = fermentation ? `/?${fermentation.id}/update` : '/fermentation/add';
-		// optional chaining doesn't work inline, hence this values object
+		const actionPath = fermentation ? `/fermentation/${fermentation.id}/update` : '/fermentation/add';
+		// optional chaining doesn't work inline in pug, hence this values object...
 		const values = {
 			name: f?.name || '',
 			description: f?.description || '', 
@@ -20,7 +20,7 @@ block content
 			actualFG: f?.gravity?.actualFG || ''
 		};
 
-	form(action= actionPath method= f ? 'PUT' : 'POST') 
+	form(action=actionPath method='POST') 
 
 		label(for="name") Name
 		input(type="text" name="name" value=values.name required)
@@ -37,7 +37,7 @@ block content
 		label(for="targetFG") Target FG
 		input(type="number" name="targetFG" step=0.001 value=values.targetFG)
 		br
-		if (editingExhisitngFermentation)
+		if (editingExhistingFermentation)
 			label(for="actualFG") Actual FG
 			input(type="number" name="actualFG" step=0.001 value=values.actualFG)
 			br
@@ -45,12 +45,15 @@ block content
 
 		if (devices.length > 0)
 			h3 Select a device to monitor/control this fermentation
+			if (f.assignedDevice)
+				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
+			.deviceRadio
 			each device in devices
-				.deviceRadio
-					input(type="radio" id=device.name name="device" value=device._id)
-					label(for=device.name) !{device.name}
-						span.device-description  - !{device.description}
-
+				input(type="radio" id=device.name name="device" value=device._id)
+				label(for=device.name) !{device.name}
+					span.device-description  - !{device.description}
+			input(type="radio" id='none' name="device" value=null)
+			label(for='none') None
 
 		button(type="submit") Submit
 

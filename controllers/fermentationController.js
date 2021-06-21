@@ -23,9 +23,14 @@ export const renderPopulatedEditForm = async (req, res) => {
 	res.status(401).end();
 };
 
-export const update = (req, res, next) => {};
+export const update = async (req, res, next) => {
+	console.log(`🟠 body`, req.body);
+	await Fermentation.findByIdAndUpdate(req.fermentation._id, req.body, {runValidators: true});
+	res.redirect(`/fermentation/${req.fermentation._id}`);
+};
 
 export const addToDatabase = async (req, res, next) => {
+	console.log(`🍉`);
 	try {
 		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
 		const fermentation = await Fermentation.create({

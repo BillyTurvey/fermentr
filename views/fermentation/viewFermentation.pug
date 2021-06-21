@@ -5,6 +5,7 @@ block content
 
 	h1 !{fermentation.name}
 
+
 	if (fermentation.description)
 		p !{fermentation.description}
 	
@@ -13,15 +14,35 @@ block content
 
 		.graph-container
 
-	if (fermentation.recipe) 
+	if (fermentation.recipe.malt || fermentation.recipe.hops || fermentation.recipe.yeast) 
 		article
 			h2 Recipe
+	
+	h2 Specific Gravity
+	
+	table
+		thead
+			tr
+				th 
+				th Original Gravity
+				th Final Gravity
+		tbody
+			tr
+				td Target
+				td #{fermentation.targetOG}
+				td #{fermentation.targetFG}
+			tr
+				td Actual
+				td #{fermentation.actualOG}
+				td #{fermentation.actualFG}
+
 
 	if (fermentation.assignedDevice) 
 		article
 			h2 Device
 			p Device !{fermentation.assignedDevice.name} is assigned to !{fermentation.name}.
 
+	a(href=`/fermentation/${fermentation._id}/edit`) Edit fermentation details.
 	//- script(src="https://d3js.org/d3.v6.min.js")
 	//- include clientScripts/drawGraph.js
 	
