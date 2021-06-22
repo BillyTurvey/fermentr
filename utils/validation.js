@@ -130,10 +130,10 @@ export const sanitizeAndValidateFermentation = [
 	// body('actualOG', 'actualOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('targetFG', 'targetFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('actualFG', 'actualFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
-	body('targetOG', 'targetOG ... something').escape(),
-	body('actualOG', 'actualOG ... something').escape(),
-	body('targetFG', 'targetFG ... something').escape(),
-	body('actualFG', 'actualFG ... something').escape(),
+	body('targetOG', 'targetOG ... something').escape().isNumeric(),
+	body('actualOG', 'actualOG ... something').escape().isNumeric(),
+	body('targetFG', 'targetFG ... something').escape().isNumeric(),
+	body('actualFG', 'actualFG ... something').escape().isNumeric(),
 	handleFermentationValidationErrors
 ];
 
