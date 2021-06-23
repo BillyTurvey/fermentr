@@ -5,15 +5,16 @@ import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
 import {populateForm} from '../cypress/fixtures/testUtils.js';
 
-export const generateTokenAndID = (req, res, next) => {
-	res.locals.token = uuidv4();
+export const generateKey = (req, res, next) => {
+	res.locals.key = uuidv4();
 	next();
 };
 
-export const hashToken = (req, res, next) => {
+export const hashKey = (req, res, next) => {
 	const saltRounds = 12; //
 	bcrypt.hash('newID', saltRounds).then(hash => {
-		res.locals.tokenHash = hash;
+		res.locals.keyHash = hash;
+		// TODO Is this actually hashing the right thing?
 		next();
 	});
 };
@@ -127,8 +128,12 @@ export const view = async (req, res) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
+	console.log(`⭕️ id: ${id}`);
+	console.log(`⭕️ req.body: ${req.body}`);
+
 	if (req.user && (await req.user.ownsDevice(id))) {
 		//user is logged in and is trying to view or edit device they own
+		console.log(`🟣`);
 		try {
 			const device = await Device.findById(id).populate('currentFermentation').exec();
 			req.device = device;
@@ -142,6 +147,8 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 		try {
 			const device = await Device.findById(id);
 			const key = req.header('device-key');
+			console.log(`☎️ device: ${device}`);
+			console.log(`☎️ key: ${key}`);
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
 				next();
