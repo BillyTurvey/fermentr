@@ -107,12 +107,7 @@ export const deleteDevice = async function (req, res, next) {
 	// pre delete hook on the device model removes the device id from the user's db entry
 	try {
 		await Device.findByIdAndDelete(req.device._id).exec();
-		req.flash('success', `Device: ${req.device.name} was successfully deleted.`);
-		res.render('user/dashboard', {
-			title: 'Dashboard',
-			user: req.user,
-			flashes: req.flash()
-		});
+		res.redirect('/user/dashboard');
 	} catch (error) {
 		console.error(error);
 		next(error);

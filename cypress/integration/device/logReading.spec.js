@@ -10,13 +10,13 @@ describe('Unauthenticated log request', function () {
 				temperature: 22
 			},
 			failOnStatusCode: false
-		}).should((response) => {
+		}).should(response => {
 			expect(response.status).to.eq(401);
 		});
 	});
 });
 
-describe('Unauthenticated log request', function () {
+describe('Authenticated log request', function () {
 	it('properly formed request responds with a 200 response code', function () {
 		cy.request({
 			method: 'POST',
@@ -28,8 +28,8 @@ describe('Unauthenticated log request', function () {
 				temperature: 22
 			},
 			failOnStatusCode: false
-		}).should((response) => {
-			expect(response.status).to.eq(401);
+		}).should(response => {
+			expect(response.status).to.eq(200);
 		});
 	});
 });
