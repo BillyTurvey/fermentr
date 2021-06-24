@@ -29,10 +29,8 @@ describe('Fermentation editing', function () {
 			.next('a')
 			.contains('Edit')
 			.click();
-		cy.get('[name="name"]').type(temporaryTestFermentationName);
-		cy.get('textarea[name="description"]').type("This is the extra text I'm adding.");
 		cy.get('form').contains('Submit').click();
-		cy.location('pathname').should('eq', '/user/dashboard');
+		cy.location('pathname').should('eq', '/fermentation/60c4cefc55d2a518d3004ec8');
 	});
 	// it("causes the selected device to be listed as the fermentation's assigned device", function () {
 	// 	cy.get('article.fermentations > ul > li > a') //
