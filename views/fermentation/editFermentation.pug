@@ -17,7 +17,8 @@ block content
 			targetOG: f?.gravity?.targetOG || '', 
 			actualOG: f?.gravity?.actualOG || '', 
 			targetFG: f?.gravity?.targetFG || '', 
-			actualFG: f?.gravity?.actualFG || ''
+			actualFG: f?.gravity?.actualFG || '',
+			assignedDevice: f?.assignedDevice || false
 		};
 
 	form(action=actionPath method='POST') 
@@ -55,7 +56,7 @@ block content
 			input(type="radio" id='none' name="assignedDevice" value='none')
 			label(for='none') None
 
-		button(type="submit") Submit
+		button(type="submit") Update
 
 	if (editingExhistingFermentation)
 		form(action=`/fermentation/${f.id}/delete` method="POST")

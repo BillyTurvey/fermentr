@@ -9,8 +9,8 @@ router.get('/add', device.addDeviceForm);
 
 router.post('/add', 
 validate.sanitizeAndValidateDevice, 
-device.generateTokenAndID,
-device.hashToken,
+device.generateKey,
+device.hashKey,
 device.addToDatabase
 );
 
