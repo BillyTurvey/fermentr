@@ -27,7 +27,7 @@ export const addToDatabase = async (req, res) => {
 			deviceID: res.locals.deviceID,
 			name: req.body.deviceName,
 			description: req.body.description,
-			tokenHash: res.locals.tokenHash,
+			keyHash: res.locals.keyHash,
 			dateRegistered: Date.now(),
 			owner: req.user._id
 		});
@@ -138,6 +138,8 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 		try {
 			const device = await Device.findById(id);
 			const key = req.header('device-key');
+			console.log(`🔴 device: ${device}`);
+			console.log(`🔴 key: ${key}`);
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
 				next();

@@ -20,9 +20,9 @@ describe('Authenticated log request', function () {
 	it('properly formed request responds with a 200 response code', function () {
 		cy.request({
 			method: 'POST',
-			url: '/device/60d2db98d800940aa1c0b533/log',
+			url: '/device/60d6430126d74a78af3e5cfb/log',
 			headers: {
-				'device-key': 'e3491a5d-9c75-49c0-ae7d-c68d5b1a601d'
+				'device-key': '2ca1e6a0-da03-4cdb-8360-5737df6a8b6f'
 			},
 			body: {
 				temperature: Math.floor(Math.random() * 6 + 17)
