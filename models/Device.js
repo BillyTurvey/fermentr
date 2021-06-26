@@ -69,15 +69,10 @@ deviceSchema.pre('findOneAndDelete', async function removeFromUser(next) {
 });
 
 deviceSchema.methods.isAuthenticated = async function isAuthenticated(key) {
-	console.log(`🟣`);
-	console.log(`🟣 key: ${key}`);
-	console.log(`🟣 this: ${this}`);
 	try {
 		const resultBoolean = await bcrypt.compare(key, this.keyHash);
-		console.log(`🟣 resultBoolean: ${resultBoolean}`);
 		return resultBoolean;
 	} catch (error) {
-		console.log(`🔵`);
 		console.error(error);
 		return false;
 	}

@@ -50,6 +50,9 @@ export const logInAsJeanette = () => {
 	});
 };
 
+export const randomTemperature = () =>
+	Math.floor(Math.random() * 6 + 18) + Math.floor(Math.random() * 7) / 10;
+
 export const visitURLAndRemoveRequiredAttributes = url => cy.visit(url, {onLoad: unrequireFormInputs});
 
 // nice idea, maybe work on this later

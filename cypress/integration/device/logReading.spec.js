@@ -1,3 +1,6 @@
+import jeanette from '../../fixtures/testUserJeanette.json';
+import {randomTemperature} from '../../fixtures/testUtils.js';
+
 describe('Unauthenticated log request', function () {
 	it('receives a 401 response code', function () {
 		cy.request({
@@ -18,14 +21,15 @@ describe('Unauthenticated log request', function () {
 
 describe('Authenticated log request', function () {
 	it('properly formed request responds with a 200 response code', function () {
+		const device = jeanette.activeTestDevice;
 		cy.request({
 			method: 'POST',
-			url: '/device/60d6430126d74a78af3e5cfb/log',
+			url: `/device/${device.id}/log`,
 			headers: {
-				'device-key': '2ca1e6a0-da03-4cdb-8360-5737df6a8b6f'
+				'device-key': device.key
 			},
 			body: {
-				temperature: Math.floor(Math.random() * 6 + 17)
+				temperature: randomTemperature()
 			}
 		}).should(response => {
 			expect(response.status).to.eq(200);

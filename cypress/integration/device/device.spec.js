@@ -161,7 +161,7 @@ describe('Viewing a device', function () {
 			logInAsNelson();
 			cy.request({
 				method: 'GET',
-				url: `/device/${jeanette.devices[0]._id}`,
+				url: `/device/${jeanette.devices[0].id}`,
 				failOnStatusCode: false
 			}).should(response => {
 				expect(response.status).to.eq(401);
@@ -173,7 +173,7 @@ describe('Viewing a device', function () {
 			logInAsJeanette();
 			cy.request({
 				method: 'GET',
-				url: `/device/${jeanette.devices[0]._id}`
+				url: `/device/${jeanette.devices[0].id}`
 			}).should(response => {
 				expect(response.status).to.eq(200);
 			});
