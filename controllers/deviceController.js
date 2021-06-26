@@ -12,9 +12,8 @@ export const generateKey = (req, res, next) => {
 
 export const hashKey = (req, res, next) => {
 	const saltRounds = 12; //
-	bcrypt.hash('newID', saltRounds).then(hash => {
+	bcrypt.hash(res.locals.key, saltRounds).then(hash => {
 		res.locals.keyHash = hash;
-		// TODO Is this actually hashing the right thing?
 		next();
 	});
 };
