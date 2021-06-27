@@ -137,8 +137,6 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 		try {
 			const device = await Device.findById(id);
 			const key = req.header('device-key');
-			console.log(`🔴 device: ${device}`);
-			console.log(`🔴 key: ${key}`);
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
 				next();
@@ -156,13 +154,22 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 
 export const logReading = async (req, res, next) => {
 	try {
-		const fermentation = await Fermentation.findById(req.device.activeFermenation); //Populate the fermentation when the device is retreived from the database?
-		fermentation.thermalProfile.actual.push({
-			time: Date.now(),
-			temp: req.body.temmperature
-		});
-		next();
-	} catch (error) {}
+		const fermentation = await Fermentation.findById(req.device.activeFermenation);
+		if (!fermentation) res.status(403).end();
+		throw new Error(
+			'This device is not assigned to a fermentation, therefore we cannot log the data it is submitting.'
+		);
+		//Populate the fermentation when the device is retreived from the database?
+		fermentation.thermalProfile.actual
+			.push({
+				time: Date.now(),
+				temp: req.body.temmperature
+			})
+			.save();
+		res.status(200).end();
+	} catch (error) {
+		console.error(error);
+	}
 };
 
 export const sendTargetTemp = (req, res) => {
