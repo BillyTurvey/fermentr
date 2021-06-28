@@ -56,7 +56,11 @@ block content
 			input(type="radio" id='none' name="assignedDevice" value='none')
 			label(for='none') None
 
-		button(type="submit") Update
+		if (editingExhistingFermentation)
+			button(type="submit") Update 
+		else 
+			button(type="submit") Submit
+
 
 	if (editingExhistingFermentation)
 		form(action=`/fermentation/${f.id}/delete` method="POST")
