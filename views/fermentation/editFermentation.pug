@@ -46,7 +46,7 @@ block content
 
 		if (devices.length > 0)
 			h3 Select a device to monitor/control this fermentation
-			if (f.assignedDevice)
+			if (f && f.assignedDevice)
 				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
 			.deviceRadio
 			each device in devices
