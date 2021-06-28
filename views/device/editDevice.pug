@@ -4,7 +4,7 @@ block content
 
 	h2 Edit Device: !{device.name} 
 	
-	form(action="/device/add" method="PUT")
+	form(action=`/device/${device.id}/update` method="POST")
 
 		label(for="deviceName") Device Name – to help you differentiate multiple devices.
 		input(type="text", name="deviceName" value=device.name||'' required)

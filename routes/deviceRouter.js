@@ -20,7 +20,7 @@ router.get('/:id', device.view);
 
 router.post('/:id/delete', device.deleteDevice);
 
-router.put('/:id', 
+router.post('/:id/update', 
 	validate.sanitizeAndValidateDevice,
 	device.update
 );
