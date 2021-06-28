@@ -35,4 +35,17 @@ describe('Authenticated log request', function () {
 			expect(response.status).to.eq(200);
 		});
 	});
+	it('log requests are saved in the database', function () {
+		const device = jeanette.activeTestDevice;
+		const fermentation = jeanette.activeTestFermentation;
+		const sameTemperature = randomTemperature();
+		cy.request({
+			method: 'POST',
+			url: `/device/${device.id}/log`,
+			headers: {'device-key': device.key},
+			body: {temperature: sameTemperature}
+		});
+		cy.visit(`/fermentation/${fermentation.id}`);
+		cy.get('p').contains(`Last logged temperature: ${sameTemperature}`).should('exist');
+	});
 });
