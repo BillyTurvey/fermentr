@@ -146,7 +146,7 @@ function handleFermentationValidationErrors(req, res, next) {
 		);
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
-			editingExhistingFermentation: false,
+			editingExistingFermentation: false,
 			devices: req.user.devices || [],
 			name: req.body.name,
 			description: req.body.description,

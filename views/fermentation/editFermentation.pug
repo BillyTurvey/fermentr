@@ -2,14 +2,14 @@ extends ../layout
 
 block content
 
-	if (editingExhistingFermentation)
+	if (editingExistingFermentation)
 		h1 Edit Fermentation: !{fermentation.name} 
 	else 
 		h1 Add New Fermentation
 
 	- 
 		const f = fermentation ? fermentation : null;
-		const actionPath = fermentation ? `/fermentation/${fermentation.id}/update` : '/fermentation/add';
+		const actionPath = editingExistingFermentation ? `/fermentation/${fermentation.id}/update` : '/fermentation/add';
 		// optional chaining doesn't work inline in pug, hence this values object...
 		const values = {
 			name: f?.name || '',
@@ -38,7 +38,7 @@ block content
 		label(for="targetFG") Target FG
 		input(type="number" name="targetFG" step=0.001 value=values.targetFG)
 		br
-		if (editingExhistingFermentation)
+		if (editingExistingFermentation)
 			label(for="actualFG") Actual FG
 			input(type="number" name="actualFG" step=0.001 value=values.actualFG)
 			br
@@ -56,12 +56,12 @@ block content
 			input(type="radio" id='none' name="assignedDevice" value='none')
 			label(for='none') None
 
-		if (editingExhistingFermentation)
+		if (editingExistingFermentation)
 			button(type="submit") Update 
 		else 
 			button(type="submit") Submit
 
 
-	if (editingExhistingFermentation)
+	if (editingExistingFermentation)
 		form(action=`/fermentation/${f.id}/delete` method="POST")
 			button(type="submit") Delete !{fermentation.name}

@@ -5,7 +5,7 @@ export const renderEmptyEditFermentationForm = async (req, res) => {
 		res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
 			devices: req.user.devices || [],
-			editingExhisitngFermentation: false
+			editingExisitngFermentation: false
 		});
 	}
 	res.status(401).end();
@@ -16,7 +16,7 @@ export const renderPopulatedEditForm = async (req, res) => {
 		res.render('fermentation/editFermentation', {
 			title: 'Edit Fermentation',
 			devices: req.user.devices || [],
-			editingExhistingFermentation: true,
+			editingExistingFermentation: true,
 			fermentation: req.fermentation
 		});
 	}
