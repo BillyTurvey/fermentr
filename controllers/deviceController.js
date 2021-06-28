@@ -1,5 +1,5 @@
 import Device from '../models/Device.js';
-import User from '../models/User.js';
+import Fermentation from '../models/Fermentation.js';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
