@@ -64,7 +64,7 @@ app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
 		cookie: {
-			// maxAge: 1000 * 60 * 60 * 24 * 7,
+			maxAge: 1000 * 60 * 60 * 24,
 			// without a max age property most clients will consider this a "non-persistent cookie"
 			// and will delete it on a condition like exiting a web browser application
 			sameSite: 'lax',
