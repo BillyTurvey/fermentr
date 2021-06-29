@@ -6,8 +6,8 @@ block content
 	
 	form(action=`/device/${device.id}/update` method="POST")
 
-		label(for="deviceName") Device Name – to help you differentiate multiple devices.
-		input(type="text", name="deviceName" value=device.name||'' required)
+		label(for="name") Device Name – to help you differentiate multiple devices.
+		input(type="text", name="name" value=device.name||'' required)
 
 		br
 

@@ -32,7 +32,7 @@ describe('Device name', function () {
 		cy.get('.flash--error').should('contain', 'Device name is a required field.');
 	});
 	it('must be unique to user', function () {
-		cy.get('input[name="deviceName"]').type('Arduino One');
+		cy.get('input[name="name"]').type('Arduino One');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
@@ -40,7 +40,7 @@ describe('Device name', function () {
 		);
 	});
 	it('must be shorter than 30 chars', function () {
-		cy.get('input[name="deviceName"]').type('This string really is far far far too long for a device name');
+		cy.get('input[name="name"]').type('This string really is far far far too long for a device name');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
@@ -52,7 +52,7 @@ describe('Device name', function () {
 describe('Device description', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('must be shorter than 100 chars', function () {
-		cy.get('input[name="deviceName"]').type('Neville XIV');
+		cy.get('input[name="name"]').type('Neville XIV');
 		cy.get('input[name="description"]').type(
 			'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut libero eget quam volutpat sodales. Praesent aliquam elit ut dui pharetra convallis.'
 		);
@@ -78,7 +78,7 @@ describe('Add device page lists fermentations', function () {
 describe('Sanitization', function () {
 	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
-		cy.get('input[name="deviceName"]').type('<script>&');
+		cy.get('input[name="name"]').type('<script>&');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
@@ -96,7 +96,7 @@ describe('Sanitization', function () {
 		it('provides access key upon successfully registering device', function () {
 			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
 			cy.visit('device/add');
-			cy.get('input[name="deviceName"]').type(temporaryTestDeviceName);
+			cy.get('input[name="name"]').type(temporaryTestDeviceName);
 			cy.get('form > .fermentationRadio > input[id="NEIPA 21"]') //
 				.click();
 			cy.get('form').contains('Submit').click();

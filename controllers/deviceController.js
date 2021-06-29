@@ -24,7 +24,7 @@ export const addToDatabase = async (req, res) => {
 		// and adds the device id to the user db entry if not already present
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
-			name: req.body.deviceName,
+			name: req.body.name,
 			description: req.body.description,
 			keyHash: res.locals.keyHash,
 			dateRegistered: Date.now(),
@@ -40,7 +40,7 @@ export const addToDatabase = async (req, res) => {
 	} catch (error) {
 		console.error(`Error during device registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
-			error.message = `You already have a device named '${req.body.deviceName}', please choose a new name.`;
+			error.message = `You already have a device named '${req.body.name}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
 		res.render('device/addDevice', {
@@ -55,25 +55,13 @@ export const update = async (req, res) => {
 	try {
 		// pre-save hook on the device model checks if device name is unique to user
 		// and adds the device id to the user db entry if not already present
-		const device = await Device.create({
-			deviceID: res.locals.deviceID,
-			name: req.body.deviceName,
-			description: req.body.description,
-			tokenHash: res.locals.tokenHash,
-			dateRegistered: Date.now(),
-			owner: req.user._id
-		});
+		await Device.findByIdAndUpdate(req.device._id, req.body, {runValidators: true});
 		req.flash('success', 'Device registered.');
-		return res.render('device/addDevice', {
-			title: 'Done!',
-			flashes: req.flash(),
-			device: device,
-			deviceToken: res.locals.token
-		});
+		return res.redirect(`/device/${req.device._id}`);
 	} catch (error) {
 		console.error(`Error during device registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
-			error.message = `You already have a device named '${req.body.deviceName}', please choose a new name.`;
+			error.message = `You already have a device named '${req.body.name}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
 		res.render('device/addDevice', {
