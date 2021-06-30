@@ -49,10 +49,10 @@ block content
 			if (f && f.assignedDevice)
 				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
 			.deviceRadio
-			each device in devices
-				input(type="radio" id=device.name name="assignedDevice" value=device._id)
-				label(for=device.name) !{device.name}
-					span.device-description  - !{device.description}
+				each device in devices
+					input(type="radio" id=device.name name="assignedDevice" value=device._id)
+					label(for=device.name) !{device.name}
+						span.device-description  - !{device.description}
 			input(type="radio" id='none' name="assignedDevice" value='none')
 			label(for='none') None
 
