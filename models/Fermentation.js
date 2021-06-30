@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import User from './User.js';
 import Device from './Device.js';
-import ThermalProfile from './ThermalProfile.js';
+import ThermalProfile from './DataLog.js';
 
 const fermentationSchema = new mongoose.Schema(
 	{
@@ -33,9 +33,9 @@ const fermentationSchema = new mongoose.Schema(
 		targetFG: Number,
 		actualFG: Number,
 		startTime: Number,
-		thermalProfile: {
+		dataLog: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'ThermalProfile'
+			ref: 'DataLog'
 		},
 		co2Activity: [
 			{
