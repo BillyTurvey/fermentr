@@ -66,11 +66,17 @@ fermentationSchema.index(
 	}
 );
 
-fermentationSchema.pre('validate', async function createLinkedThermalProfile(next) {
-	if (!this.isNew) return next();
+fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
+	if (this.isNew == false) return next();
 	try {
-		const thermalProfile = await ThermalProfile.create({target: [], actual: []});
-		this.ThermalProfile = thermalProfile._id;
+		const dataLog = await DataLog.create({
+			thermalProfile: {
+				target: [],
+				actual: []
+			},
+			co2Activity: []
+		});
+		this.dataLog = dataLog._id;
 		next();
 	} catch (error) {
 		next(error);
@@ -118,6 +124,20 @@ fermentationSchema.pre('findOneAndDelete', async function removeFromDevice(next)
 	} catch (error) {
 		console.error(
 			`Error during fermentation deletion, could not remove fermentation from device: ${error.message}`
+		);
+	}
+});
+
+fermentationSchema.pre('findOneAndDelete', async function deleteDataLog(next) {
+	// In pre('findOneAndDelete') 'this' refers to the query object rather than the document being updated.
+	// https://mongoosejs.com/docs/middleware.html#notes
+	try {
+		const fermentation = await this.model.findOne(this.getQuery());
+		await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
+		next();
+	} catch (error) {
+		console.error(
+			`Error during fermentation deletion, could not delete associate data log: ${error.message}`
 		);
 	}
 });
