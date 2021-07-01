@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 import User from './User.js';
 import Device from './Device.js';
-import ThermalProfile from './DataLog.js';
+import DataLog from './DataLog.js';
 
 const fermentationSchema = new mongoose.Schema(
 	{
@@ -67,8 +67,10 @@ fermentationSchema.index(
 );
 
 fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
-	if (this.isNew == false) return next();
+	console.log(`🔴 in prevalidate hook`);
+	if (this.dataLog) return next();
 	try {
+		console.log(`🟣 CREATING A LINKED DATALOG`);
 		const dataLog = await DataLog.create({
 			thermalProfile: {
 				target: [],

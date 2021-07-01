@@ -26,7 +26,7 @@ router.post('/:id/update',
 );
 
 
-router.get('/:id/edit', device.editDevice);
+router.get('/:id/edit', device.editDeviceForm);
 
 router.post('/:id/log',
 	device.logReading 

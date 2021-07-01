@@ -18,11 +18,11 @@ const deviceSchema = new mongoose.Schema(
 		keyHash: String,
 		owner: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user'
+			ref: 'User'
 		},
 		currentFermentation: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'fermentation'
+			ref: 'Fermentation'
 		}
 	},
 	{
