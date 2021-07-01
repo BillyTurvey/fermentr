@@ -24,12 +24,13 @@ describe('Fermentation editing', function () {
 	});
 	it("After updating a fermentation the same fermentation loads in 'view' mode.", function () {
 		cy.logInAs('Jeanette');
-		cy.get('article.devices > ul > li') //
+		cy.visit('user/dashboard');
+		cy.get('article.fermentations > ul > li') //
 			.contains('NEIPA 21')
 			.next('a')
 			.contains('Edit')
 			.click();
-		cy.get('form').contains('Submit').click();
+		cy.get('form').contains('Update').click();
 		cy.location('pathname').should('eq', '/fermentation/60c4cefc55d2a518d3004ec8');
 	});
 	// it("causes the selected device to be listed as the fermentation's assigned device", function () {
