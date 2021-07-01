@@ -113,7 +113,7 @@ describe('Fermentation description', function () {
 
 	describe('Successfully adding a fermentation', function () {
 		beforeEach(logInAsJeanette);
-		it('redirects to the user dashboard', function () {
+		it('redirects to viewing the saved fermentation', function () {
 			cy.visit('fermentation/add');
 			cy.get('input[name="name"]').type(temporaryTestFermentationName);
 			cy.get('textarea[name="description"]').type(
@@ -121,9 +121,10 @@ describe('Fermentation description', function () {
 			);
 			cy.get(`form > .deviceRadio > input[id="${jeanettesDevice}"]`).click();
 			cy.get('form').contains('Submit').click();
-			cy.location('pathname').should('eq', '/user/dashboard');
+			cy.get('h1').contains(temporaryTestFermentationName).should('exist');
 		});
 		it("causes the fermentation to appear on the user's dashboard", function () {
+			cy.visit('user/dashboard');
 			cy.get('article.fermentations > ul > li > a') //
 				.contains(temporaryTestFermentationName)
 				.should('exist');

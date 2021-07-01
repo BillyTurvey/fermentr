@@ -40,7 +40,7 @@ export const addToDatabase = async (req, res, next) => {
 			assignedDevice: req.body.device
 		});
 		req.flash('success', 'Fermentation added.');
-		return res.redirect('/user/dashboard');
+		return res.redirect(`/fermentation/${fermentation._id}`);
 	} catch (error) {
 		console.error(`Error during fermentation registration: ${error.message}`);
 		if (error.message.includes('E11000')) {
