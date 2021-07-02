@@ -33,12 +33,12 @@ describe('Fermentation editing', function () {
 		cy.get('form').contains('Update').click();
 		cy.location('pathname').should('eq', '/fermentation/60c4cefc55d2a518d3004ec8');
 	});
-	// it("causes the selected device to be listed as the fermentation's assigned device", function () {
-	// 	cy.get('article.fermentations > ul > li > a') //
-	// 		.contains(temporaryTestFermentationName)
-	// 		.click();
-	// 	cy.get('p')
-	// 		.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
-	// 		.should('exist');
-	// });
+	it("causes the selected device to be listed as the fermentation's assigned device", function () {
+		cy.get('article.fermentations > ul > li > a') //
+			.contains(temporaryTestFermentationName)
+			.click();
+		cy.get('p')
+			.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
+			.should('exist');
+	});
 });
