@@ -152,7 +152,7 @@ export const logReading = async (req, res, next) => {
 		}
 		//Populate the fermentation when the device is retreived from the database?
 		try {
-			const dataLog = DataLog.findById(fermentation.dataLog);
+			const dataLog = await DataLog.findById(fermentation.dataLog).exec();
 			dataLog.thermalProfile.actual
 				.push({
 					time: Date.now(),
