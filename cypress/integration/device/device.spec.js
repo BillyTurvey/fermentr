@@ -69,7 +69,7 @@ describe('Add device page lists fermentations', function () {
 	it("contains a list of user's fermentations", function () {
 		cy.visit('device/add');
 		cy.get('form > .fermentationRadio > label') //
-			.contains('NEIPA 21')
+			.contains('Breakfast Stout')
 			.should('exist');
 	});
 });
@@ -97,7 +97,7 @@ describe('Sanitization', function () {
 			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
 			cy.visit('device/add');
 			cy.get('input[name="name"]').type(temporaryTestDeviceName);
-			cy.get('form > .fermentationRadio > input[id="NEIPA 21"]') //
+			cy.get('form > .fermentationRadio > input[id="Bière De Saison"]') //
 				.click();
 			cy.get('form').contains('Submit').click();
 			cy.get('p').contains(uuidRegEx).should('exist');
