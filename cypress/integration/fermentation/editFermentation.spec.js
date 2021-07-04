@@ -7,7 +7,7 @@ describe('Fermentation editing', function () {
 			.next('a')
 			.contains('Edit')
 			.click();
-		cy.location('pathname').should('eq', '/fermentation/60c4cefc55d2a518d3004ec8/edit');
+		cy.location('pathname').should('eq', '/fermentation/60e1b00a3efff60ee0a65001/edit');
 	});
 	it('Submitting the edit form updates the fermentation details', function () {
 		cy.logInAs('Jeanette');
@@ -18,7 +18,9 @@ describe('Fermentation editing', function () {
 			.contains('Edit')
 			.click();
 		const sameNumber = Math.random();
-		cy.get('textarea[name="description"]').clear().type(`Fermentation description lorem ipsum ${sameNumber}`);
+		cy.get('textarea[name="description"]')
+			.clear()
+			.type(`Persistent test fermentation, do not delete. Lorem ipsum... ${sameNumber}`);
 		cy.get('form > button').contains('Update').click();
 		cy.get('p.description').contains(sameNumber).should('exist');
 	});
@@ -31,14 +33,6 @@ describe('Fermentation editing', function () {
 			.contains('Edit')
 			.click();
 		cy.get('form').contains('Update').click();
-		cy.location('pathname').should('eq', '/fermentation/60c4cefc55d2a518d3004ec8');
-	});
-	it("causes the selected device to be listed as the fermentation's assigned device", function () {
-		cy.get('article.fermentations > ul > li > a') //
-			.contains(temporaryTestFermentationName)
-			.click();
-		cy.get('p')
-			.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
-			.should('exist');
+		cy.location('pathname').should('eq', '/fermentation/60e1b00a3efff60ee0a65001');
 	});
 });

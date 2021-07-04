@@ -1,10 +1,14 @@
 describe('Fermentation thermal profile', function () {
 	it('Target thermal profile is editable from the edit fermentation page', function () {
-		const temporaryTestFermentationName = `Test Fermentation ${Math.random().toString().slice(9, 12)}`;
+		const temporaryTestFermentationName = `Temporary Test Fermentation ${Math.random()
+			.toString()
+			.slice(9, 12)}`;
 		cy.logInAs('Jeanette');
 		cy.visit('fermentation/add');
 		cy.get('input[name="name"]').type(temporaryTestFermentationName);
-		cy.get('textarea[name="description"]').type('This fermentation is used by integration tests only ;)');
+		cy.get('textarea[name="description"]').type(
+			'This fermentation is used by integration tests, it should be automatically deleted.'
+		);
 		cy.get('form').contains('Submit').click();
 		cy.get('article.fermentations > ul > li > a').contains(temporaryTestFermentationName).click();
 		cy.get('article.thermal-profile > a').contains('Edit target thermal profile.').click();

@@ -17,7 +17,8 @@ const fermentationSchema = new mongoose.Schema(
 		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'User',
+			required: true
 		},
 		assignedDevice: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -35,14 +36,9 @@ const fermentationSchema = new mongoose.Schema(
 		startTime: Number,
 		dataLog: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'DataLog'
+			ref: 'DataLog',
+			required: true
 		},
-		co2Activity: [
-			{
-				time: Number,
-				value: Number //bubbles per minute
-			}
-		],
 		notes: [
 			{
 				time: Number,
@@ -67,10 +63,8 @@ fermentationSchema.index(
 );
 
 fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
-	console.log(`🔴 in prevalidate hook`);
 	if (this.dataLog) return next();
 	try {
-		console.log(`🟣 CREATING A LINKED DATALOG`);
 		const dataLog = await DataLog.create({
 			thermalProfile: {
 				target: [],
