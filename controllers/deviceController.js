@@ -21,7 +21,6 @@ export const hashKey = (req, res, next) => {
 
 export const addToDatabase = async (req, res) => {
 	try {
-		// pre-save hook on the device model checks if device name is unique to user
 		// and adds the device id to the user db entry if not already present
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
@@ -54,7 +53,6 @@ export const addToDatabase = async (req, res) => {
 
 export const update = async (req, res) => {
 	try {
-		// pre-save hook on the device model checks if device name is unique to user
 		// and adds the device id to the user db entry if not already present
 		await Device.findByIdAndUpdate(req.device._id, req.body, {runValidators: true});
 		req.flash('success', 'Device registered.');
