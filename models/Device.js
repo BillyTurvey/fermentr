@@ -43,9 +43,7 @@ deviceSchema.index(
 
 deviceSchema.pre('save', async function saveDeviceToUser(next) {
 	try {
-		console.log(`🔴 In pre save hook`);
 		const user = await User.findById(this.owner).populate('device').exec();
-		console.log(`🔴 user: ${user}`);
 		if (user.devices.includes(this._id)) next();
 		user.devices.push(this._id);
 		await user.save();
