@@ -7,7 +7,7 @@ describe('Device editing', function () {
 			.next('a')
 			.contains('Edit')
 			.click();
-		cy.location('pathname').should('eq', '/device/60c1b4581d8a36ac2286310a/edit');
+		cy.location('pathname').should('eq', '/device/60e2a2d860d83e1f4f3eb1e9/edit');
 	});
 	it('Submitting the edit form updates the device details', function () {
 		cy.logInAs('Jeanette');
@@ -20,7 +20,7 @@ describe('Device editing', function () {
 		const sameNumber = Math.random();
 		cy.get('textarea[name="description"]')
 			.clear()
-			.type(`Persistent test device used in integration tests. Description lorem ipsum ${sameNumber}`);
+			.type(`Persistent test device used in integration tests. Do not delete! ${sameNumber}`);
 		cy.get('form > button').contains('Update').click();
 		cy.get('p.description').contains(sameNumber).should('exist');
 	});
@@ -34,7 +34,7 @@ describe('Device editing', function () {
 			.click();
 		cy.get('textarea[name="description"]').type(' 🤙');
 		cy.get('form').contains('Update').click();
-		cy.location('pathname').should('contain', '/device/60c1b4581d8a36ac2286310a');
+		cy.location('pathname').should('contain', '/device/60e2a2d860d83e1f4f3eb1e9');
 	});
 	// it("causes the selected device to be listed as the device's assigned device", function () {
 	// 	cy.get('article.devices > ul > li > a') //
