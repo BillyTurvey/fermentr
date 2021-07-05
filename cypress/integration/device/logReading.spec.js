@@ -37,12 +37,13 @@ describe('Authenticated log request', function () {
 	});
 	it('log requests are saved in the database', function () {
 		const device = jeanette.activeTestDevice;
+		const key = process.env.TEST_USER_1_ACTIVE_DEVICE_KEY;
 		const fermentation = jeanette.activeTestFermentation;
 		const sameTemperature = randomTemperature();
 		cy.request({
 			method: 'POST',
 			url: `/device/${device.id}/log`,
-			headers: {'device-key': device.key},
+			headers: {'device-key': key},
 			body: {temperature: sameTemperature}
 		});
 		cy.visit(`/fermentation/${fermentation.id}`);
