@@ -1,10 +1,7 @@
 import Device from '../models/Device.js';
 import DataLog from '../models/DataLog.js';
-import Fermentation from '../models/Fermentation.js';
-import validator from 'validator';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
-import {populateForm} from '../cypress/fixtures/testUtils.js';
 
 export const generateKey = (req, res, next) => {
 	res.locals.key = uuidv4();
@@ -109,6 +106,7 @@ export const view = async (req, res) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
+	console.log(`🔵 in authenticateAndAttachToReq`);
 	if (req.user && (await req.user.ownsDevice(id))) {
 		//user is logged in and is trying to view or edit device they own
 		try {
@@ -122,8 +120,12 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	} else if (req.header('device-key')) {
 		// device posting data to be logged
 		try {
-			const device = await Device.findById(id).populate('currentFermentation').exec();
+			// const device = await Device.findById(id).populate('currentFermentation').exec();
+			const device = await Device.findById(id).exec();
 			const key = req.header('device-key');
+			console.log(`🔴 id: ${id}`);
+			console.log(`🔴 device: ${device}`);
+			console.log(`🔴 key: ${key}`);
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
 				next();
