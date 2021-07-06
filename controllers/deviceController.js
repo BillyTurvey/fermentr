@@ -106,7 +106,6 @@ export const view = async (req, res) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
-	console.log(`🔵 in authenticateAndAttachToReq`);
 	if (req.user && (await req.user.ownsDevice(id))) {
 		//user is logged in and is trying to view or edit device they own
 		try {
@@ -120,12 +119,8 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	} else if (req.header('device-key')) {
 		// device posting data to be logged
 		try {
-			// const device = await Device.findById(id).populate('currentFermentation').exec();
-			const device = await Device.findById(id).exec();
+			const device = await Device.findById(id).populate('currentFermentation').exec();
 			const key = req.header('device-key');
-			console.log(`🔴 id: ${id}`);
-			console.log(`🔴 device: ${device}`);
-			console.log(`🔴 key: ${key}`);
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
 				next();
@@ -153,12 +148,11 @@ export const logReading = async (req, res, next) => {
 		//Populate the fermentation when the device is retreived from the database?
 		try {
 			const dataLog = await DataLog.findById(fermentation.dataLog).exec();
-			dataLog.thermalProfile.actual
-				.push({
-					time: Date.now(),
-					temp: req.body.temperature
-				})
-				.save();
+			dataLog.thermalProfile.actual.push({
+				time: Date.now(),
+				temp: req.body.temperature
+			});
+			dataLog.save();
 			res.status(200).end();
 		} catch (error) {
 			console.error(error);

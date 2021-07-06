@@ -78,6 +78,8 @@ web_modules/
 # dotenv environment variables file
 *.env
 .env
+*.env.json
+.env.json
 .env.test
 .env.now
 
