@@ -27,8 +27,7 @@ describe('Authenticated log request', function () {
 			method: 'POST',
 			url: `/device/${device.id}/log`,
 			headers: {
-				'device-key': `${key}`,
-				'another-header': 'FRUITY'
+				'device-key': `${key}`
 			},
 			body: {
 				temperature: randomTemperature()
@@ -38,17 +37,19 @@ describe('Authenticated log request', function () {
 		});
 	});
 	it('log requests are saved in the database', function () {
-		const device = jeanette.activeTestDevice;
-		const key = process.env.TEST_USER_1_ACTIVE_DEVICE_KEY;
-		const fermentation = jeanette.activeTestFermentation;
 		const sameTemperature = randomTemperature();
 		cy.request({
 			method: 'POST',
-			url: `/device/${device.id}/log`,
-			headers: {'device-key': 'key'},
-			body: {temperature: sameTemperature}
+			url: `/device/${jeanette.activeTestDevice.id}/log`,
+			headers: {
+				'device-key': Cypress.env('activeTestDeviceKey')
+			},
+			body: {
+				temperature: sameTemperature
+			}
 		});
-		cy.visit(`/fermentation/${fermentation.id}`);
+		cy.logInAs(jeanette);
+		cy.visit(`/fermentation/${jeanette.activeTestFermentation.id}`);
 		cy.get('p').contains(`Last logged temperature: ${sameTemperature}`).should('exist');
 	});
 });

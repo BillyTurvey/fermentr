@@ -17,24 +17,30 @@ block content
 	if (fermentation.recipe.malt || fermentation.recipe.hops || fermentation.recipe.yeast) 
 		article
 			h2 Recipe
+
+	article
+		h2 Temperature
+		- const temperatureLog = fermentation.dataLog.thermalProfile.actual;
+		p Last logged temperature: #{temperatureLog[temperatureLog.length - 1].temp}°C
 	
-	h2 Specific Gravity
-	
-	table
-		thead
-			tr
-				th 
-				th Original Gravity
-				th Final Gravity
-		tbody
-			tr
-				td Target
-				td #{fermentation.targetOG}
-				td #{fermentation.targetFG}
-			tr
-				td Actual
-				td #{fermentation.actualOG}
-				td #{fermentation.actualFG}
+	article 
+		h2 Specific Gravity
+		
+		table
+			thead
+				tr
+					th 
+					th Original Gravity
+					th Final Gravity
+			tbody
+				tr
+					td Target
+					td #{fermentation.targetOG}
+					td #{fermentation.targetFG}
+				tr
+					td Actual
+					td #{fermentation.actualOG}
+					td #{fermentation.actualFG}
 
 
 	if (fermentation.assignedDevice) 

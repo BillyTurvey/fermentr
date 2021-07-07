@@ -15,5 +15,9 @@
 	"activeTestDevice": {
 		"name": "Persistent Test Device",
 		"id": "60e2a3a411c0f61f6db03bb2"
+	},
+	"activeTestFermentation": {
+		"name": "NEIPA 21",
+		"id": "60e1b00a3efff60ee0a65001"
 	}
 }

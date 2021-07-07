@@ -4,7 +4,8 @@ mongoose.Promise = global.Promise;
 const dataLogSchema = new mongoose.Schema({
 	fermentation: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Fermentation'
+		ref: 'Fermentation',
+		required: true
 	},
 	thermalProfile: {
 		target: [

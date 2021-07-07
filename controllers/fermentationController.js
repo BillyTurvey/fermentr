@@ -71,17 +71,17 @@ export const deleteFermentation = async function (req, res, next) {
 	}
 };
 
-export const view = (req, res, next) => {
+export const view = async (req, res, next) => {
+	const fermentation = await req.fermentation.populate('dataLog').execPopulate();
 	res.render('fermentation/viewFermentation', {
-		title: req.fermentation.name,
-		fermentation: req.fermentation
+		title: fermentation.name,
+		fermentation: fermentation
 	});
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	if (req.user && (await req.user.ownsFermentation(id))) {
 		try {
-			// const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
 			const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
 			req.fermentation = fermentation;
 			next();
