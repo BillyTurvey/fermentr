@@ -117,7 +117,7 @@ describe('Fermentation description', function () {
 			cy.visit('fermentation/add');
 			cy.get('input[name="name"]').type(temporaryTestFermentationName);
 			cy.get('textarea[name="description"]').type(
-				'This block of text is the description for a test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
+				'This block of text is the description for a TEMPORARY test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
 			);
 			cy.get(`form > .deviceRadio > input[id="${jeanettesDevice}"]`).click();
 			cy.get('form').contains('Submit').click();
