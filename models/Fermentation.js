@@ -66,6 +66,7 @@ fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
 	if (this.dataLog) return next();
 	try {
 		const dataLog = await DataLog.create({
+			fermentation: this._id,
 			thermalProfile: {
 				target: [],
 				actual: []
