@@ -36,8 +36,7 @@ const fermentationSchema = new mongoose.Schema(
 		startTime: Number,
 		dataLog: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'DataLog',
-			required: true
+			ref: 'DataLog'
 		},
 		notes: [
 			{
@@ -62,8 +61,8 @@ fermentationSchema.index(
 	}
 );
 
-fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
-	if (this.dataLog) return next();
+fermentationSchema.post('save', async function createLinkedDataLog() {
+	if (this.dataLog) return;
 	try {
 		const dataLog = await DataLog.create({
 			fermentation: this._id,
@@ -74,7 +73,8 @@ fermentationSchema.pre('validate', async function createLinkedDataLog(next) {
 			co2Activity: []
 		});
 		this.dataLog = dataLog._id;
-		next();
+		this.save();
+		// next();
 	} catch (error) {
 		next(error);
 	}
@@ -130,7 +130,7 @@ fermentationSchema.pre('findOneAndDelete', async function deleteDataLog(next) {
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const fermentation = await this.model.findOne(this.getQuery());
-		await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
+		const dataLog = await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
 		next();
 	} catch (error) {
 		console.error(
