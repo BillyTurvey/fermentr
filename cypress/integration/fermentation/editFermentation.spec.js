@@ -9,6 +9,20 @@ describe('Fermentation editing', function () {
 			.click();
 		cy.location('pathname').should('eq', '/fermentation/60e1b00a3efff60ee0a65001/edit');
 	});
+	it('Submitting edit fermentation form with invalid data causes the form to reload with the invalid data populated in their fields', function () {
+		cy.logInAs('Jeanette');
+		cy.visit('user/dashboard');
+		cy.get('article.fermentations > ul > li') //
+			.contains('NEIPA 21')
+			.next('a')
+			.contains('Edit')
+			.click();
+		cy.get('textarea[name="description"]').type(
+			' A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah'
+		);
+		cy.get('form > button').contains('Update').click();
+		cy.get('p.description').contains('blah blah').should('exist');
+	});
 	it('Submitting the edit form updates the fermentation details', function () {
 		cy.logInAs('Jeanette');
 		cy.visit('user/dashboard');
