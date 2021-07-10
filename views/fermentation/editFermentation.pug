@@ -24,23 +24,23 @@ block content
 	form(action=actionPath method='POST') 
 
 		label(for="name") Name
-		input(type="text" name="name" value=values.name required)
+		input(type="text" name="name" value= name || values.name required)
 		br
 		label(for="description") Description
-		textarea(name="description" rows=5 columns=33) !{values.description}
+		textarea(name="description" rows=5 columns=33) !{description || values.description}
 		br
 		label(for="targetFG") Target OG
-		input(type="number" name="targetOG" step=0.001 value=values.targetOG)
+		input(type="number" name="targetOG" step=0.001 value= targetOG || values.targetOG)
 		br
 		label(for="actualFG") Actual OG
-		input(type="number" name="actualOG" step=0.001 value=values.actualOG)
+		input(type="number" name="actualOG" step=0.001 value= actualOG || values.actualOG)
 		br
 		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" step=0.001 value=values.targetFG)
+		input(type="number" name="targetFG" step=0.001 value= targetFG || values.targetFG)
 		br
 		if (editingExistingFermentation)
 			label(for="actualFG") Actual FG
-			input(type="number" name="actualFG" step=0.001 value=values.actualFG)
+			input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
 			br
 
 
