@@ -170,7 +170,7 @@ function handleFermentationValidationErrors(req, res, next) {
 				});
 
 			default:
-				res.redirect(`fermentation/${req.fermentation._id}`);
+				res.redirect(`/fermentation/${req.fermentation._id}`);
 				break;
 		}
 	} else {
