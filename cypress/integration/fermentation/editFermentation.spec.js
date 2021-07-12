@@ -21,7 +21,7 @@ describe('Fermentation editing', function () {
 			' A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah'
 		);
 		cy.get('form > button').contains('Update').click();
-		cy.get('p.description').contains('blah blah').should('exist');
+		cy.get('textarea[name=description]').contains('blah blah').should('exist');
 	});
 	it('Submitting the edit form updates the fermentation details', function () {
 		cy.logInAs('Jeanette');

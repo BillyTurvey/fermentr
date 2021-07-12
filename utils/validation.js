@@ -141,37 +141,35 @@ function handleFermentationValidationErrors(req, res, next) {
 			'error',
 			errors.array().map(err => err.msg)
 		);
-		switch (req.header('referer')) {
-			case 'fermentation/*/update':
-				res.render(`fermentation/${req.fermentation._id}/update`, {
-					title: `Edit ${req.fermentation.name}`,
-					name: req.body.name,
-					description: req.body.description,
-					targetOG: req.body.targetOG,
-					actualOG: req.body.actualOG,
-					targetFG: req.body.targetFG,
-					actualFG: req.body.actualFG,
-					fermentation: req.fermentation
-				});
-				break;
-
-			case `fermentation/add`:
-				res.render('fermentation/editFermentation', {
-					title: 'Add New Fermentation',
-					editingExistingFermentation: false,
-					devices: req.user.devices || [],
-					name: req.body.name,
-					description: req.body.description,
-					targetOG: parseFloat(req.body.targetOG),
-					actualOG: parseFloat(req.body.actualOG),
-					targetFG: parseFloat(req.body.targetFG),
-					actualFG: parseFloat(req.body.actualFG),
-					flashes: req.flash()
-				});
-
-			default:
-				res.redirect(`/fermentation/${req.fermentation._id}`);
-				break;
+		if (req.headers.referer.includes('edit') || req.headers.referer.includes('update')) {
+			res.render(`fermentation/editFermentation`, {
+				title: `Edit ${req.fermentation.name}`,
+				name: req.body.name,
+				description: req.body.description,
+				targetOG: req.body.targetOG,
+				actualOG: req.body.actualOG,
+				targetFG: req.body.targetFG,
+				actualFG: req.body.actualFG,
+				fermentation: req.fermentation,
+				devices: req.user.devices || [],
+				flashes: req.flash(),
+				editingExistingFermentation: true
+			});
+		} else if (req.headers.referer.includes('add')) {
+			res.render('fermentation/editFermentation', {
+				title: 'Add New Fermentation',
+				editingExistingFermentation: false,
+				devices: req.user.devices || [],
+				name: req.body.name,
+				description: req.body.description,
+				targetOG: parseFloat(req.body.targetOG),
+				actualOG: parseFloat(req.body.actualOG),
+				targetFG: parseFloat(req.body.targetFG),
+				actualFG: parseFloat(req.body.actualFG),
+				flashes: req.flash()
+			});
+		} else {
+			res.redirect(`/fermentation/${req.fermentation._id}`);
 		}
 	} else {
 		next();
