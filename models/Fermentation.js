@@ -62,7 +62,9 @@ fermentationSchema.index(
 );
 
 fermentationSchema.post('save', async function createLinkedDataLog() {
-	if (this.dataLog) return;
+	if (this.dataLog) {
+		return;
+	}
 	try {
 		const dataLog = await DataLog.create({
 			fermentation: this._id,
@@ -80,9 +82,10 @@ fermentationSchema.post('save', async function createLinkedDataLog() {
 	}
 });
 
-fermentationSchema.pre('save', async function linkFermentationToUserAndDevice(next) {
+fermentationSchema.pre('save', async function linkFermentationToUser(next) {
 	try {
 		const user = await User.findById(this.user).populate('device').exec();
+		if (user.fermentations.includes(this._id)) return next();
 		user.fermentations.push(this._id);
 		await user.save();
 		next();
