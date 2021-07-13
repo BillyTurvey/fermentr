@@ -1,7 +1,6 @@
 import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.js';
 
-const logInAndVisitAddDeviceWithoutRequired = () => {
-	logInAsNelson();
+const visitAddDeviceWithoutRequired = () => {
 	cy.visit('/device/add', {
 		onLoad: contentWindow => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
@@ -26,7 +25,10 @@ describe('User', function () {
 });
 
 describe('Device name', function () {
-	beforeEach(logInAndVisitAddDeviceWithoutRequired);
+	beforeEach(() => {
+		cy.logInAs('Nelson');
+		visitAddDeviceWithoutRequired();
+	});
 	it('is a required field', function () {
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Device name is a required field.');
@@ -50,7 +52,10 @@ describe('Device name', function () {
 });
 
 describe('Device description', function () {
-	beforeEach(logInAndVisitAddDeviceWithoutRequired);
+	beforeEach(() => {
+		cy.logInAs('Nelson');
+		visitAddDeviceWithoutRequired();
+	});
 	it('must be shorter than 100 chars', function () {
 		cy.get('input[name="name"]').type('Neville XIV');
 		cy.get('input[name="description"]').type(
@@ -65,8 +70,8 @@ describe('Device description', function () {
 });
 
 describe('Add device page lists fermentations', function () {
-	before(logInAsJeanette);
 	it("contains a list of user's fermentations", function () {
+		cy.logInAs('Jeanette');
 		cy.visit('device/add');
 		cy.get('form > .fermentationRadio > label') //
 			.contains('Breakfast Stout')
@@ -76,8 +81,8 @@ describe('Add device page lists fermentations', function () {
 
 // all fields are sanitized/escaped
 describe('Sanitization', function () {
-	beforeEach(logInAndVisitAddDeviceWithoutRequired);
 	it('form inputs are escaped', function () {
+		cy.logInAs('Jeanette');
 		cy.get('input[name="name"]').type('<script>&');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
@@ -92,7 +97,7 @@ describe('Sanitization', function () {
 	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(8, 12)}`;
 
 	describe('Success', function () {
-		before(logInAsJeanette);
+		before(() => cy.logInAs('Jeanette'));
 		it('provides access key upon successfully registering device', function () {
 			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
 			cy.visit('device/add');
@@ -105,7 +110,7 @@ describe('Sanitization', function () {
 	});
 
 	describe('Successfully adding a Device', function () {
-		beforeEach(logInAsJeanette);
+		beforeEach(() => cy.logInAs('Jeanette'));
 		it("causes the device to appear in a list on the user's dashboard", function () {
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li > a') //
@@ -121,7 +126,7 @@ describe('Sanitization', function () {
 	});
 
 	describe('Deleting a device', function () {
-		beforeEach(logInAsJeanette);
+		beforeEach(() => cy.logInAs('Jeanette'));
 		it('Device can be deleted using a button on the "edit device" page', function () {
 			cy.visit('user/dashboard');
 			cy.get('article.devices > ul > li') //
@@ -146,8 +151,8 @@ describe('Sanitization', function () {
 }
 
 describe('Viewing a device', function () {
-	before(logOut);
 	it('User must be logged in.', function () {
+		cy.logOut;
 		cy.request({
 			method: 'GET',
 			url: '/device/60c1b4581d8a36ac2286310a',
@@ -158,7 +163,7 @@ describe('Viewing a device', function () {
 	});
 	it('If logged in, user must also own the Device they request to view.', function () {
 		cy.fixture('testUserJeanette.json').then(jeanette => {
-			logInAsNelson();
+			cy.logInAs('Nelson');
 			cy.request({
 				method: 'GET',
 				url: `/device/${jeanette.devices[0].id}`,
@@ -170,7 +175,7 @@ describe('Viewing a device', function () {
 	});
 	it('If logged in, user is able to view one of thier own devices.', function () {
 		cy.fixture('testUserJeanette.json').then(jeanette => {
-			logInAsJeanette();
+			cy.logInAs('Jeanette');
 			cy.request({
 				method: 'GET',
 				url: `/device/${jeanette.devices[0].id}`

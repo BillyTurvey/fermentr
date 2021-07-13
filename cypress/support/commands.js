@@ -4,13 +4,15 @@ import nelson from '../fixtures/testUserNelson.json';
 function logInAs(user) {
 	if (user === 'Jeanette') user = jeanette;
 	if (user === 'Nelson') user = nelson;
-	cy.request({
-		method: 'POST',
-		url: '/user/logIn',
-		body: {
-			email: user.email,
-			password: user.password
-		}
+	cy.request('POST', '/user/logOut').then(() => {
+		cy.request({
+			method: 'POST',
+			url: '/user/logIn',
+			body: {
+				email: user.email,
+				password: user.password
+			}
+		});
 	});
 }
 
