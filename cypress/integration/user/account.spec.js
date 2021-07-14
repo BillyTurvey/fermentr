@@ -80,7 +80,7 @@ describe('Email validation', function () {
 	const temporaryTestUser1 = {
 		name: 'Temporary <br>Tilly',
 		email: 'testymctestface@unreal.com',
-		password: 'engine-46767-float-wireless'
+		password: `engine-${Math.random().toString().slice(1, 12)}-float-wireless`
 	};
 
 	describe('Success', function () {
