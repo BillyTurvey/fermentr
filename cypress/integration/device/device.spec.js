@@ -83,6 +83,7 @@ describe('Add device page lists fermentations', function () {
 describe('Sanitization', function () {
 	it('form inputs are escaped', function () {
 		cy.logInAs('Jeanette');
+		cy.visit('device/add');
 		cy.get('input[name="name"]').type('<script>&');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(

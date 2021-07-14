@@ -38,11 +38,13 @@ describe('Authenticated log request', function () {
 	});
 	it('log requests are saved in the database', function () {
 		const sameTemperature = randomTemperature();
+		const key = Cypress.env('activeTestDeviceKey');
+
 		cy.request({
 			method: 'POST',
 			url: `/device/${jeanette.activeTestDevice.id}/log`,
 			headers: {
-				'device-key': Cypress.env('activeTestDeviceKey')
+				'device-key': key
 			},
 			body: {
 				temperature: sameTemperature
