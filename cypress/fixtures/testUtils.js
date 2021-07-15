@@ -20,20 +20,34 @@ export const logInAsNelson = () => {
 			url: '/user/logIn',
 			body: {
 				email: nelson.email,
-				password: nelson.password
+				password: Cypress.env('nelsonsPassword')
 			}
 		});
 	});
 };
 
 export const logInAs = user => {
-	cy.request({
-		method: 'POST',
-		url: '/user/logIn',
-		body: {
-			email: user.email,
-			password: user.password
+	if (typeof user === 'string') {
+		if (user === 'Jeanette') {
+			user = jeanette;
+			var password = Cypress.env('jeanettesPassword');
 		}
+		if (user === 'Nelson') {
+			user = nelson;
+			var password = Cypress.env('jeanettesPassword');
+		}
+	} else if (typeof user === 'object') {
+		var password = user.password;
+	}
+	cy.request('POST', '/user/logOut').then(() => {
+		cy.request({
+			method: 'POST',
+			url: '/user/logIn',
+			body: {
+				email: user.email,
+				password: password
+			}
+		});
 	});
 };
 
@@ -44,7 +58,7 @@ export const logInAsJeanette = () => {
 			url: '/user/logIn',
 			body: {
 				email: user.email,
-				password: user.password
+				password: Cypress.env('jeanettesPassword')
 			}
 		});
 	});

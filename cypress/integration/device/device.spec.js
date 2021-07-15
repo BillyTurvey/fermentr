@@ -1,4 +1,4 @@
-import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.js';
+import {logOut} from '../../fixtures/testUtils.js';
 
 const visitAddDeviceWithoutRequired = () => {
 	cy.visit('/device/add', {
@@ -12,7 +12,7 @@ const visitAddDeviceWithoutRequired = () => {
 };
 
 describe('User', function () {
-	before(logOut);
+	before(() => cy.logOut());
 	it('must be logged in to view Add Device page', function () {
 		cy.request({
 			method: 'GET',
