@@ -50,7 +50,7 @@ describe('Authenticated log request', function () {
 				temperature: sameTemperature
 			}
 		});
-		cy.logInAs(jeanette);
+		cy.logInAs('Jeanette');
 		cy.visit(`/fermentation/${jeanette.activeTestFermentation.id}`);
 		cy.get('p').contains(`Last logged temperature: ${sameTemperature}`).should('exist');
 	});
