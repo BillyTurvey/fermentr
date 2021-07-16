@@ -18,6 +18,8 @@ html
 					else
 						li 
 							a(href="/user/register") User Registration
+					li
+						a(href="/about") About
 				if (user)
 					p Logged in as !{user.name}.
 					form(action="/user/logOut" method="POST")

@@ -10,8 +10,8 @@ router.get('/current-temp', (req, res, next) => {
 	res.json(req);
 });
 
-router.post('/incoming', (req, res, next) => {
-	res.json(req);
+router.get('/about', (req, res, next) => {
+  res.render('topLevelPages/about', { title: 'About Fermentr' });
 });
 
 export default router;

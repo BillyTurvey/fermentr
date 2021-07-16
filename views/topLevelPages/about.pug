@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+
+	h2 What is fermentr.io? 
+
+	p Fermentr is a web app built to help home brewers monitor and control their fermentations. After a user registers, they may register fermentations, and devices to log data for their fermentations. The app currently relies on users being able to set up an arduino, Raspberry Pi, or other internet connected microprocessor such that it can send web post requests to the Fermentr server in order for data to be saved. 
+
+	h2 How it works 
+	
+	p When a user registers a device, both an access key and a device ID will be generated, which are used to authenticate Data logging HTTP requests. Data logging requests must be 'POST' requests sent to the server with a specified path containing the device's ID as shows here: 'https://fermentr.io/device/<device_id_here>/log'. The device's access key should be included as a header named 'device-key', and the body of the request should be a JSON object. Temperatures are logged using the key 'temperature' with a number value in degrees celsius. Fermentation activity, measured by having a device listed to the airlock to calculate a 'bubbles per minute' value, can be sent in the JSON payload under the 'co2Activity' key.
+
+	p Fermentations need a device assigned to them before a device's data logging requests are accepted. Devices can be assigned to a fermentation when either the device or the fermentation are registered, or through the 'edit device/fermentation' option on the user dashboard. Currently a device may only be assigned to one fermentation at a time, and similarly a fermentation may only have one assigned device at a time. 
+
