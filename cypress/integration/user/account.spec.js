@@ -69,8 +69,8 @@ describe('Email validation', function () {
 		cy.fixture('testUserNelson').then(user => {
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="name"]').type(user.name);
-			cy.get('input[name="password"]').type(user.password);
-			cy.get('input[name="passwordConfirm"]').type(user.password + '{enter}');
+			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassword'));
+			cy.get('input[name="passwordConfirm"]').type(Cypress.env('nelsonsPassword') + '{enter}');
 			cy.get('.flash--error').should('contain', 'Email already registered.');
 		});
 	});

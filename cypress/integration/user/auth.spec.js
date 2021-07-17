@@ -57,10 +57,10 @@ describe('If user is NOT logged in...', function () {
 
 describe('If user is logged in...', function () {
 	beforeEach(() => {
-		cy.fixture('testUserNelson.json').then((user) => {
+		cy.fixture('testUserNelson.json').then(user => {
 			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
-			cy.get('input[name="password"]').type(user.password + '{enter}');
+			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassword') + '{enter}');
 		});
 	});
 	it('Log In option is not present in the nav', function () {
@@ -78,10 +78,10 @@ describe('If user is logged in...', function () {
 
 describe('Logging out...', function () {
 	it('Log out button (not a link!) logs user out.', function () {
-		cy.fixture('testUserNelson.json').then((user) => {
+		cy.fixture('testUserNelson.json').then(user => {
 			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
-			cy.get('input[name="password"]').type(user.password + '{enter}');
+			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassord') + '{enter}');
 			cy.get('nav > form > button').contains('Log Out').click();
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
 		});
