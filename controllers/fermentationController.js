@@ -2,7 +2,7 @@ import Fermentation from '../models/Fermentation.js';
 
 export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
-		res.render('fermentation/editFermentation', {
+		return res.render('fermentation/editFermentation', {
 			title: 'Add New Fermentation',
 			devices: req.user.devices || [],
 			editingExisitngFermentation: false
