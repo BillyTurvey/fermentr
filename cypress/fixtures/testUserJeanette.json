@@ -1,7 +1,6 @@
 {
 	"name": "Jeanette",
 	"email": "testuser2@persistenttestuser.com",
-	"password": "bunk-5684-Ermine",
 	"devices": [
 		{
 			"name": "Arduino MKR",
