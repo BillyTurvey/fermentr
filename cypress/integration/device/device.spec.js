@@ -58,7 +58,7 @@ describe('Device description', function () {
 	});
 	it('must be shorter than 100 chars', function () {
 		cy.get('input[name="name"]').type('Neville XIV');
-		cy.get('input[name="description"]').type(
+		cy.get('textarea[name="description"]').type(
 			'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut libero eget quam volutpat sodales. Praesent aliquam elit ut dui pharetra convallis.'
 		);
 		cy.get('form').contains('Submit').click();

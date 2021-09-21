@@ -15,7 +15,7 @@ block content
 			input(type="text", name="name" required)
 
 			label(for="description") Description (optional).
-			input(type="text", name="description")
+			textarea(name="description" rows=5 columns=33)
 
 			if (user.fermentations.length > 0)
 				h3 Assign this device to a fermentation
