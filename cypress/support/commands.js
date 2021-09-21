@@ -9,21 +9,30 @@ function logInAs(user) {
 		}
 		if (user === 'Nelson') {
 			user = nelson;
-			var password = Cypress.env('jeanettesPassword');
+			var password = Cypress.env('nelsonsPassword');
 		}
 	} else if (typeof user === 'object') {
 		var password = user.password;
 	}
-	cy.request('POST', '/user/logOut').then(() => {
-		cy.request({
-			method: 'POST',
-			url: '/user/logIn',
-			body: {
-				email: user.email,
-				password: password
-			}
-		});
+	cy.request({
+		method: 'POST',
+		url: '/user/logIn',
+		body: {
+			email: user.email,
+			password: password
+		}
 	});
+
+	// cy.request('POST', '/user/logOut').then(() => {
+	// 	cy.request({
+	// 		method: 'POST',
+	// 		url: '/user/logIn',
+	// 		body: {
+	// 			email: user.email,
+	// 			password: password
+	// 		}
+	// 	});
+	// });
 }
 
 Cypress.Commands.add('logInAs', logInAs);
