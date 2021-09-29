@@ -1,5 +1,7 @@
 import passport from 'passport';
+import bcrypt from 'bcrypt';
 import User from '../models/User.js';
+import Util from '../models/Util.js';
 
 export const registrationForm = (req, res) => {
 	res.render('user/register');
@@ -45,7 +47,14 @@ export const logOut = (req, res) => {
 
 export const register = async (req, res, next) => {
 	try {
-		const user = await User.create(req.body);
+		const registrationPassword = await Util.findById('6154725802b5519bf4772293').exec();
+		const isAuthorisedToRegister = await bcrypt.compare(
+			req.body.registrationPassword,
+			registrationPassword.value
+		);
+		if (isAuthorisedToRegister == false) throw new Error('Invalid registration password.');
+
+		await User.create(req.body);
 		req.flash('success', `${req.body.name}, your account was successfully created.`);
 		next();
 	} catch (error) {

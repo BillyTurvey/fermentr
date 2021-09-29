@@ -36,6 +36,8 @@ export const sanitizeAndValidateUser = [
 		remove_extension: false,
 		gmail_remove_subaddress: false
 	}),
+
+	body('registrationPassword', 'Invalid registration password.').escape().notEmpty(),
 	body('password', 'Password is not valid.').escape().notEmpty().isLength({min: 8}),
 	body('passwordConfirm', 'Password confirmation cannot be blank.').escape().notEmpty(),
 	async function checkIfPasswordsMatch(req, res, next) {
@@ -48,6 +50,7 @@ export const sanitizeAndValidateUser = [
 		}
 		next();
 	},
+
 	function handleUserValidationErrors(req, res, next) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {

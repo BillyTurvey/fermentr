@@ -58,7 +58,7 @@ describe('Invalid Form Submission', function () {
 		cy.get('input[name="password"]').type('randomP@55word');
 		cy.get('input[name="passwordConfirm"]').type('randomP@55word');
 		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should('contain', 'You must provide a valid registration password.');
+		cy.get('.flash--error').should('contain', 'Invalid registration password.');
 	});
 	it('Requires a valid signup password for succesful registration.', function () {
 		cy.get('input[name="email"]').type(newTestEmail());
@@ -67,7 +67,7 @@ describe('Invalid Form Submission', function () {
 		cy.get('input[name="passwordConfirm"]').type('randomP@55word');
 		cy.get('input[name="registrationPassword"]').type('incorrectRegPW');
 		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should('contain', 'You must provide a valid registration password.');
+		cy.get('.flash--error').should('contain', 'Invalid registration password.');
 	});
 });
 
