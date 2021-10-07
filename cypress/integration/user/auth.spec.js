@@ -35,10 +35,18 @@ describe('Log in page', function () {
 		cy.get('input[name="email"]').type(`${newTestEmail()}{enter}`);
 		cy.get('.flash--error').should('contain', 'Password is not valid.');
 	});
-	it('Fails with incorrect credentials', function () {
+	it('Fails with incorrect email and password', function () {
 		cy.get('input[name="email"]').type(newTestEmail());
 		cy.get('input[name="password"]').type('Inc0rectP@55word{enter}');
 		cy.get('.flash--error').should('contain', 'Login failed.');
+	});
+	it('Fails with valid email and invalid password', function () {
+		cy.fixture('testUserNelson.json').then(user => {
+			cy.get('input[name="email"]').type(user.email);
+			cy.get('input[name="password"]').type('Inc0rectP@55word{enter}');
+			cy.get('.flash--error').should('contain', 'Login failed.');
+			cy.location('pathname').should('eq', '/user/logIn');
+		});
 	});
 });
 
@@ -81,7 +89,7 @@ describe('Logging out...', function () {
 		cy.fixture('testUserNelson.json').then(user => {
 			cy.visit('user/logIn');
 			cy.get('input[name="email"]').type(user.email);
-			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassord') + '{enter}');
+			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassword') + '{enter}');
 			cy.get('nav > form > button').contains('Log Out').click();
 			cy.get('.flash--success').should('contain', 'You have successfully logged out.');
 		});

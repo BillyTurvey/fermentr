@@ -12,7 +12,6 @@ export const logInForm = (req, res) => {
 };
 
 export const dashboard = async (req, res) => {
-	console.log(`🟣 Dashboard requested ${Date.now()}`);
 	if (req.user) {
 		return res.render('user/dashboard', {
 			title: 'Dashboard',
@@ -24,8 +23,6 @@ export const dashboard = async (req, res) => {
 };
 
 export const logIn = (req, res, next) => {
-	console.log(`=====================================================================`);
-	console.log(`🟣 logIn controller function called ${Date.now()}`);
 	passport.authenticate('local', function (err, user, info) {
 		if (err) {
 			return next(err);
@@ -34,11 +31,9 @@ export const logIn = (req, res, next) => {
 			req.flash('error', 'Login failed.');
 			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()});
 		}
-		console.log(`🟠 User has been authenticated, about to call req.logIn() ${Date.now()}`);
 		req.logIn(user, async function (err) {
 			if (err) return next(err);
 			req.flash('success', 'Login successful.');
-			console.log(`🔵 about to redirect to dashboard`);
 			res.redirect('/user/dashboard');
 		});
 	})(req, res, next);

@@ -17,7 +17,8 @@ passport.use(
 				if (!user) {
 					return done(null, false, {message: 'Invalid credentials.'});
 				}
-				if (!user.isAuthenticated(password)) {
+				const userIsAuthenticated = await user.isAuthenticated(password);
+				if (userIsAuthenticated == false) {
 					return done(null, false, {message: 'Invalid credentials.'});
 				}
 				return done(null, user);
@@ -29,12 +30,10 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-	console.log(`🟣 serialising user, ${Date.now()}`);
 	done(null, user.id);
 });
 
 passport.deserializeUser(async function (id, done) {
-	console.log(`🔵 deserialising user ${Date.now()}`);
 	try {
 		const user = await User.findById(id).populate('devices').populate('fermentations').exec();
 		done(null, user);
