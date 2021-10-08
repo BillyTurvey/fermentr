@@ -44,10 +44,22 @@ block content
 					td #{fermentation.actualFG}
 
 
-	if (fermentation.assignedDevice) 
-		article
-			h2 Device
-			p Device !{fermentation.assignedDevice.name} is assigned to !{fermentation.name}.
+	article
+		h2 Assigned Device
+		if (fermentation.assignedDevice) 
+			p Device '
+				a(href=`/device/${fermentation.assignedDevice._id}`) !{fermentation.assignedDevice.name}
+				| ' is assigned to '!{fermentation.name}'.
+		else
+			p !{fermentation.name} currently has no device assigned. 
+				a(href=`/fermentation/${fermentation._id}/edit`) Edit this fermentation
+				|
+				| to assign a pre-registered device, or
+				|
+				a(href="/device/add") register a new device
+				| 
+				| and select !{fermentation.name} in the device section of the form.
+	
 
 	a(href=`/fermentation/${fermentation._id}/edit`) Edit fermentation details.
 	//- script(src="https://d3js.org/d3.v6.min.js")

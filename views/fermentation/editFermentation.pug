@@ -43,7 +43,6 @@ block content
 			input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
 			br
 
-
 		if (devices.length > 0)
 			h3 Select a device to monitor/control this fermentation
 			if (f && f.assignedDevice)
@@ -51,10 +50,11 @@ block content
 			.deviceRadio
 				each device in devices
 					if (!device.currentFermentation)
-						input(type="radio" id=device.name name="assignedDevice" value=device._id)
+					- let ischecked = f.assignedDevice?.id === device.id;
+						input(type="radio" id=device.name name="assignedDevice" value=device._id checked=isChecked)
 						label(for=device.name) !{device.name}
 							span.device-description  - !{device.description}
-			input(type="radio" id='none' name="assignedDevice" value='none')
+			input(type="radio" id='none' name="assignedDevice" value="null" checked=!f.assignedDevice)
 			label(for='none') None
 
 		if (editingExistingFermentation)
