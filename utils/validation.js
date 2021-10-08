@@ -134,6 +134,7 @@ export const sanitizeAndValidateFermentation = [
 	body('actualOG', 'actualOG ... something').escape().isLength({max: 6}),
 	body('targetFG', 'targetFG ... something').escape().isLength({max: 6}),
 	body('actualFG', 'actualFG ... something').escape().isLength({max: 6}),
+	body('assignedDevice').escape(),
 	handleFermentationValidationErrors
 ];
 
