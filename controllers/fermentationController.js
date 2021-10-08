@@ -34,13 +34,17 @@ export const update = async (req, res, next) => {
 
 export const addToDatabase = async (req, res, next) => {
 	try {
+		// pre-validate middleware on the fermentation model checks the device ID is valid
+		// and that the device is owned by the user who is creating the fermentation.
+
 		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
+
 		const fermentation = await Fermentation.create({
 			name: req.body.name,
 			description: req.body.description,
 			dateRegistered: Date.now(),
 			user: req.user._id,
-			assignedDevice: req.body.assignedDevice
+			assignedDevice: req.body.assignedDevice === 'null' ? null : req.body.assignedDevice
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect(`/fermentation/${fermentation._id}`);

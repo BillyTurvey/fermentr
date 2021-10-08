@@ -82,6 +82,20 @@ fermentationSchema.post('save', async function createLinkedDataLog() {
 	}
 });
 
+fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
+	try {
+		if (this.assignedDevice === null) next();
+		const user = await User.findById(this.user).exec();
+		if (await user.ownsDevice(this.assignedDevice)) {
+			next();
+		} else {
+			throw new Error('Invalid device ID.');
+		}
+	} catch (error) {
+		next(error);
+	}
+});
+
 fermentationSchema.pre('save', async function linkFermentationToUser(next) {
 	try {
 		const user = await User.findById(this.user).populate('device').exec();
