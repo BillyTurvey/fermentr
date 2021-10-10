@@ -29,9 +29,9 @@ block content
 						input(type="radio" id=fermentation.name name="currentFermentation" value=fermentation._id checked=isChecked)
 						label(for=fermentation.name) !{fermentation.name}
 							span.fermentation-description - !{fermentation.description}
-								.fermentationRadio
-			input(type="radio" id=None name="currentFermentation" value=null)
-			label(for=None) None
+			.fermentationRadio
+				input(type="radio" id='none' name="currentFermentation" value=null)
+				label(for=None) None
 
 		button(type="submit") Update
 

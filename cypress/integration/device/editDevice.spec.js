@@ -36,12 +36,4 @@ describe('Device editing', function () {
 		cy.get('form').contains('Update').click();
 		cy.location('pathname').should('contain', '/device/60e2a2d860d83e1f4f3eb1e9');
 	});
-	// it("causes the selected device to be listed as the device's assigned device", function () {
-	// 	cy.get('article.devices > ul > li > a') //
-	// 		.contains(temporaryTestFermentationName)
-	// 		.click();
-	// 	cy.get('p')
-	// 		.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
-	// 		.should('exist');
-	// });
 });
