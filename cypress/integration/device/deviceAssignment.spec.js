@@ -80,4 +80,59 @@ describe('Device Assignment', function () {
 		cy.get('input#none').click();
 		cy.get('button').contains('Update').click();
 	});
+
+	it('Device is unassigned from a fermentation when a user deletes a device.', function () {
+		const sameTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(8, 12)}`;
+		// create device and assign it to a fermentation (Brett IPA)
+		cy.visit('device/add');
+		cy.get('input[name="name"]').type(sameTestDeviceName);
+		cy.get('textarea[name="description"]').type(
+			'This temporary test device is used to make sure that devices are unassigned from a fermentation when a user deletes a device.'
+		);
+		cy.get('form > .fermentationRadio > input[id="Brett IPA"]') //
+			.click();
+		cy.get('form > button').contains('Submit').click();
+		// assert the device is properly assigned on the fermentation page
+		cy.visit('/fermentation/61632c1bf0a0762ecab52dcb');
+		cy.get('article.assigned-device > p')
+			.contains(`Device '${sameTestDeviceName}' is currently assigned to 'Bret IPA'.`)
+			.should('exist');
+		// assert the device is properly assigned on the device page
+		cy.get('article.assigned-device > a').contains(sameTestDeviceName).click();
+		cy.get('article.assigned-device > p')
+			.contains(`${sameTestDeviceName} is currently assigned to 'Bret IPA'.`)
+			.should('exist');
+		//delete device
+		cy.get('button') //
+			.contains(`Delete ${sameTestDeviceName}`)
+			.click();
+		// assert the device is unassigned, on the fermentation page
+		cy.visit('/fermentation/61632c1bf0a0762ecab52dcb');
+		cy.get('article.assigned-device > p')
+			.contains(`Brett IPA currently has no device assigned.`)
+			.should('exist');
+	});
 });
+
+// it('Device is unassigned from a fermentation when a user deletes a fermentation.', function () {
+// 	const sameTestFermentationName = `TemporaryTestFermentation${Math.random().toString().slice(1, 6)}`;
+// 	cy.visit('fermentation/add');
+// 	cy.get('input[name="name"]').type(sameTestFermentationName);
+// 	cy.get('textarea[name="description"]').type(
+// 		'This temporary test fermentation is used to make sure that devices are unassigned from a fermentation when a user deletes a device.'
+// 	);
+// 	cy.get('form > .deviceRadio > input[id="Persistent Test Device Enid"]').click();
+// 	cy.get('form > button').contains('Submit').click();
+// 	cy.get('p')
+// 		.contains(`Device 'Persistent Test Device Enid' is currently assigned to '${sameTestFermentationName}'.`)
+// 		.should('exist');
+// 	cy.get('a').contains('Persistent Test Device Enid').click();
+// 	cy.get('p')
+// 		.contains(`Persistent Test Device Holly is assigned to '${sameTestFermentationName}'.`)
+// 		.should('exist');
+// 	cy.get('a').contains(sameTestFermentationName).click();
+// 	cy.get('a').contains('Edit fermentation details.').click();
+// 	cy.get('button') //
+// 		.contains(`Delete ${sameTestFermentationName}`)
+// 		.click();
+// });
