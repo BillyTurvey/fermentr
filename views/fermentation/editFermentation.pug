@@ -45,17 +45,20 @@ block content
 
 		if (devices.length > 0)
 			h3 Select a device to monitor/control this fermentation
+
 			if (f && f.assignedDevice)
 				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
+
 			.deviceRadio
 				each device in devices
 					if (!device.currentFermentation)
-					- let ischecked = f.assignedDevice?.id === device.id;
+						- let ischecked = f ? (f.assignedDevice?.id === device.id) : false;
 						input(type="radio" id=device.name name="assignedDevice" value=device._id checked=isChecked)
 						label(for=device.name) !{device.name}
 							span.device-description  - !{device.description}
-			input(type="radio" id='none' name="assignedDevice" value="null" checked=!f.assignedDevice)
-			label(for='none') None
+
+				input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
+				label(for='none') None
 
 		if (editingExistingFermentation)
 			button(type="submit") Update 
