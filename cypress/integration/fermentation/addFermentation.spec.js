@@ -90,17 +90,17 @@ describe('Add fermentation page: Devices...', function () {
 
 describe('Fermentation description', function () {
 	beforeEach(logInAsJeanette);
-	it('must be shorter than 300 chars', function () {
+	it('must be shorter than 600 chars', function () {
 		cy.visit('fermentation/add');
 		cy.get('input[name="name"]').type('Test Fermentation');
 		cy.get('textarea[name="description"]') //
 			.type(
-				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters.'
 			);
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`Description is too long, please limit to fewer than 300 characters.`
+			`Description is too long, please limit to fewer than 600 characters.`
 		);
 	});
 });
