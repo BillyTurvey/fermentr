@@ -8,7 +8,7 @@ block content
 	p.description !{device.description}
 
 	if (device.currentFermentation)
-		p !{device.name} is currently assigned to fermentation '
+		p !{device.name} is currently assigned to '
 			a(href=`/fermentation/${device.currentFermentation._id}`) !{device.currentFermentation.name}
 			| '.
 	else
