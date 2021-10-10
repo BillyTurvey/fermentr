@@ -87,10 +87,10 @@ export const sanitizeAndValidateDevice = [
 	body('name', 'Device name is too long, please limit to fewer than 30 alphanumeric characters.').isLength({
 		max: 30
 	}),
-	body('description', 'Description is too long, please limit to fewer than 100 characters.')
+	body('description', 'Description is too long, please limit to fewer than 600 characters.')
 		.escape()
 		.trim()
-		.isLength({max: 100}),
+		.isLength({max: 600}),
 	body('fermentation').escape(),
 	handleDeviceValidationErrors
 ];
@@ -122,10 +122,10 @@ export const sanitizeAndValidateFermentation = [
 	).isLength({
 		max: 30
 	}),
-	body('description', 'Description is too long, please limit to fewer than 300 characters.')
+	body('description', 'Description is too long, please limit to fewer than 600 characters.')
 		.escape()
 		.trim()
-		.isLength({max: 300}),
+		.isLength({max: 600}),
 	// body('targetOG', 'targetOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('actualOG', 'actualOG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
 	// body('targetFG', 'targetFG ... something').escape().isDecimal({force_decimal: true, decimal_digits: '3', locale: 'en-GB'}),
