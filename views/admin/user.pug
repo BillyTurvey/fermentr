@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+
+	h1 User: !{user.name} 
+
+
+	article.fermentations
+		h2 Fermentations
+		ul 
+			if (user.fermentations.length > 0)
+				each fermentation in user.fermentations
+					li
+						a(href=`/fermentation/${fermentation._id}`) !{fermentation.name}
+						|
+						| | 
+						|
+						a(href=`/fermentation/${fermentation._id}/edit`) Edit
+			li
+				a(href="/fermentation/add") + Add a new fermentation
+
+	article.devices
+		h2 Devices
+		ul 
+			if (user.devices.length > 0)
+				each device in user.devices
+					li
+						a(href=`/device/${device._id}`) !{device.name}
+						|
+						| |
+						|
+						a(href=`/device/${device._id}/edit`) Edit
+
+			li
+				a(href="/device/add") + Register a new device
+
