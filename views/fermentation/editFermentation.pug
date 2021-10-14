@@ -49,7 +49,7 @@ block content
 			if (f && f.assignedDevice)
 				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
 
-			.deviceRadio
+			.device-radio-container
 				each device in devices
 					- let isAssignedToThisFermentation = device.currentFermentation == f?.id;
 					if (!device.currentFermentation || isAssignedToThisFermentation)

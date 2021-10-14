@@ -24,6 +24,7 @@ block content
 
 			if (user.fermentations.length > 0)
 				h3 Assign this device to a fermentation
+				
 				each fermentation in user.fermentations
 					if (!fermentation.assignedDevice)
 						.fermentationRadio
@@ -31,8 +32,8 @@ block content
 							label(for=fermentation.name) !{fermentation.name}
 								span.fermentation-description  - !{fermentation.description}
 				.fermentationRadio
-						input(type="radio" id=None name="currentFermentation" value=null)
-						label(for=None) None
+					input(type="radio" id=None name="currentFermentation" value=null checked)
+					label(for=None) None
 
 			button(type="submit") Submit
 
