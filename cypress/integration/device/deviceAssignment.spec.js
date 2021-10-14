@@ -6,7 +6,7 @@ describe('Device Assignment', function () {
 		const sameTestFermentationName = `TemporaryTestFermentation${Math.random().toString().slice(2, 7)}`;
 		cy.visit('fermentation/add');
 		cy.get('input[name="name"]').type(sameTestFermentationName);
-		cy.get('form > .deviceRadio > input[id="Persistent Test Device Enid"]').click();
+		cy.get('input[id="Persistent Test Device Enid"]').click();
 		cy.get('textarea[name="description"]').type(
 			'This temporary test fermentation is used to make sure the correct documents are updated when a user assigns a device to a fermentation during the process of registering a new fermentation.'
 		);
