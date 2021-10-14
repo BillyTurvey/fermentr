@@ -27,11 +27,11 @@ block content
 				each fermentation in user.fermentations
 					if (!fermentation.assignedDevice)
 						.fermentationRadio
-							input(type="radio" id=fermentation.name name="fermentation" value=fermentation._id)
+							input(type="radio" id=fermentation.name name="currentFermentation" value=fermentation._id)
 							label(for=fermentation.name) !{fermentation.name}
 								span.fermentation-description  - !{fermentation.description}
 				.fermentationRadio
-						input(type="radio" id=None name="fermentation" value=null)
+						input(type="radio" id=None name="currentFermentation" value=null)
 						label(for=None) None
 
 			button(type="submit") Submit

@@ -91,7 +91,7 @@ export const sanitizeAndValidateDevice = [
 		.escape()
 		.trim()
 		.isLength({max: 600}),
-	body('fermentation').escape(),
+	body('currentFermentation').escape(),
 	handleDeviceValidationErrors
 ];
 

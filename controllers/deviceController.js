@@ -18,14 +18,16 @@ export const hashKey = (req, res, next) => {
 
 export const addToDatabase = async (req, res) => {
 	try {
-		// and adds the device id to the user db entry if not already present
+		// pre save middleware on the device model...
+		//// ...adds the device id to the fermentation document
+		//// ...adds the device id to the user document
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
 			name: req.body.name,
 			description: req.body.description,
 			keyHash: res.locals.keyHash,
-			dateRegistered: Date.now(),
-			owner: req.user._id
+			owner: req.user._id,
+			currentFermentation: req.body.currentFermentation === 'null' ? null : req.body.currentFermentation
 		});
 		req.flash('success', 'Device registered.');
 		return res.render('device/addDevice', {
@@ -50,7 +52,9 @@ export const addToDatabase = async (req, res) => {
 
 export const update = async (req, res) => {
 	try {
-		// and adds the device id to the user db entry if not already present
+		// pre save middleware on the device model...
+		//// ...adds the device id to the fermentation document
+		//// ...adds the device id to the user document
 		await Device.findByIdAndUpdate(req.device._id, req.body, {runValidators: true});
 		req.flash('success', 'Device registered.');
 		return res.redirect(`/device/${req.device._id}`);

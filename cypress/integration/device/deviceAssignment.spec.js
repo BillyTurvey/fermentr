@@ -58,7 +58,8 @@ describe('Device Assignment', function () {
 		cy.visit('/fermentation/6160419e90472912a08c24b3');
 		cy.get('p').contains(`Device '${sameTestDeviceName}' is currently assigned to 'Kölsch'.`).should('exist');
 		//delete device
-		cy.get('a').contains('Kölsch').click();
+		cy.get('a').contains(sameTestDeviceName).click();
+		cy.get('a').contains('Edit device details').click();
 		cy.get('button') //
 			.contains(`Delete ${sameTestDeviceName}`)
 			.click();

@@ -76,7 +76,6 @@ fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
 });
 
 fermentationSchema.pre('save', async function updateAssignedDeviceDocuments(next) {
-	if (this.isModified('device')) console.log(`✅ this.device has been modified`);
 	try {
 		const oldFermentation = await Fermentation.findById(this._id).exec();
 		if (oldFermentation && oldFermentation.assignedDevice !== this.assignedDevice) {
