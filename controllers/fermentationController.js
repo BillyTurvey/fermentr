@@ -26,7 +26,7 @@ export const renderPopulatedEditForm = async (req, res) => {
 export const update = async (req, res, next) => {
 	try {
 		if (req.body.assignedDevice === 'null') req.body.assignedDevice = null;
-		const fermentation = await Fermentation.findById(req.fermentation._id);
+		const fermentation = req.fermentation;
 		fermentation.name = req.body.name;
 		fermentation.description = req.body.description;
 		fermentation.targetOG = req.body.targetOG;

@@ -55,8 +55,15 @@ export const update = async (req, res) => {
 		// pre save middleware on the device model...
 		//// ...adds the device id to the fermentation document
 		//// ...adds the device id to the user document
-		await Device.findByIdAndUpdate(req.device._id, req.body, {runValidators: true});
-		req.flash('success', 'Device registered.');
+
+		const device = req.device;
+		device.name = req.body.name;
+		device.description = req.body.description;
+		device.currentFermentation =
+			req.body.currentFermentation === 'null' ? null : req.body.currentFermentation;
+		await device.save();
+
+		req.flash('success', 'Device updated.');
 		return res.redirect(`/device/${req.device._id}`);
 	} catch (error) {
 		console.error(`Error during device registration: ${error.message}`);

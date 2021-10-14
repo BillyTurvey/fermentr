@@ -25,12 +25,12 @@ block content
 			each fermentation in fermentations
 				if (!fermentation.assignedDevice)
 					.fermentationRadio
-						- const isChecked = device.currentFermentation._id.toString() == fermentation._id.toString()
+						- const isChecked = device.currentFermentation?._id.toString() == fermentation._id.toString()
 						input(type="radio" id=fermentation.name name="currentFermentation" value=fermentation._id checked=isChecked)
 						label(for=fermentation.name) !{fermentation.name} 
 							span.fermentation-description - !{fermentation.description}
 			.fermentationRadio
-				input(type="radio" id='none' name="currentFermentation" value=null checked=device.currentFermentation ? false : true)
+				input(type="radio" id='none' name="currentFermentation" value="null" checked=device.currentFermentation ? false : true)
 				label(for=None) None
 
 		button(type="submit") Update

@@ -50,7 +50,7 @@ deviceSchema.pre('save', async function addDeviceToUserDocument(next) {
 		await user.save();
 		next();
 	} catch (error) {
-		console.error(`Error during device registration: ${error.message}`);
+		console.error(`Error, could not add device to user document: ${error.message}`);
 		next(error);
 	}
 });
@@ -68,6 +68,7 @@ deviceSchema.pre('save', async function addToFermentationDocument(next) {
 		await fermentation.save();
 		next();
 	} catch (error) {
+		console.error(`Error, could not add device to fermentation document: ${error.message}`);
 		next(error);
 	}
 });
@@ -82,7 +83,7 @@ deviceSchema.pre('findOneAndDelete', async function removeFromUserDocument(next)
 		await user.save();
 		next();
 	} catch (error) {
-		console.error(`Error during device deletion, could not remove device from user: ${error.message}`);
+		console.error(`Error, could not remove device from user document: ${error.message}`);
 	}
 });
 
@@ -92,14 +93,10 @@ deviceSchema.pre('findOneAndDelete', async function removeFromFermentationDocume
 	try {
 		const device = await this.model.findOne(this.getQuery());
 		if (!device.currentFermentation) return next();
-		const fermentation = await Fermentation.findById(device.currentFermentation).exec();
-		fermentation.currentFermentation = null;
-		await fermentation.save();
+		Fermentation.findByIdAndUpdate(device.currentFermentation, {assignedDevice: null}).exec();
 		next();
 	} catch (error) {
-		console.error(
-			`Error during device deletion, could not remove device from fermentation: ${error.message}`
-		);
+		console.error(`Error, could not remove device from fermentation: ${error.message}`);
 	}
 });
 
