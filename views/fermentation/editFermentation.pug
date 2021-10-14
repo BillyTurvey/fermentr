@@ -51,9 +51,10 @@ block content
 
 			.deviceRadio
 				each device in devices
-					if (!device.currentFermentation)
-						- let ischecked = f ? (f.assignedDevice?.id === device.id) : false;
-						input(type="radio" id=device.name name="assignedDevice" value=device._id checked=isChecked)
+					- let isAssignedToThisFermentation = device.currentFermentation == f?.id;
+					if (!device.currentFermentation || isAssignedToThisFermentation)
+						//- - let ischecked = device.currentFermentation ? true : false;
+						input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.currentFermentation!=null)
 						label(for=device.name) !{device.name}
 							span.device-description  - !{device.description}
 

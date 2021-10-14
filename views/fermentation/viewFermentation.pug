@@ -48,7 +48,7 @@ block content
 		if (fermentation.assignedDevice) 
 			p Device '
 				a(href=`/device/${fermentation.assignedDevice._id}`) !{fermentation.assignedDevice.name}
-				| ' is assigned to '!{fermentation.name}'.
+				| ' is currently assigned to '!{fermentation.name}'.
 		else
 			p !{fermentation.name} currently has no device assigned. 
 				a(href=`/fermentation/${fermentation._id}/edit`) Edit this fermentation

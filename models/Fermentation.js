@@ -61,27 +61,6 @@ fermentationSchema.index(
 	}
 );
 
-fermentationSchema.post('save', async function createLinkedDataLog() {
-	if (this.dataLog) {
-		return;
-	}
-	try {
-		const dataLog = await DataLog.create({
-			fermentation: this._id,
-			thermalProfile: {
-				target: [],
-				actual: []
-			},
-			co2Activity: []
-		});
-		this.dataLog = dataLog._id;
-		this.save();
-		// next();
-	} catch (error) {
-		next(error);
-	}
-});
-
 fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
 	try {
 		if (this.assignedDevice === null) next();
@@ -96,7 +75,22 @@ fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
 	}
 });
 
-fermentationSchema.pre('save', async function linkFermentationToUser(next) {
+fermentationSchema.pre('save', async function updateAssignedDeviceDocuments(next) {
+	if (this.isModified('device')) console.log(`✅ this.device has been modified`);
+	try {
+		const oldFermentation = await Fermentation.findById(this._id).exec();
+		if (oldFermentation && oldFermentation.assignedDevice !== this.assignedDevice) {
+			await Device.findByIdAndUpdate(oldFermentation.assignedDevice?._id, {currentFermentation: null});
+		}
+		await Device.findByIdAndUpdate(this.assignedDevice, {currentFermentation: this._id}).exec();
+		next();
+	} catch (error) {
+		console.error(`Error, could not add to device document: ${error.message}`);
+		next(error);
+	}
+});
+
+fermentationSchema.pre('save', async function addToUserDocument(next) {
 	try {
 		const user = await User.findById(this.user).populate('device').exec();
 		if (user.fermentations.includes(this._id)) return next();
@@ -108,7 +102,25 @@ fermentationSchema.pre('save', async function linkFermentationToUser(next) {
 	}
 });
 
-fermentationSchema.pre('findOneAndDelete', async function removeFromUser(next) {
+fermentationSchema.pre('save', async function createLinkedDataLog(next) {
+	if (this.dataLog) return next();
+	try {
+		const dataLog = await DataLog.create({
+			fermentation: this._id,
+			thermalProfile: {
+				target: [],
+				actual: []
+			},
+			co2Activity: []
+		});
+		this.dataLog = dataLog._id;
+		next();
+	} catch (error) {
+		next(error);
+	}
+});
+
+fermentationSchema.pre('findOneAndDelete', async function removeFromUserDocument(next) {
 	// In pre('findOneAndDelete') 'this' refers to the query object rather than the document being updated.
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
@@ -124,16 +136,14 @@ fermentationSchema.pre('findOneAndDelete', async function removeFromUser(next) {
 	}
 });
 
-fermentationSchema.pre('findOneAndDelete', async function removeFromDevice(next) {
+fermentationSchema.pre('findOneAndDelete', async function removeFromDeviceDocument(next) {
 	// In pre('findOneAndDelete') 'this' refers to the query object rather than the document being updated.
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const fermentation = await this.model.findOne(this.getQuery());
-		await Device.findByIdAndUpdate(
-			fermentation.assignedDevice,
-			{assignedDevice: undefined},
-			{omitUndefined: true}
-		).exec();
+		const device = await Device.findById(fermentation.assignedDevice).exec();
+		device.currentFermentation = null;
+		await device.save();
 		next();
 	} catch (error) {
 		console.error(
@@ -147,7 +157,7 @@ fermentationSchema.pre('findOneAndDelete', async function deleteDataLog(next) {
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const fermentation = await this.model.findOne(this.getQuery());
-		const dataLog = await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
+		await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
 		next();
 	} catch (error) {
 		console.error(

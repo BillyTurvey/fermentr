@@ -83,7 +83,7 @@ userSchema.methods.isAuthenticated = async function isAuthenticated(password) {
 
 userSchema.methods.ownsDevice = async function ownsDevice(deviceID) {
 	for (const device in this.devices) {
-		if (this.devices[device].id === deviceID) {
+		if (this.devices[device]._id.toString() == deviceID.toString()) {
 			return true;
 		}
 	}

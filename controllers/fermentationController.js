@@ -24,12 +24,22 @@ export const renderPopulatedEditForm = async (req, res) => {
 };
 
 export const update = async (req, res, next) => {
-	if (req.body.assignedDevice === 'null') req.body.assignedDevice = null;
-	await Fermentation.findByIdAndUpdate(req.fermentation._id, req.body, {
-		runValidators: true,
-		context: 'query'
-	});
-	res.redirect(`/fermentation/${req.fermentation._id}`);
+	try {
+		if (req.body.assignedDevice === 'null') req.body.assignedDevice = null;
+		const fermentation = await Fermentation.findById(req.fermentation._id);
+		fermentation.name = req.body.name;
+		fermentation.description = req.body.description;
+		fermentation.targetOG = req.body.targetOG;
+		fermentation.actualOG = req.body.actualOG;
+		fermentation.targetFG = req.body.targetFG;
+		fermentation.actualFG = req.body.actualFG;
+		fermentation.assignedDevice = req.body.assignedDevice;
+		await fermentation.save();
+		res.redirect(`/fermentation/${req.fermentation._id}`);
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
 };
 
 export const addToDatabase = async (req, res, next) => {
@@ -38,6 +48,7 @@ export const addToDatabase = async (req, res, next) => {
 		// and that the device is owned by the user who is creating the fermentation.
 
 		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
+		// post-save middleware on the fermentation model the activeFermentation field on the device is updated
 
 		const fermentation = await Fermentation.create({
 			name: req.body.name,
