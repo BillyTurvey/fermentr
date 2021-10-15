@@ -82,7 +82,7 @@ describe('Add fermentation page: Devices...', function () {
 	before(() => cy.logInAs('Jeanette'));
 	it('contains a list of available devices owned by the user', function () {
 		cy.visit('fermentation/add');
-		cy.get('form > .deviceRadio > label') //
+		cy.get('form > .device-radio-container > label') //
 			.contains('Arduino MKR')
 			.should('exist');
 	});
@@ -119,7 +119,7 @@ describe('Fermentation description', function () {
 			cy.get('textarea[name="description"]').type(
 				'This block of text is the description for a TEMPORARY test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
 			);
-			cy.get(`form > .deviceRadio > input[id="${jeanettesDevice}"]`).click();
+			cy.get(`form > .device-radio-container > input[id="${jeanettesDevice}"]`).click();
 			cy.get('form').contains('Submit').click();
 			cy.get('h1').contains(temporaryTestFermentationName).should('exist');
 		});

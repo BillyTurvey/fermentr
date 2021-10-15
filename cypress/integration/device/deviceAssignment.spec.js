@@ -122,7 +122,7 @@ describe('Device Assignment', function () {
 // 	cy.get('textarea[name="description"]').type(
 // 		'This temporary test fermentation is used to make sure that devices are unassigned from a fermentation when a user deletes a device.'
 // 	);
-// 	cy.get('form > .deviceRadio > input[id="Persistent Test Device Enid"]').click();
+// 	cy.get('form > .device-radio-container > input[id="Persistent Test Device Enid"]').click();
 // 	cy.get('form > button').contains('Submit').click();
 // 	cy.get('p')
 // 		.contains(`Device 'Persistent Test Device Enid' is currently assigned to '${sameTestFermentationName}'.`)
