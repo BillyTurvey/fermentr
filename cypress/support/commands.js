@@ -14,14 +14,19 @@ function logInAs(user) {
 	} else if (typeof user === 'object') {
 		var password = user.password;
 	}
-	cy.request({
-		method: 'POST',
-		url: '/user/logIn',
-		body: {
-			email: user.email,
-			password: password
-		}
-	});
+
+	cy.visit('user/logIn');
+	cy.get('input[name="email"]').type(user.email);
+	cy.get('input[name="password"]').type(password + '{enter}');
+
+	// cy.request({
+	// 	method: 'POST',
+	// 	url: '/user/logIn',
+	// 	body: {
+	// 		email: user.email,
+	// 		password: password
+	// 	}
+	// });
 
 	// cy.request('POST', '/user/logOut').then(() => {
 	// 	cy.request({
