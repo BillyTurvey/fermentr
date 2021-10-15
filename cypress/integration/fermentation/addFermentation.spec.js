@@ -129,14 +129,6 @@ describe('Fermentation description', function () {
 				.contains(temporaryTestFermentationName)
 				.should('exist');
 		});
-		it("causes the selected device to be listed as the fermentation's assigned device", function () {
-			cy.get('article.fermentations > ul > li > a') //
-				.contains(temporaryTestFermentationName)
-				.click();
-			cy.get('p')
-				.contains(`Device ${jeanettesDevice} is assigned to ${temporaryTestFermentationName}.`)
-				.should('exist');
-		});
 	});
 
 	describe('Sanitization', function () {
