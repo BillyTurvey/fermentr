@@ -21,7 +21,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 	});
 
 	describe('Sanitization', function () {
-		before(logOut);
+		before(() => cy.logOut());
 		it("User's name is escaped", function () {
 			logInAs(temporaryTestUser1);
 			cy.visit('/user/dashboard');

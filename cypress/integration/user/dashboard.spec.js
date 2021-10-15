@@ -6,13 +6,13 @@
 import {logInAsNelson, logOut} from '../../fixtures/testUtils.js';
 
 describe('Dashboard', function () {
-	before(logOut);
+	before(() => cy.logOut());
 	it('must be logged in to view user dashboard', function () {
 		cy.request({
 			method: 'GET',
 			url: '/user/dashboard',
 			failOnStatusCode: false
-		}).should((response) => {
+		}).should(response => {
 			expect(response.status).to.eq(401);
 		});
 	});

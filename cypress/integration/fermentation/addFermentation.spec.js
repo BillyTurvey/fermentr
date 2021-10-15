@@ -1,9 +1,9 @@
-import {logInAsJeanette, logInAsNelson, logOut} from '../../fixtures/testUtils.js';
+import {logOut} from '../../fixtures/testUtils.js';
 import nelson from '../../fixtures/testUserNelson.json';
 import jeanette from '../../fixtures/testUserJeanette.json';
 
 const logInAndVisitAddFermentationWithoutRequired = () => {
-	logInAsNelson();
+	cy.logInAs('Nelson');
 	cy.visit('/fermentation/add', {
 		onLoad: contentWindow => {
 			let inputFields = contentWindow.document.getElementsByTagName('input');
@@ -14,8 +14,8 @@ const logInAndVisitAddFermentationWithoutRequired = () => {
 	});
 };
 
-describe('Auth', function () {
-	before(logOut);
+describe('Add fermentation - auth', function () {
+	before(() => cy.logOut());
 	it('User must be logged in to view Add Device page', function () {
 		cy.request({
 			method: 'GET',
@@ -26,7 +26,7 @@ describe('Auth', function () {
 		});
 	});
 	it('loads for logged in user', function () {
-		logInAsNelson();
+		cy.logInAs('Nelson');
 		cy.visit('fermentation/add');
 		cy.get('h1').contains('Add New Fermentation');
 	});
@@ -34,7 +34,7 @@ describe('Auth', function () {
 
 describe('Add fermantation page', function () {
 	beforeEach(() => {
-		logInAsNelson();
+		cy.logInAs('Nelson');
 	});
 	it('contains form with correct inputs', function () {
 		cy.visit('fermentation/add');
@@ -79,7 +79,7 @@ describe('Fermentation name', function () {
 });
 
 describe('Add fermentation page: Devices...', function () {
-	before(logInAsJeanette);
+	before(() => cy.logInAs('Jeanette'));
 	it('contains a list of available devices owned by the user', function () {
 		cy.visit('fermentation/add');
 		cy.get('form > .deviceRadio > label') //
@@ -89,7 +89,7 @@ describe('Add fermentation page: Devices...', function () {
 });
 
 describe('Fermentation description', function () {
-	beforeEach(logInAsJeanette);
+	beforeEach(() => cy.logInAs('Jeanette'));
 	it('must be shorter than 600 chars', function () {
 		cy.visit('fermentation/add');
 		cy.get('input[name="name"]').type('Test Fermentation');
@@ -112,7 +112,7 @@ describe('Fermentation description', function () {
 	// Updates the device's entry in the databse to show its active fermentation
 
 	describe('Successfully adding a fermentation', function () {
-		beforeEach(logInAsJeanette);
+		beforeEach(() => cy.logInAs('Jeanette'));
 		it('redirects to viewing the saved fermentation', function () {
 			cy.visit('fermentation/add');
 			cy.get('input[name="name"]').type(temporaryTestFermentationName);
@@ -140,7 +140,7 @@ describe('Fermentation description', function () {
 	});
 
 	describe('Sanitization', function () {
-		beforeEach(logInAsJeanette);
+		beforeEach(() => cy.logInAs('Jeanette'));
 		it('Fermentation name is escaped', function () {
 			cy.visit('user/dashboard');
 			cy.get('a').contains(temporaryTestFermentationName).should('exist');
@@ -153,7 +153,7 @@ describe('Fermentation description', function () {
 	});
 
 	describe('Deleting a fermentation', function () {
-		beforeEach(logInAsJeanette);
+		beforeEach(() => cy.logInAs('Jeanette'));
 		it('Fermentation can be deleted using a button on the "edit fermentation" page', function () {
 			cy.visit('user/dashboard');
 			cy.get('article.fermentations > ul > li') //
