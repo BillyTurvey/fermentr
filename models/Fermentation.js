@@ -75,16 +75,26 @@ fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
 	}
 });
 
-fermentationSchema.pre('save', async function updateAssignedDeviceDocuments(next) {
+fermentationSchema.pre('save', async function removeFromDeviceDocument(next) {
 	try {
 		const oldFermentation = await Fermentation.findById(this._id).exec();
 		if (oldFermentation && oldFermentation.assignedDevice !== this.assignedDevice) {
 			await Device.findByIdAndUpdate(oldFermentation.assignedDevice?._id, {currentFermentation: null});
 		}
+		next();
+	} catch (error) {
+		console.error(`Error, could not remove fermentation from device document: ${error.message}`);
+		next(error);
+	}
+});
+
+fermentationSchema.pre('save', async function addToDeviceDocument(next) {
+	if (!this.assignedDevice) return next();
+	try {
 		await Device.findByIdAndUpdate(this.assignedDevice, {currentFermentation: this._id}).exec();
 		next();
 	} catch (error) {
-		console.error(`Error, could not add to device document: ${error.message}`);
+		console.error(`Error, could not add fermentation to device document: ${error.message}`);
 		next(error);
 	}
 });

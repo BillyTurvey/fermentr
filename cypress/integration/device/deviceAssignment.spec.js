@@ -96,14 +96,17 @@ describe('Device Assignment', function () {
 		// assert the device is properly assigned on the fermentation page
 		cy.visit('/fermentation/61632c1bf0a0762ecab52dcb');
 		cy.get('article.assigned-device > p')
-			.contains(`Device '${sameTestDeviceName}' is currently assigned to 'Bret IPA'.`)
+			.contains(`Device '${sameTestDeviceName}' is currently assigned to 'Brett IPA'.`)
 			.should('exist');
+		// navigate to the device page
+		cy.get('article.assigned-device > p > a').contains(sameTestDeviceName).click();
 		// assert the device is properly assigned on the device page
-		cy.get('article.assigned-device > a').contains(sameTestDeviceName).click();
-		cy.get('article.assigned-device > p')
-			.contains(`${sameTestDeviceName} is currently assigned to 'Bret IPA'.`)
+		cy.get('article.assigned-fermentation > p')
+			.contains(`${sameTestDeviceName} is currently assigned to 'Brett IPA'.`)
 			.should('exist');
-		//delete device
+		// navigate to edit device page
+		cy.get('a').contains('Edit device details.').click();
+		// delete device
 		cy.get('button') //
 			.contains(`Delete ${sameTestDeviceName}`)
 			.click();
