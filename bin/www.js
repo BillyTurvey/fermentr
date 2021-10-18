@@ -5,12 +5,11 @@ import mongoose from 'mongoose';
 // Connect to our Database and handle any bad connections
 mongoose.connect(process.env.DB, {
 	useNewUrlParser: true,
-	useUnifiedTopology: true,
 	useCreateIndex: true,
 	useFindAndModify: false
 });
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
-mongoose.connection.on('error', (err) => {
+mongoose.connection.on('error', err => {
 	console.error(`  ❌  ❌  ${err.message}  ❌  ❌  `);
 });
 

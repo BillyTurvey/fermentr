@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import path from 'path';
 import logger from 'morgan';
 import flash from 'connect-flash';
-import bodyParser from 'body-parser';
+import rateLimiterMiddleware from './utils/rateLimiterMongoose.js';
 import passport from './utils/passport.js';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
@@ -29,6 +29,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(rateLimiterMiddleware);
+
 app.use(
 	helmet({
 		referrerPolicy: {policy: 'same-origin'}
@@ -49,15 +51,14 @@ const mongoSessionStore = new SessionStore({
 	collection: 'userSessions',
 	connectionOptions: {
 		// options passed to mongoose.connect()
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		serverSelectionTimeoutMS: 10000
+		useNewUrlParser: true
+		// serverSelectionTimeoutMS: 10000
 	}
 });
 
 //// Catch session store errors
 mongoSessionStore.on('error', function (error) {
-	console.error(error);
+	console.error(`  ❌  ❌  (Session store) ${err.message}  ❌  ❌  `);
 });
 
 app.use(
