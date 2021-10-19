@@ -153,6 +153,7 @@ fermentationSchema.pre('findOneAndDelete', async function removeFromDeviceDocume
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const fermentation = await this.model.findOne(this.getQuery());
+		if (!fermentation.assignedDevice) return next();
 		const device = await Device.findById(fermentation.assignedDevice).exec();
 		device.currentFermentation = null;
 		await device.save();
