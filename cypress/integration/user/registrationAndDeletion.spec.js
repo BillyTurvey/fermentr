@@ -7,7 +7,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 		password: `engine-${Math.random().toString().slice(1, 12)}-float-wireless`
 	};
 
-	describe('Success', function () {
+	describe('User registration - Success', function () {
 		it('Redirects to user dashboard after registration and user is logged in', function () {
 			cy.visit('/user/register');
 			cy.get('input[name="email"]').type(temporaryTestUser1.email);
@@ -20,7 +20,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 		});
 	});
 
-	describe('Sanitization', function () {
+	describe('User registration - Sanitization', function () {
 		before(() => cy.logOut());
 		it("User's name is escaped", function () {
 			logInAs(temporaryTestUser1);
@@ -29,7 +29,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 		});
 	});
 
-	describe('Account deletion', function () {
+	describe('User account deletion', function () {
 		it('Account deletion link takes user to a confirmation of deletion page', function () {
 			logInAs(temporaryTestUser1);
 			cy.visit('/user/account');

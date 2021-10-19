@@ -7,7 +7,7 @@ import {logInAsNelson, logOut} from '../../fixtures/testUtils.js';
 
 describe('Dashboard', function () {
 	before(() => cy.logOut());
-	it('must be logged in to view user dashboard', function () {
+	it('User must be logged in to view dashboard', function () {
 		cy.request({
 			method: 'GET',
 			url: '/user/dashboard',
@@ -19,7 +19,7 @@ describe('Dashboard', function () {
 });
 
 describe("Users' fermentations", function () {
-	beforeEach(logInAsNelson);
+	beforeEach(() => cy.logInAs('Nelson'));
 	it('contains a link to create new fermentation', function () {
 		cy.visit('user/dashboard');
 		cy.get('a') //
