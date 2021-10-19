@@ -63,7 +63,10 @@ fermentationSchema.index(
 
 fermentationSchema.pre('validate', async function validateAssignedDevice(next) {
 	try {
-		if (this.assignedDevice === null) next();
+		if (!this.assignedDevice) {
+			this.assignedDevice = null;
+			next();
+		}
 		const user = await User.findById(this.user).exec();
 		if (await user.ownsDevice(this.assignedDevice)) {
 			next();

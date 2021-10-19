@@ -55,7 +55,7 @@ export const addToDatabase = async (req, res, next) => {
 			description: req.body.description,
 			dateRegistered: Date.now(),
 			user: req.user._id,
-			assignedDevice: req.body.assignedDevice === 'null' ? null : req.body.assignedDevice
+			assignedDevice: req.body.assignedDevice === ('null' || undefined) ? null : req.body.assignedDevice
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect(`/fermentation/${fermentation._id}`);
