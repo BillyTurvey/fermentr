@@ -18,6 +18,7 @@ const mongoConn = mongoose.connection;
 
 const limiterOptions = {
 	storeClient: mongoConn,
+	dbName: 'rateLimiter',
 	points: 10, // Number of points
 	duration: 1 // Per second(s)
 };
