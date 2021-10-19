@@ -29,7 +29,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(rateLimiterMiddleware);
+if (!app.get('env') === 'development') app.use(rateLimiterMiddleware);
 
 app.use(
 	helmet({
