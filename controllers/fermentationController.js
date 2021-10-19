@@ -61,7 +61,7 @@ export const addToDatabase = async (req, res, next) => {
 		return res.redirect(`/fermentation/${fermentation._id}`);
 	} catch (error) {
 		console.error(`Error during fermentation registration: ${error.message}`);
-		if (error.message.includes('E11000')) {
+		if (error.code === 11000) {
 			error.message = `You already have a fermentation named '${req.body.name}', please choose a new name.`;
 		}
 		req.flash('error', error.message);
