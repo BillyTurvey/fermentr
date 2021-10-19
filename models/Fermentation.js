@@ -82,7 +82,7 @@ fermentationSchema.pre('save', async function removeFromDeviceDocument(next) {
 	try {
 		const oldFermentation = await Fermentation.findById(this._id).exec();
 		if (oldFermentation && oldFermentation.assignedDevice !== this.assignedDevice) {
-			await Device.findByIdAndUpdate(oldFermentation.assignedDevice?._id, {currentFermentation: null});
+			await Device.findByIdAndUpdate(oldFermentation.assignedDevice?._id, {assignedFermentation: null});
 		}
 		next();
 	} catch (error) {
@@ -94,7 +94,7 @@ fermentationSchema.pre('save', async function removeFromDeviceDocument(next) {
 fermentationSchema.pre('save', async function addToDeviceDocument(next) {
 	if (!this.assignedDevice) return next();
 	try {
-		await Device.findByIdAndUpdate(this.assignedDevice, {currentFermentation: this._id}).exec();
+		await Device.findByIdAndUpdate(this.assignedDevice, {assignedFermentation: this._id}).exec();
 		next();
 	} catch (error) {
 		console.error(`Error, could not add fermentation to device document: ${error.message}`);
@@ -160,7 +160,7 @@ fermentationSchema.pre('findOneAndDelete', async function removeFromDeviceDocume
 		const fermentation = await this.model.findOne(this.getQuery());
 		if (!fermentation.assignedDevice) return next();
 		const device = await Device.findById(fermentation.assignedDevice).exec();
-		device.currentFermentation = null;
+		device.assignedFermentation = null;
 		await device.save();
 		next();
 	} catch (error) {

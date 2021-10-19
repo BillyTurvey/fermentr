@@ -8,9 +8,9 @@ block content
 	p.description !{device.description}
 
 	article.assigned-fermentation
-		if (device.currentFermentation)
+		if (device.assignedFermentation)
 			p !{device.name} is currently assigned to '
-				a(href=`/fermentation/${device.currentFermentation._id}`) !{device.currentFermentation.name}
+				a(href=`/fermentation/${device.assignedFermentation._id}`) !{device.assignedFermentation.name}
 				| '.
 		else
 			p 

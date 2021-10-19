@@ -21,7 +21,7 @@ const deviceSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User'
 		},
-		currentFermentation: {
+		assignedFermentation: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Fermentation'
 		}
@@ -58,8 +58,8 @@ deviceSchema.pre('save', async function addDeviceToUserDocument(next) {
 deviceSchema.pre('save', async function removeFromOldFermentationDocument(next) {
 	try {
 		const oldDevice = await Device.findById(this._id).exec();
-		if (oldDevice && oldDevice.currentFermentation != this.currentFermentation) {
-			await Fermentation.findByIdAndUpdate(oldDevice.currentFermentation?._id, {assignedDevice: null});
+		if (oldDevice && oldDevice.assignedFermentation != this.assignedFermentation) {
+			await Fermentation.findByIdAndUpdate(oldDevice.assignedFermentation?._id, {assignedDevice: null});
 		}
 		next();
 	} catch (error) {
@@ -69,9 +69,9 @@ deviceSchema.pre('save', async function removeFromOldFermentationDocument(next) 
 });
 
 deviceSchema.pre('save', async function addToNewFermentationDocument(next) {
-	if (!this.currentFermentation) return next();
+	if (!this.assignedFermentation) return next();
 	try {
-		await Fermentation.findByIdAndUpdate(this.currentFermentation, {assignedDevice: this._id}).exec();
+		await Fermentation.findByIdAndUpdate(this.assignedFermentation, {assignedDevice: this._id}).exec();
 		next();
 	} catch (error) {
 		console.error(`Error, could not add device to fermentation document: ${error.message}`);
@@ -98,8 +98,8 @@ deviceSchema.pre('findOneAndDelete', async function removeFromFermentationDocume
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const device = await this.model.findOne(this.getQuery());
-		// if (!device.currentFermentation) return next();
-		Fermentation.findByIdAndUpdate(device.currentFermentation, {assignedDevice: null}).exec();
+		// if (!device.assignedFermentation) return next();
+		Fermentation.findByIdAndUpdate(device.assignedFermentation, {assignedDevice: null}).exec();
 		next();
 	} catch (error) {
 		console.error(`Error, could not remove device from fermentation: ${error.message}`);

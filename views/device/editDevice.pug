@@ -17,20 +17,20 @@ block content
 
 
 		if (fermentations.length > 0)
-			if (device.currentFermentation)
-				h3 !{device.name} is currently assigned to !{device.currentFermentation.name}
+			if (device.assignedFermentation)
+				h3 !{device.name} is currently assigned to !{device.assignedFermentation.name}
 			else
 				h3 Assign this device to a fermentation
 
 			each fermentation in fermentations
 				if (!fermentation.assignedDevice)
 					.fermentationRadio
-						- const isChecked = device.currentFermentation?._id.toString() == fermentation._id.toString()
-						input(type="radio" id=fermentation.name name="currentFermentation" value=fermentation._id checked=isChecked)
+						- const isChecked = device.assignedFermentation?._id.toString() == fermentation._id.toString()
+						input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id checked=isChecked)
 						label(for=fermentation.name) !{fermentation.name} 
 							span.fermentation-description - !{fermentation.description}
 			.fermentationRadio
-				input(type="radio" id='none' name="currentFermentation" value="null" checked=device.currentFermentation ? false : true)
+				input(type="radio" id='none' name="assignedFermentation" value="null" checked=device.assignedFermentation ? false : true)
 				label(for=None) None
 
 		button(type="submit") Update

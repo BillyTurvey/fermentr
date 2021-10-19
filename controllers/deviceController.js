@@ -27,7 +27,7 @@ export const addToDatabase = async (req, res) => {
 			description: req.body.description,
 			keyHash: res.locals.keyHash,
 			owner: req.user._id,
-			currentFermentation: req.body.currentFermentation === 'null' ? null : req.body.currentFermentation
+			assignedFermentation: req.body.assignedFermentation === 'null' ? null : req.body.assignedFermentation
 		});
 		req.flash('success', 'Device registered.');
 		return res.render('device/addDevice', {
@@ -59,8 +59,8 @@ export const update = async (req, res) => {
 		const device = req.device;
 		device.name = req.body.name;
 		device.description = req.body.description;
-		device.currentFermentation =
-			req.body.currentFermentation === 'null' ? null : req.body.currentFermentation;
+		device.assignedFermentation =
+			req.body.assignedFermentation === 'null' ? null : req.body.assignedFermentation;
 		await device.save();
 
 		req.flash('success', 'Device updated.');
@@ -120,7 +120,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	if (req.user && (await req.user.ownsDevice(id))) {
 		//user is logged in and is trying to view or edit device they own
 		try {
-			const device = await Device.findById(id).populate('currentFermentation').exec();
+			const device = await Device.findById(id).populate('assignedFermentation').exec();
 			req.device = device;
 			next();
 		} catch (error) {
@@ -130,7 +130,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 	} else if (req.header('device-key')) {
 		// device posting data to be logged
 		try {
-			const device = await Device.findById(id).populate('currentFermentation').exec();
+			const device = await Device.findById(id).populate('assignedFermentation').exec();
 			const key = req.header('device-key');
 			if (await device.isAuthenticated(key)) {
 				req.device = device;
@@ -149,7 +149,7 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 
 export const logReading = async (req, res, next) => {
 	try {
-		const fermentation = req.device.currentFermentation;
+		const fermentation = req.device.assignedFermentation;
 		if (!fermentation) {
 			res.status(403).end();
 			throw new Error(
