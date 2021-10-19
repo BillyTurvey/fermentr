@@ -132,6 +132,11 @@ fermentationSchema.pre('save', async function createLinkedDataLog(next) {
 	}
 });
 
+fermentationSchema.post('save', async function (error, fermentation, next) {
+	if (error.code === 11000) await DataLog.findByIdAndDelete(fermentation.dataLog).exec();
+	next(error);
+});
+
 fermentationSchema.pre('findOneAndDelete', async function removeFromUserDocument(next) {
 	// In pre('findOneAndDelete') 'this' refers to the query object rather than the document being updated.
 	// https://mongoosejs.com/docs/middleware.html#notes
