@@ -21,14 +21,14 @@ describe('Dashboard', function () {
 describe("Users' fermentations", function () {
 	beforeEach(() => cy.logInAs('Nelson'));
 	it('contains a link to create new fermentation', function () {
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('a') //
 			.contains('Add a new fermentation')
 			.click();
 		cy.location('pathname').should('include', 'fermentation/add');
 	});
 	it('contains a link to register a new device', function () {
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('a') //
 			.contains('Register a new device')
 			.click();

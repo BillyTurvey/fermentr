@@ -37,7 +37,7 @@ describe('Add fermantation page', function () {
 		cy.logInAs('Nelson');
 	});
 	it('contains form with correct inputs', function () {
-		cy.visit('fermentation/add');
+		cy.visit('/fermentation/add');
 		cy.get('form')
 			.should('contain', 'Name') //
 			.should('contain', 'Description')
@@ -81,7 +81,7 @@ describe('Fermentation name', function () {
 describe('Add fermentation page: Devices...', function () {
 	before(() => cy.logInAs('Jeanette'));
 	it('contains a list of available devices owned by the user', function () {
-		cy.visit('fermentation/add');
+		cy.visit('/fermentation/add');
 		cy.get('form > .device-radio-container > label') //
 			.contains('Arduino MKR')
 			.should('exist');
@@ -91,7 +91,7 @@ describe('Add fermentation page: Devices...', function () {
 describe('Fermentation description', function () {
 	beforeEach(() => cy.logInAs('Jeanette'));
 	it('must be shorter than 600 chars', function () {
-		cy.visit('fermentation/add');
+		cy.visit('/fermentation/add');
 		cy.get('input[name="name"]').type('Test Fermentation');
 		cy.get('textarea[name="description"]') //
 			.type(
@@ -114,7 +114,7 @@ describe('Fermentation description', function () {
 	describe('Successfully adding a fermentation', function () {
 		beforeEach(() => cy.logInAs('Jeanette'));
 		it('redirects to viewing the saved fermentation', function () {
-			cy.visit('fermentation/add');
+			cy.visit('/fermentation/add');
 			cy.get('input[name="name"]').type(temporaryTestFermentationName);
 			cy.get('textarea[name="description"]').type(
 				'This block of text is the description for a TEMPORARY test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
@@ -124,7 +124,7 @@ describe('Fermentation description', function () {
 			cy.get('h1').contains(temporaryTestFermentationName).should('exist');
 		});
 		it("causes the fermentation to appear on the user's dashboard", function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('article.fermentations > ul > li > a') //
 				.contains(temporaryTestFermentationName)
 				.should('exist');
@@ -134,11 +134,11 @@ describe('Fermentation description', function () {
 	describe('Sanitization', function () {
 		beforeEach(() => cy.logInAs('Jeanette'));
 		it('Fermentation name is escaped', function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('a').contains(temporaryTestFermentationName).should('exist');
 		});
 		it('Fermentation description is escaped', function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('a').contains(temporaryTestFermentationName).click();
 			cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
 		});
@@ -147,7 +147,7 @@ describe('Fermentation description', function () {
 	describe('Deleting a fermentation', function () {
 		beforeEach(() => cy.logInAs('Jeanette'));
 		it('Fermentation can be deleted using a button on the "edit fermentation" page', function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('article.fermentations > ul > li') //
 				.contains(temporaryTestFermentationName)
 				.next('a')
@@ -156,19 +156,19 @@ describe('Fermentation description', function () {
 			cy.get('button') //
 				.contains(`Delete ${temporaryTestFermentationName}`)
 				.click();
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('article.fermentations > ul > li') //
 				.contains(temporaryTestFermentationName)
 				.should('not.exist');
 		});
 		it("causes the fermentation to be removed from the user's DB entry", function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('article.fermentations > ul > li > a') //
 				.contains(temporaryTestFermentationName)
 				.should('not.exist');
 		});
 		it("causes the fermentation's active device to no longer have an active fermentation", function () {
-			cy.visit('user/dashboard');
+			cy.visit('/user/dashboard');
 			cy.get('article.devices > ul > li > a') //
 				.contains(jeanettesDevice)
 				.click();

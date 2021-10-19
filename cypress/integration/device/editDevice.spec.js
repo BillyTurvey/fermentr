@@ -1,7 +1,7 @@
 describe('Device editing', function () {
 	it("Device can be edited by following an 'edit' link on the dashboard", function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.devices > ul > li') //
 			.contains('Raspberry')
 			.next('a')
@@ -11,7 +11,7 @@ describe('Device editing', function () {
 	});
 	it('Submitting the edit form updates the device details', function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.devices > ul > li') //
 			.contains('Raspberry')
 			.next('a')
@@ -26,7 +26,7 @@ describe('Device editing', function () {
 	});
 	it("After updating a device the same device loads in 'view' mode.", function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.devices > ul > li') //
 			.contains('Raspberry')
 			.next('a')

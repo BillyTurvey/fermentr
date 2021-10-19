@@ -15,7 +15,7 @@ function logInAs(user) {
 		var password = user.password;
 	}
 
-	cy.visit('user/logIn');
+	cy.visit('/user/logIn');
 	cy.get('input[name="email"]').type(user.email);
 	cy.get('input[name="password"]').type(password + '{enter}');
 

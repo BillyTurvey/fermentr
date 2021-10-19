@@ -4,7 +4,7 @@
 // 			.toString()
 // 			.slice(9, 12)}`;
 // 		cy.logInAs('Jeanette');
-// 		cy.visit('fermentation/add');
+// 		cy.visit('/fermentation/add');
 // 		cy.get('input[name="name"]').type(temporaryTestFermentationName);
 // 		cy.get('textarea[name="description"]').type(
 // 			'This fermentation is used by integration tests, it should be automatically deleted.'

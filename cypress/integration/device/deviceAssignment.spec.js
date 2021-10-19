@@ -4,7 +4,7 @@ describe('Device Assignment', function () {
 	});
 	it('Device can be assigned to a fermentation when a user adds a fermentation to their account.', function () {
 		const sameTestFermentationName = `TemporaryTestFermentation${Math.random().toString().slice(2, 7)}`;
-		cy.visit('fermentation/add');
+		cy.visit('/fermentation/add');
 		cy.get('input[name="name"]').type(sameTestFermentationName);
 		cy.get('input[id="Persistent Test Device Enid"]').click();
 		cy.get('textarea[name="description"]').type(
@@ -45,7 +45,7 @@ describe('Device Assignment', function () {
 
 	it('Device can be assigned to a fermentation during device registration.', function () {
 		const sameTestDeviceName = `TemporaryTestDevice${Math.random().toString().slice(2, 7)}`;
-		cy.visit('device/add');
+		cy.visit('/device/add');
 		cy.get('input[name="name"]').type(sameTestDeviceName);
 		cy.get('textarea[name="description"]').type(
 			'This temporary test device is used to make sure the correct documents are updated when a user assigns a device to a fermentation during the process of registering a new device.'
@@ -85,7 +85,7 @@ describe('Device Assignment', function () {
 	it('Device is unassigned from a fermentation when a user deletes a device.', function () {
 		const sameTestDeviceName = `TemporaryTestDevice${Math.random().toString().slice(2, 7)}`;
 		// create device and assign it to a fermentation (Brett IPA)
-		cy.visit('device/add');
+		cy.visit('/device/add');
 		cy.get('input[name="name"]').type(sameTestDeviceName);
 		cy.get('textarea[name="description"]').type(
 			'This temporary test device is used to make sure that devices are unassigned from a fermentation when a user deletes a device.'
@@ -120,7 +120,7 @@ describe('Device Assignment', function () {
 
 // it('Device is unassigned from a fermentation when a user deletes a fermentation.', function () {
 // 	const sameTestFermentationName = `TemporaryTestFermentation${Math.random().toString().slice(1, 6)}`;
-// 	cy.visit('fermentation/add');
+// 	cy.visit('/fermentation/add');
 // 	cy.get('input[name="name"]').type(sameTestFermentationName);
 // 	cy.get('textarea[name="description"]').type(
 // 		'This temporary test fermentation is used to make sure that devices are unassigned from a fermentation when a user deletes a device.'

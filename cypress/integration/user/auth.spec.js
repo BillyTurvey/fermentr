@@ -66,7 +66,7 @@ describe('If user is NOT logged in...', function () {
 describe('If user is logged in...', function () {
 	beforeEach(() => {
 		cy.fixture('testUserNelson.json').then(user => {
-			cy.visit('user/logIn');
+			cy.visit('/user/logIn');
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassword') + '{enter}');
 		});
@@ -87,7 +87,7 @@ describe('If user is logged in...', function () {
 describe('Logging out...', function () {
 	it('Log out button (not a link!) logs user out.', function () {
 		cy.fixture('testUserNelson.json').then(user => {
-			cy.visit('user/logIn');
+			cy.visit('/user/logIn');
 			cy.get('input[name="email"]').type(user.email);
 			cy.get('input[name="password"]').type(Cypress.env('nelsonsPassword') + '{enter}');
 			cy.get('nav > form > button').contains('Log Out').click();

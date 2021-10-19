@@ -1,7 +1,7 @@
 describe('Fermentation editing', function () {
 	it("Fermentation can be edited by following an 'edit' link on the dashboard", function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.fermentations > ul > li') //
 			.contains('NEIPA 21')
 			.next('a')
@@ -11,7 +11,7 @@ describe('Fermentation editing', function () {
 	});
 	it('Submitting edit fermentation form with invalid data causes the form to reload with the invalid data populated in their fields', function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.fermentations > ul > li') //
 			.contains('NEIPA 21')
 			.next('a')
@@ -25,7 +25,7 @@ describe('Fermentation editing', function () {
 	});
 	it('Submitting the edit form updates the fermentation details', function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.fermentations > ul > li') //
 			.contains('NEIPA 21')
 			.next('a')
@@ -40,7 +40,7 @@ describe('Fermentation editing', function () {
 	});
 	it("After updating a fermentation the same fermentation loads in 'view' mode.", function () {
 		cy.logInAs('Jeanette');
-		cy.visit('user/dashboard');
+		cy.visit('/user/dashboard');
 		cy.get('article.fermentations > ul > li') //
 			.contains('NEIPA 21')
 			.next('a')
