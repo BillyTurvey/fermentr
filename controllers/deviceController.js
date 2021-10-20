@@ -149,9 +149,20 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 
 export const logReading = async (req, res, next) => {
 	try {
+		if (!req.device) {
+			res.status(400).json({
+				message: 'Device configuration error, check authentication credentials.'
+			});
+			throw new Error(
+				'This device is not assigned to a fermentation, therefore the data it is submitting cannot be saved.'
+			);
+		}
 		const fermentation = req.device.assignedFermentation;
 		if (!fermentation) {
-			res.status(403).end();
+			res.status(400).json({
+				message:
+					'Error! This device is not assigned to a fermentation, therefore the data it is submitting cannot be saved.'
+			});
 			throw new Error(
 				'This device is not assigned to a fermentation, therefore the data it is submitting cannot be saved.'
 			);
@@ -164,7 +175,10 @@ export const logReading = async (req, res, next) => {
 				temp: req.body.temperature
 			});
 			dataLog.save();
-			res.status(200).end();
+			// res.status(200).end();
+			res.status(200).json({
+				message: 'Thank you! Your reading has been saved to the database.'
+			});
 		} catch (error) {
 			console.error(error);
 		}
