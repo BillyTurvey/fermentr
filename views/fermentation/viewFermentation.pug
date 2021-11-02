@@ -23,6 +23,8 @@ block content
 		article.temperature
 			h2 Temperature
 			p Last logged temperature: #{temperatureLog[temperatureLog.length - 1].temp}°C
+			.graph-container
+				svg#actualTempGraph
 	
 	article.gravity
 		h2 Specific Gravity
