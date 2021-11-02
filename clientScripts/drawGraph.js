@@ -25,3 +25,11 @@ async function drawGraph() {
 			- for each pixel work out the mean of all the temps measured during that time period, this gives a new array of y values for each pixel.
 	*/
 }
+
+import * as d3 from 'https://cdn.skypack.dev/d3@7';
+
+function dThreeSomething() {
+	// select this svg and put it into this variable
+	const svg = d3.select('#actualTempGraph'); // <svg id='actualTempGraph'></svg>
+	const points = svg.selectAll;
+}
