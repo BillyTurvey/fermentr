@@ -28,7 +28,7 @@ async function drawGraph() {
 
 import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
-function dThreeSomething() {
+function d3Something() {
 	// select this svg and put it into this variable
 	const svg = d3.select('#actualTempGraph'); // <svg id='actualTempGraph'></svg>
 	const points = svg.selectAll;
