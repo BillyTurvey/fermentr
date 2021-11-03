@@ -9,5 +9,5 @@ export const processGraphRequest = async (req, res) => {
 	const startTime = rawActual[0].time;
 	const endTime = rawActual[rawActual.length - 1].time;
 	const timeRange = endTime - startTime;
-	const timePerPixel = timeRange / graphWidth;
+	const timePeriodPerPixel = timeRange / graphWidth;
 };

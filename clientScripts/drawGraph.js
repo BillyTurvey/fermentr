@@ -33,3 +33,17 @@ function d3Something() {
 	const svg = d3.select('#actualTempGraph'); // <svg id='actualTempGraph'></svg>
 	const points = svg.selectAll;
 }
+
+function fetchTempData() {
+	const graphWidth = document.getElementById('temp-graph')
+	
+	const idReg = /[a-z0-9]{24}/
+	const fermentationId = idReg.exec(window.location.pathname)[0];
+	const response = await fetch(`https://fermentr.io/f/${fermentationId}/graph/?width=${graphWidth}`);
+	
+	response.catch((error) => {
+		console.error(error.message);
+		informUserFetchRequestFailed();
+	})
+
+}
