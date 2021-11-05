@@ -1,4 +1,5 @@
 import Fermentation from '../models/Fermentation.js';
+import DataLog from '../models/DataLog.js';
 
 export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
@@ -46,7 +47,6 @@ export const addToDatabase = async (req, res, next) => {
 	try {
 		// pre-validate middleware on the fermentation model checks the device ID is valid
 		// and that the device is owned by the user who is creating the fermentation.
-
 		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
 		// post-save middleware on the fermentation model the activeFermentation field on the device is updated
 
@@ -95,16 +95,26 @@ export const view = async (req, res, next) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
+	console.log(`🟣 Auth and attach...`);
 	if (req.user && (await req.user.ownsFermentation(id))) {
 		try {
 			const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
 			req.fermentation = fermentation;
+			console.log(`🟣 fermentation.name: ${fermentation.name}`);
 			next();
 		} catch (error) {
 			console.error(error);
 			res.status(500).end();
 		}
 	} else {
+		console.log(`🔵 here 🥶`);
 		res.status(401).end();
 	}
+};
+
+export const retrieveAndProcessGraphData = async (req, res) => {
+	const dataLog = await DataLog.findById(req.fermentation.dataLog);
+	const rawActual = dataLog.thermalProfile.actual;
+	const arrayActual = rawActual.map(log => [log.time, log.temp]);
+	res.json(arrayActual).end();
 };

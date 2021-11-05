@@ -24,5 +24,4 @@ validate.sanitizeAndValidateFermentation,
 fermentation.update
 );
 
-
 export default router;
