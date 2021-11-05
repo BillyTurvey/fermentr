@@ -35,13 +35,11 @@ function d3Something() {
 }
 
 async function fetchTempData() {
-	console.log(`🟠 in fetchTempData()`);
 	const graphWidth = document.getElementById('temp-graph').width;
 
 	const idReg = /[a-z0-9]{24}/;
 	const fermentationId = idReg.exec(window.location.pathname)[0];
-	console.log(`🔴 fermentationId: ${fermentationId}`);
-	const graphData = await fetch(`/fermentation/${fermentationId}/graph`).catch(error => {
+	const graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
 		console.error(error.message);
 		// informUserFetchRequestFailed();
 	});

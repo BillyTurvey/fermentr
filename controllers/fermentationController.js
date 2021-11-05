@@ -95,19 +95,16 @@ export const view = async (req, res, next) => {
 };
 
 export const authenticateAndAttachToReq = async (req, res, next, id) => {
-	console.log(`🟣 Auth and attach...`);
 	if (req.user && (await req.user.ownsFermentation(id))) {
 		try {
 			const fermentation = await Fermentation.findById(id).populate('assignedDevice').exec();
 			req.fermentation = fermentation;
-			console.log(`🟣 fermentation.name: ${fermentation.name}`);
 			next();
 		} catch (error) {
 			console.error(error);
 			res.status(500).end();
 		}
 	} else {
-		console.log(`🔵 here 🥶`);
 		res.status(401).end();
 	}
 };
