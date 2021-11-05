@@ -14,6 +14,7 @@ import indexRouter from './routes/index.js';
 import deviceRouter from './routes/deviceRouter.js';
 import fermentationRouter from './routes/fermentationRouter.js';
 import userRouter from './routes/userRouter.js';
+import apiRouter from './routes/apiRouter.js';
 
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
@@ -33,7 +34,16 @@ if (!app.get('env') === 'development') app.use(rateLimiterMiddleware);
 
 app.use(
 	helmet({
-		referrerPolicy: {policy: 'same-origin'}
+		referrerPolicy: {policy: 'same-origin'},
+		contentSecurityPolicy: {
+			useDefaults: true,
+			directives: {
+				defaultSrc: ["'self'"],
+				scriptSrc: ["'self'", 'https://cdn.skypack.dev'],
+				objectSrc: ["'none'"],
+				upgradeInsecureRequests: []
+			}
+		}
 	})
 );
 
@@ -94,6 +104,7 @@ app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/device', deviceRouter);
 app.use('/fermentation', fermentationRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
