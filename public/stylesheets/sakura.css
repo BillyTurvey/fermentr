@@ -1,4 +1,4 @@
-/* Sakura.css v1.3.1
+/* Based on Sakura.css v1.3.1
  * ================
  * Minimal css theme.
  * Project: https://github.com/oxalorg/sakura/
@@ -13,7 +13,7 @@ html {
 body {
 	font-size: 1.8rem;
 	line-height: 1.618;
-	max-width: 38em;
+	max-width: 80em;
 	margin: auto;
 	color: #4a4a4a;
 	background-color: #f9f9f9;
