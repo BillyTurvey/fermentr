@@ -14,9 +14,12 @@ async function drawGraph() {
 
 	const startTime = graphData[0][0];
 	const endTime = graphData[graphData.length - 1][0];
+	console.log(`🟠 startTime: ${startTime}`);
+	console.log(`🟠 endTime: ${endTime}`);
 	const timeRange = endTime - startTime;
+	console.log(`🟠 timeRange: ${timeRange}`);
 	const graph = document.getElementById('temp-graph');
-	graph.setAttribute('viewBox', `0 0 ${timeRange * 1.1} ${500}`);
+	graph.setAttribute('viewBox', `0 0 ${(timeRange / 60000) * 1.1} ${200}`);
 
 	const svg = d3
 		.select('#temp-graph')
@@ -24,10 +27,11 @@ async function drawGraph() {
 		.data(graphData)
 		.enter()
 		.append('circle')
-		.attr('cx', d => d[0] - startTime) //time
-		.attr('cy', d => d[1] * 10) //temp
-		.attr('r', 4000)
-		.attr('fill', d => `hsl(${300 + (d - 18) * 20}, 80%, 80%)`);
+		.attr('cx', d => (d[0] - startTime) / 60000) //time
+		.attr('cy', d => (d[1] - 15) * 20) //temp
+		.attr('r', 20)
+		.attr('fill', d => `hsl(${300 + (d[1] - 12) * 20}, 100%, 50%)`)
+		.attr('stroke', null);
 
 	console.log(svg);
 }
