@@ -14,32 +14,38 @@ async function drawGraph() {
 	const endTime = graphData[graphData.length - 1][0];
 	const timeRange = endTime - startTime;
 
-	const viewBox = {
-		x: 0,
-		y: 0,
-		width: (timeRange / 60000) * 1.1,
-		height: 50
-	};
-
 	const graph = document.getElementById('temp-graph');
-	graph.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+	graph.append = addSVGElement;
+	const height = graph.clientHeight,
+		width = graph.clientWidth;
+	graph.append({
+		name: 'rect',
+		attributes: {
+			width: width,
+			height: height,
+			style: 'fill: #eee'
+		}
+	});
 
-	// Draw graph grid/scale
-	const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	line.setAttribute('d', `M 0 20 L ${viewBox.width} 20`);
-	line.setAttribute('style', 'stroke: grey; stroke-width: 2');
-	console.log(line);
-	graph.appendChild(line);
+	// Draw graph y axis grid/scale line
+	for (let i = 0; i < 10; i++) {
+		graph.append({
+			name: 'path',
+			attributes: {
+				d: `M 0 ${i * (height / 5) - 1} L ${graph.clientWidth} ${i * (height / 5) - 1}`,
+				style: 'stroke: grey; stroke-width: 0.5'
+			}
+		});
+	}
 
-	const svg = d3
-		.select('#temp-graph')
+	d3.select('#temp-graph')
 		.selectAll('circle')
 		.data(graphData)
 		.enter()
 		.append('circle')
 		.attr('cx', d => (d[0] - startTime) / 60000) //time
-		.attr('cy', d => (d[1] - 15) * 100) //temp
-		.attr('r', 20)
+		.attr('cy', d => d[1]) //temp
+		.attr('r', 3)
 		.attr('fill', d => `hsl(${250 + (d[1] - 12) * 15}, 100%, 50%)`)
 		.attr('stroke', null);
 
@@ -47,6 +53,16 @@ async function drawGraph() {
 }
 
 drawGraph();
+
+//=========================================================================================================================================================================
+
+function addSVGElement(element) {
+	const newElement = document.createElementNS('http://www.w3.org/2000/svg', element.name);
+	for (const key in element.attributes) {
+		newElement.setAttribute(key, element.attributes[key]);
+	}
+	this.appendChild(newElement);
+}
 
 // const sum = (previous, current) => previous + current[1];
 // const meanTemp = graphData.reduce((previous, current) => {previous + current[1]}, 0) / graphData.length;
