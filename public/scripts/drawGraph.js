@@ -1,25 +1,35 @@
 import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
 async function drawGraph() {
-	const idRegEx = /[a-z0-9]{24}/; //24 lowercase letter or number characters, aka mongoose
-	const fermentationId = idRegEx.exec(window.location.pathname)[0];
+	const fermentationIdRegEx = /[a-z0-9]{24}/; //24 lowercase letter or number characters, aka mongoose
+	const fermentationId = fermentationIdRegEx.exec(window.location.pathname)[0];
+
 	let graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
 		console.error(error.message);
 		// informUserFetchRequestFailed();
 	});
 	graphData = await graphData.json();
 
-	const sum = (previous, current) => previous + current[1];
-	const meanTemp = graphData.reduce(sum, 0) / graphData.length;
-
 	const startTime = graphData[0][0];
 	const endTime = graphData[graphData.length - 1][0];
-	console.log(`🟠 startTime: ${startTime}`);
-	console.log(`🟠 endTime: ${endTime}`);
 	const timeRange = endTime - startTime;
-	console.log(`🟠 timeRange: ${timeRange}`);
+
+	const viewBox = {
+		x: 0,
+		y: 0,
+		width: (timeRange / 60000) * 1.1,
+		height: 50
+	};
+
 	const graph = document.getElementById('temp-graph');
-	graph.setAttribute('viewBox', `0 0 ${(timeRange / 60000) * 1.1} ${200}`);
+	graph.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+
+	// Draw graph grid/scale
+	const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	line.setAttribute('d', `M 0 20 L ${viewBox.width} 20`);
+	line.setAttribute('style', 'stroke: grey; stroke-width: 2');
+	console.log(line);
+	graph.appendChild(line);
 
 	const svg = d3
 		.select('#temp-graph')
@@ -28,15 +38,18 @@ async function drawGraph() {
 		.enter()
 		.append('circle')
 		.attr('cx', d => (d[0] - startTime) / 60000) //time
-		.attr('cy', d => (d[1] - 15) * 20) //temp
+		.attr('cy', d => (d[1] - 15) * 100) //temp
 		.attr('r', 20)
-		.attr('fill', d => `hsl(${300 + (d[1] - 12) * 20}, 100%, 50%)`)
+		.attr('fill', d => `hsl(${250 + (d[1] - 12) * 15}, 100%, 50%)`)
 		.attr('stroke', null);
 
-	console.log(svg);
+	// graph.onscroll(function zoomGraph(e) {});
 }
 
 drawGraph();
+
+// const sum = (previous, current) => previous + current[1];
+// const meanTemp = graphData.reduce((previous, current) => {previous + current[1]}, 0) / graphData.length;
 
 //ASAP a fetch request should grap an overview of the fermentation's thermal profile to date AND the target thermal profile if it has one too
 // if there's a thermal profile, the graph width should be the length of the planned fermentation length
