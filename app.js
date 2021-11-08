@@ -61,7 +61,8 @@ const mongoSessionStore = new SessionStore({
 	collection: 'userSessions',
 	connectionOptions: {
 		// options passed to mongoose.connect()
-		useNewUrlParser: true
+		useNewUrlParser: true,
+		useUnifiedTopology: true
 		// serverSelectionTimeoutMS: 10000
 	}
 });

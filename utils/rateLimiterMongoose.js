@@ -5,9 +5,8 @@ dotenv.config({path: 'variables.env'});
 
 mongoose
 	.connect(process.env.DB, {
-		reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-		reconnectInterval: 100, // Reconnect every 100ms
 		useNewUrlParser: true,
+		useUnifiedTopology: true,
 		useCreateIndex: true,
 		useFindAndModify: false
 	})
