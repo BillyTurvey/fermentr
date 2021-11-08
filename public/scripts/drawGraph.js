@@ -13,6 +13,7 @@ async function drawGraph() {
 	const startTime = graphData[0][0];
 	const endTime = graphData[graphData.length - 1][0];
 	const timeRange = endTime - startTime;
+	console.log(`🟠 timeRange: ${timeRange}`);
 
 	const graph = document.getElementById('temp-graph');
 	graph.append = addSVGElement;
@@ -43,8 +44,8 @@ async function drawGraph() {
 		.data(graphData)
 		.enter()
 		.append('circle')
-		.attr('cx', d => (d[0] - startTime) / 60000) //time
-		.attr('cy', d => d[1]) //temp
+		.attr('cx', d => (d[0] - startTime) / (timeRange / width)) //time
+		.attr('cy', d => height - d[1]) //temp
 		.attr('r', 3)
 		.attr('fill', d => `hsl(${250 + (d[1] - 12) * 15}, 100%, 50%)`)
 		.attr('stroke', null);
