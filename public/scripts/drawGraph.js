@@ -10,20 +10,36 @@ async function drawGraph() {
 	});
 	graphData = await graphData.json();
 
-	const startTime = graphData[0][0];
-	const endTime = graphData[graphData.length - 1][0];
-	const timeRange = endTime - startTime;
-	console.log(`🟠 timeRange: ${timeRange}`);
-
+	//select graph
 	const graph = document.getElementById('temp-graph');
 	graph.append = addSVGElement;
-	const height = graph.clientHeight,
-		width = graph.clientWidth;
+
+	const //
+		graphHeight = graph.clientHeight,
+		graphWidth = graph.clientWidth,
+		startTime = graphData[0][0],
+		endTime = graphData[graphData.length - 1][0],
+		timeRange = endTime - startTime,
+		tempMinMax = getMinMax(graphData),
+		tempRange = tempMinMax.max - tempMinMax.min,
+		//The temperature range of the graph is 125% the range of the temp data
+		yAxisTempRange = tempRange * 1.25,
+		pixelsPerDegreeC = graphHeight / yAxisTempRange,
+		yAxisMin = tempMinMax.min - tempRange / 8; //there is a margin of 12.5% (1/8th) of the tempRange below the lowest reading on the y axis
+
+	function convertTempToYAxisValue(normalTemperatureValue) {
+		const //
+			yValueDegreesC = normalTemperatureValue - yAxisMin,
+			yValuePx = yValueDegreesC * pixelsPerDegreeC;
+		return yValuePx;
+	}
+
+	//add background
 	graph.append({
 		name: 'rect',
 		attributes: {
-			width: width,
-			height: height,
+			width: graphWidth,
+			height: graphHeight,
 			style: 'fill: #eee'
 		}
 	});
@@ -33,27 +49,28 @@ async function drawGraph() {
 		graph.append({
 			name: 'path',
 			attributes: {
-				d: `M 0 ${i * (height / 5) - 1} L ${graph.clientWidth} ${i * (height / 5) - 1}`,
+				d: `M 0 ${i * (graph.clientHeight / 5) - 1} L ${graph.clientWidth} ${
+					i * (graph.clientHeight / 5) - 1
+				}`,
 				style: 'stroke: grey; stroke-width: 0.5'
 			}
 		});
 	}
 
+	//plot data on graph
 	d3.select('#temp-graph')
 		.selectAll('circle')
 		.data(graphData)
 		.enter()
 		.append('circle')
-		.attr('cx', d => (d[0] - startTime) / (timeRange / width)) //time
-		.attr('cy', d => height - d[1]) //temp
-		.attr('r', 3)
+		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth)) //time
+		.attr('cy', d => graphHeight - convertTempToYAxisValue(d[1])) //temp
+		.attr('r', 1)
 		.attr('fill', d => `hsl(${250 + (d[1] - 12) * 15}, 100%, 50%)`)
 		.attr('stroke', null);
-
-	// graph.onscroll(function zoomGraph(e) {});
 }
 
-drawGraph();
+if (document.getElementById('temp-graph')) drawGraph();
 
 //=========================================================================================================================================================================
 
@@ -63,6 +80,18 @@ function addSVGElement(element) {
 		newElement.setAttribute(key, element.attributes[key]);
 	}
 	this.appendChild(newElement);
+}
+
+function getMinMax(logArr) {
+	return logArr.reduce(
+		(prev, curr) => {
+			return {
+				min: curr[1] < prev.min ? curr[1] : prev.min,
+				max: curr[1] > prev.max ? curr[1] : prev.max
+			};
+		},
+		{min: logArr[0][1], max: logArr[0][1]}
+	);
 }
 
 // const sum = (previous, current) => previous + current[1];
