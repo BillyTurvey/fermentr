@@ -1,5 +1,7 @@
 import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
+if (document.getElementById('temp-graph')) drawGraph();
+
 async function drawGraph() {
 	const fermentationIdRegEx = /[a-z0-9]{24}/; //24 lowercase letter or number characters, aka mongoose
 	const fermentationId = fermentationIdRegEx.exec(window.location.pathname)[0];
@@ -31,7 +33,7 @@ async function drawGraph() {
 		const //
 			yValueDegreesC = normalTemperatureValue - yAxisMin,
 			yValuePx = yValueDegreesC * pixelsPerDegreeC;
-		return yValuePx;
+		return graphHeight - yValuePx;
 	}
 
 	//add background
@@ -45,14 +47,17 @@ async function drawGraph() {
 	});
 
 	// Draw graph y axis grid/scale line
-	for (let i = 0; i < 10; i++) {
+	for (let i = Math.floor(yAxisMin); i < yAxisMin + yAxisTempRange; i++) {
+		const colour = i % 5 === 0 ? '#bbb' : '#ddd';
+		const y = convertTempToYAxisValue(i);
 		graph.append({
-			name: 'path',
+			name: 'line',
 			attributes: {
-				d: `M 0 ${i * (graph.clientHeight / 5) - 1} L ${graph.clientWidth} ${
-					i * (graph.clientHeight / 5) - 1
-				}`,
-				style: 'stroke: grey; stroke-width: 0.5'
+				x1: 0,
+				y1: y,
+				x2: graph.clientWidth,
+				y2: y,
+				style: `stroke: ${colour}; stroke-width: 1`
 			}
 		});
 	}
@@ -64,13 +69,11 @@ async function drawGraph() {
 		.enter()
 		.append('circle')
 		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth)) //time
-		.attr('cy', d => graphHeight - convertTempToYAxisValue(d[1])) //temp
-		.attr('r', 1)
-		.attr('fill', d => `hsl(${250 + (d[1] - 12) * 15}, 100%, 50%)`)
+		.attr('cy', d => convertTempToYAxisValue(d[1])) //temp
+		.attr('r', 2)
+		.attr('fill', d => `hsl(${300 - (d[1] - 19) * 50}, 100%, 40%)`)
 		.attr('stroke', null);
 }
-
-if (document.getElementById('temp-graph')) drawGraph();
 
 //=========================================================================================================================================================================
 
