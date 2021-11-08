@@ -3,8 +3,7 @@ import * as d3 from 'https://cdn.skypack.dev/d3@7';
 if (document.getElementById('temp-graph')) drawGraph();
 
 async function drawGraph() {
-	const fermentationIdRegEx = /[a-z0-9]{24}/; //24 lowercase letter or number characters, aka mongoose
-	const fermentationId = fermentationIdRegEx.exec(window.location.pathname)[0];
+	const fermentationId = /[a-z0-9]{24}/.exec(window.location.pathname)[0];
 
 	let graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
 		console.error(error.message);
@@ -24,7 +23,7 @@ async function drawGraph() {
 		timeRange = endTime - startTime,
 		tempMinMax = getMinMax(graphData),
 		tempRange = tempMinMax.max - tempMinMax.min,
-		//The temperature range of the graph is 125% the range of the temp data
+		//The temperature/y axis range of the graph is 125% the range of the temp data
 		yAxisTempRange = tempRange * 1.25,
 		pixelsPerDegreeC = graphHeight / yAxisTempRange,
 		yAxisMin = tempMinMax.min - tempRange / 8; //there is a margin of 12.5% (1/8th) of the tempRange below the lowest reading on the y axis
@@ -61,6 +60,10 @@ async function drawGraph() {
 			}
 		});
 	}
+
+	// Add labels to scale
+
+	// On mouse over show data value
 
 	//plot data on graph
 	d3.select('#temp-graph')
