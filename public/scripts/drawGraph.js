@@ -71,7 +71,7 @@ async function drawGraph() {
 		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth)) //time
 		.attr('cy', d => convertTempToYAxisValue(d[1])) //temp
 		.attr('r', 2)
-		.attr('fill', d => `hsl(${300 - (d[1] - 19) * 50}, 100%, 40%)`)
+		.attr('fill', d => `hsl(${120 - (d[1] - 20) * 20}, 100%, 40%)`)
 		.attr('stroke', null);
 }
 
