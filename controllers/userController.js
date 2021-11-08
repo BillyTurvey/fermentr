@@ -19,7 +19,6 @@ export const dashboard = async (req, res) => {
 			devices: req.user.devices || []
 		});
 	}
-	console.error(req);
 	res.status(401).end();
 };
 
