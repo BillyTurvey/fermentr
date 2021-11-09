@@ -25,12 +25,16 @@ router.post('/:id/update',
 	device.update
 );
 
-
 router.get('/:id/edit', device.editDeviceForm);
+
+// requests handled below here will have no session
+router.use(function removeSessionFromRequest(req, res, next) {
+	req.session = null;
+	next();
+});
 
 router.post('/:id/log',
 	device.logReading 
 );
-
 
 export default router;

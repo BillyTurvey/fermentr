@@ -97,12 +97,13 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/device', deviceRouter);
 app.use('/fermentation', fermentationRouter);
 app.use('/api', apiRouter);
+app.use('/', indexRouter);
 
+// do not save sessions for requests which aren't served by the above routes
 app.use((req, res, next) => {
 	req.session = null;
 	next();

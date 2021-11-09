@@ -4,10 +4,9 @@ import * as validate from '../utils/validation.js';
 
 const router = Router();
 
-router.get('/logIn', user.logInForm);
 router.post('/logIn',
-	validate.validateLogIn,
-	user.logIn
+validate.validateLogIn,
+user.logIn
 );
 
 router.get('/dashboard', user.dashboard);
@@ -20,11 +19,18 @@ router.post('/deleteAccount', user.deleteAccount);
 
 router.post('/logOut', user.logOut);
 
-router.get('/register', user.registrationForm);
 router.post('/register',
-	validate.sanitizeAndValidateUser,
-	user.register,
-	user.logIn
+validate.sanitizeAndValidateUser,
+user.register,
+user.logIn
 );
+
+router.use(function removeSessionFromRequest(req, res, next) {
+	req.session = null;
+	next();
+});
+
+router.get('/logIn', user.logInForm);
+router.get('/register', user.registrationForm);
 
 export default router;

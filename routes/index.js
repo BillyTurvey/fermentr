@@ -1,13 +1,13 @@
 import {Router} from 'express';
 const router = Router();
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Fermentr' });
+router.use(function removeSessionFromRequest(req, res, next) {
+	req.session = null;
+	next();
 });
 
-router.get('/current-temp', (req, res, next) => {
-	res.json(req);
+router.get('/', (req, res, next) => {
+  res.render('index', { title: 'Fermentr' });
 });
 
 router.get('/about', (req, res, next) => {
