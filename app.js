@@ -79,8 +79,9 @@ app.use(
 		},
 		store: mongoSessionStore,
 		resave: true,
-		saveUninitialized: false, //required for where the law prohibits setting cookies without permission
-		unset: 'keep'
+		saveUninitialized: false,
+		unset: 'keep',
+		proxy: true
 	})
 );
 
