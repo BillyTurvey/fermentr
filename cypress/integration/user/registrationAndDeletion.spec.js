@@ -23,7 +23,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 	describe('User registration - Sanitization', function () {
 		before(() => cy.logOut());
 		it("User's name is escaped", function () {
-			logInAs(temporaryTestUser1);
+			cy.logInAs(temporaryTestUser1);
 			cy.visit('/user/dashboard');
 			cy.get('nav > p').contains('Logged in as Temporary <br>Tilly').should('exist');
 		});
@@ -31,13 +31,13 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 
 	describe('User account deletion', function () {
 		it('Account deletion link takes user to a confirmation of deletion page', function () {
-			logInAs(temporaryTestUser1);
+			cy.logInAs(temporaryTestUser1);
 			cy.visit('/user/account');
 			cy.get('a').contains('Delete your account.').click();
 			cy.get('h1').contains('Are you sure you want to delete your account?').should('exist');
 		});
 		it('Deletion confirmation page uses a button to POST the account deletion request to the server', function () {
-			logInAs(temporaryTestUser1);
+			cy.logInAs(temporaryTestUser1);
 			cy.visit('/user/account');
 			cy.get('a').contains('Delete your account.').click();
 			cy.get('form[method="POST"] > button') //
@@ -45,7 +45,7 @@ import {logInAs, logOut} from '../../fixtures/testUtils.js';
 				.should('exist');
 		});
 		it("User's account is deleted", function () {
-			logInAs(temporaryTestUser1);
+			cy.logInAs(temporaryTestUser1);
 			cy.visit('/user/deleteAccount');
 			cy.get('button').contains('Delete my account forever').click();
 			cy.visit('/user/logIn');
