@@ -60,31 +60,27 @@ const mongoSessionStore = new SessionStore({
 	uri: process.env.DB,
 	collection: 'userSessions',
 	connectionOptions: {
-		// options passed to mongoose.connect()
 		useNewUrlParser: true,
 		useUnifiedTopology: true
-		// serverSelectionTimeoutMS: 10000
 	}
 });
 
 //// Catch session store errors
-mongoSessionStore.on('error', function (error) {
-	console.error(`  ❌  ❌  (Session store) ${err.message}  ❌  ❌  `);
+mongoSessionStore.on('error', error => {
+	console.error(`  ❌  ❌  (Session store) ${error.message}  ❌  ❌  `);
 });
 
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
 		cookie: {
-			// maxAge: 1000 * 60 * 60 * 24,
-			// without a max age property most clients will consider this a "non-persistent cookie"
-			// and will delete it on a condition like exiting a web browser application
 			sameSite: 'lax',
 			secure: app.get('env') === 'development' ? false : true
 		},
 		store: mongoSessionStore,
 		resave: true,
-		saveUninitialized: false //required for where the law prohibits setting cookies without permission
+		saveUninitialized: false, //required for where the law prohibits setting cookies without permission
+		unset: 'keep'
 	})
 );
 
@@ -107,13 +103,18 @@ app.use('/device', deviceRouter);
 app.use('/fermentation', fermentationRouter);
 app.use('/api', apiRouter);
 
+app.use((req, res, next) => {
+	req.session = null;
+	next();
+});
+
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
 	next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
