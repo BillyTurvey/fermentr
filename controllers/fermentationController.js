@@ -1,5 +1,6 @@
 import Fermentation from '../models/Fermentation.js';
 import DataLog from '../models/DataLog.js';
+import {makeTimeStrings} from '../utils/utils.js';
 
 export const renderEmptyEditFermentationForm = async (req, res) => {
 	if (req.user) {
@@ -87,10 +88,16 @@ export const deleteFermentation = async function (req, res, next) {
 };
 
 export const view = async (req, res, next) => {
-	const fermentation = await req.fermentation.populate('dataLog').execPopulate();
+	const //
+		fermentation = await req.fermentation.populate('dataLog').execPopulate(),
+		lastLog =
+			fermentation.dataLog.thermalProfile.actual[fermentation.dataLog.thermalProfile.actual.length - 1];
+	lastLog.timeDateString = makeTimeStrings(lastLog.time).timeDateString;
+
 	res.render('fermentation/viewFermentation', {
 		title: fermentation.name,
-		fermentation: fermentation
+		fermentation,
+		lastLog
 	});
 };
 

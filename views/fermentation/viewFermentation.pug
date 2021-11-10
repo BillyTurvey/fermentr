@@ -18,17 +18,15 @@ block content
 		article.recipe
 			h2 Recipe
 
-	- const temperatureLog = fermentation.dataLog.thermalProfile.actual;
-	if (temperatureLog.length > 0) 
+	if (fermentation.dataLog.thermalProfile.actual.length > 0) 
 		article.temperature
 			h2 Temperature
-			p Last logged temperature: #{temperatureLog[temperatureLog.length - 1].temp}°C
+			p Last logged temperature: #{lastLog.temp}°C at #{lastLog.timeDateString}.
 			.graph-container
 				svg#temp-graph
 	
 	article.gravity
 		h2 Specific Gravity
-		
 		table
 			thead
 				tr
