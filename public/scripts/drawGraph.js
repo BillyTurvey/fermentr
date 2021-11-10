@@ -59,6 +59,7 @@ async function drawGraph() {
 				style: `stroke: ${colour}; stroke-width: 1`
 			}
 		});
+		// Add labels to scale
 		if (i % 5 === 0) {
 			graph.append({
 				name: 'text',
@@ -71,8 +72,6 @@ async function drawGraph() {
 			});
 		}
 	}
-
-	// Add labels to scale
 
 	//plot data on graph
 	d3.select('#temp-graph')
@@ -87,9 +86,53 @@ async function drawGraph() {
 		.attr('stroke', null);
 
 	// On mouse over show data value
+	graph.addEventListener('onmouseenter', drawCrossHairs);
 }
 
 //=========================================================================================================================================================================
+function drawCrossHairs() {
+	drawXLine();
+	drawYLine();
+	graph.addEventListener('onmousemove', moveCrossHairs);
+	graph.addEventListener('onmousemove', updateCrossHairValues);
+	graph.addEventListener('onmouseleave', removeCrossHairs);
+}
+
+function moveCrossHairs() {}
+
+function updateCrossHairValues() {}
+
+function removeCrossHairs() {
+	graph.removeEventListener('onmousemove', moveCrossHairs);
+}
+
+function drawXLine() {
+	graph.append({
+		name: 'line',
+		attributes: {
+			x1: 0,
+			y1: 0,
+			x2: graph.clientWidth,
+			y2: 0,
+			style: `stroke: red; stroke-width: 2`,
+			class: 'cross-hair'
+		}
+	});
+}
+
+function drawYLine() {
+	graph.append({
+		name: 'line',
+		attributes: {
+			x1: 0,
+			y1: 0,
+			x2: 0,
+			y2: graph.clientHeight,
+			style: `stroke: red; stroke-width: 2`,
+			class: 'cross-hair'
+		}
+	});
+}
 
 function addSVGElement(element) {
 	const newElement = document.createElementNS('http://www.w3.org/2000/svg', element.name);
