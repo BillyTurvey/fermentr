@@ -59,11 +59,20 @@ async function drawGraph() {
 				style: `stroke: ${colour}; stroke-width: 1`
 			}
 		});
+		if (i % 5 === 0) {
+			graph.append({
+				name: 'text',
+				attributes: {
+					x: 4,
+					y: y - 4,
+					fill: '#bbb'
+				},
+				innerHTML: i + 'ºC'
+			});
+		}
 	}
 
 	// Add labels to scale
-
-	// On mouse over show data value
 
 	//plot data on graph
 	d3.select('#temp-graph')
@@ -76,6 +85,8 @@ async function drawGraph() {
 		.attr('r', 2)
 		.attr('fill', d => `hsl(${120 - (d[1] - 19.8) * 30}, 100%, 40%)`)
 		.attr('stroke', null);
+
+	// On mouse over show data value
 }
 
 //=========================================================================================================================================================================
@@ -85,6 +96,7 @@ function addSVGElement(element) {
 	for (const key in element.attributes) {
 		newElement.setAttribute(key, element.attributes[key]);
 	}
+	if (element.innerHTML) newElement.innerHTML = element.innerHTML;
 	this.appendChild(newElement);
 }
 
