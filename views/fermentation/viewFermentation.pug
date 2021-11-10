@@ -18,7 +18,7 @@ block content
 		article.recipe
 			h2 Recipe
 
-	if (fermentation.dataLog.thermalProfile.actual.length > 0) 
+	if (lastLog) 
 		article.temperature
 			h2 Temperature
 			p Last logged temperature: #{lastLog.temp}°C at #{lastLog.timeDateString}.
