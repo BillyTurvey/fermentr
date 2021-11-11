@@ -43,7 +43,7 @@ export const makeTimeStrings = timeStampMS => {
 function getDateSuffix(date) {
 	switch (date % 10) {
 		case 1:
-			console.log(`🟠 date % 10: ${date % 10}`);
+			if (date == 11) return 'th';
 			return 'st';
 
 		case 2:
