@@ -47,9 +47,11 @@ function getDateSuffix(date) {
 			return 'st';
 
 		case 2:
+			if (date == 12) return 'th';
 			return 'nd';
 
 		case 3:
+			if (date == 13) return 'th';
 			return 'rd';
 
 		default:
