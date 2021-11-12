@@ -60,7 +60,7 @@ async function drawGraph() {
 			}
 		});
 		// Add labels to scale
-		if (i % 5 === 0) {
+		if (i % 5 === 0 || i % 2 === 0) {
 			graph.append({
 				name: 'text',
 				attributes: {
@@ -86,50 +86,68 @@ async function drawGraph() {
 		.attr('stroke', null);
 
 	// On mouse over show data value
-	graph.addEventListener('onmouseenter', drawCrossHairs);
+	graph.addEventListener('mouseenter', drawCrossHairs);
 }
 
 //=========================================================================================================================================================================
-function drawCrossHairs() {
-	drawXLine();
-	drawYLine();
-	graph.addEventListener('onmousemove', moveCrossHairs);
-	graph.addEventListener('onmousemove', updateCrossHairValues);
-	graph.addEventListener('onmouseleave', removeCrossHairs);
+
+function drawCrossHairs(event) {
+	drawXLine(this);
+	drawYLine(this);
+	this.addEventListener('mousemove', moveCrossHairs);
+	// this.addEventListener('mousemove', updateCrossHairValues);
+	this.addEventListener('mouseleave', removeCrossHairs);
 }
 
-function moveCrossHairs() {}
+function moveCrossHairs(event) {
+	const lines = {
+		x: document.getElementById('cross-hair-x'),
+		y: document.getElementById('cross-hair-y')
+	};
+	lines.x.setAttribute('x1', event.offsetX);
+	lines.x.setAttribute('x2', event.offsetX);
 
-function updateCrossHairValues() {}
+	lines.y.setAttribute('y1', event.offsetY);
+	lines.y.setAttribute('y2', event.offsetY);
+}
+
+// function updateCrossHairValues() {}
 
 function removeCrossHairs() {
-	graph.removeEventListener('onmousemove', moveCrossHairs);
+	const lines = [document.getElementById('cross-hair-x'), document.getElementById('cross-hair-y')];
+	lines.forEach(line => line.remove());
+
+	this.removeEventListener('mousemove', moveCrossHairs);
+	// this.removeEventListener('mousemove', updateCrossHairValues);
 }
 
-function drawXLine() {
+function drawXLine(graph) {
+	// vertical line showing the value of the data point on the x axis
 	graph.append({
 		name: 'line',
 		attributes: {
 			x1: 0,
 			y1: 0,
 			x2: graph.clientWidth,
-			y2: 0,
-			style: `stroke: red; stroke-width: 2`,
-			class: 'cross-hair'
+			y2: graph.clientHeight,
+			style: `stroke: red; stroke-width: 1`,
+			id: `cross-hair-x`
 		}
 	});
 }
 
-function drawYLine() {
+function drawYLine(graph) {
+	// horizontal line showing the value of the data point on the y axis
+
 	graph.append({
 		name: 'line',
 		attributes: {
 			x1: 0,
 			y1: 0,
-			x2: 0,
+			x2: graph.clientWidth,
 			y2: graph.clientHeight,
-			style: `stroke: red; stroke-width: 2`,
-			class: 'cross-hair'
+			style: `stroke: red; stroke-width: 1`,
+			id: `cross-hair-y`
 		}
 	});
 }
