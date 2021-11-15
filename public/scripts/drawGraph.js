@@ -79,7 +79,7 @@ async function drawGraph() {
 		.data(graphData)
 		.enter()
 		.append('circle')
-		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth)) //time
+		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth))
 		.attr('cy', d => convertTempToYAxisValue(d[1])) //temp
 		.attr('r', 2)
 		.attr('fill', d => `hsl(${120 - (d[1] - 19.8) * 30}, 100%, 40%)`)
@@ -95,7 +95,6 @@ function drawCrossHairs(event) {
 	drawXLine(this);
 	drawYLine(this);
 	this.addEventListener('mousemove', moveCrossHairs);
-	// this.addEventListener('mousemove', updateCrossHairValues);
 	this.addEventListener('mouseleave', removeCrossHairs);
 }
 
@@ -104,21 +103,39 @@ function moveCrossHairs(event) {
 		x: document.getElementById('cross-hair-x'),
 		y: document.getElementById('cross-hair-y')
 	};
+
+	//move x line
 	lines.x.setAttribute('x1', event.offsetX);
 	lines.x.setAttribute('x2', event.offsetX);
 
-	lines.y.setAttribute('y1', event.offsetY);
-	lines.y.setAttribute('y2', event.offsetY);
+	//move Y line
+	const plotPoints = [...document.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'circle')];
+	console.log(plotPoints[0].cx.baseVal);
+
+	const selectedPoint = plotPoints.filter(circle => {
+		const xVal = parseFloat(circle.cx).toFixed();
+		if (xVal === event.offsetX) return true;
+	});
+	// get a value for the temp of the selected datapoint
+	const temp = convertXValToTime(this, selectedPoint.cx);
+	console.log(temp);
+
+	//snap Y line to nearest datapoint
+	lines.y.setAttribute('y1', selectedPoint.cy);
+	lines.y.setAttribute('y2', selectedPoint.cy);
 }
 
-// function updateCrossHairValues() {}
+function convertXValToTime(graph, xVal) {
+	const xPercent = (100 * graph.clientWidth) / xVal,
+		time = (timeRange * xPercent) / 100;
+	return time;
+}
 
 function removeCrossHairs() {
 	const lines = [document.getElementById('cross-hair-x'), document.getElementById('cross-hair-y')];
 	lines.forEach(line => line.remove());
 
 	this.removeEventListener('mousemove', moveCrossHairs);
-	// this.removeEventListener('mousemove', updateCrossHairValues);
 }
 
 function drawXLine(graph) {
