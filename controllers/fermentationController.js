@@ -122,6 +122,6 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 export const retrieveAndProcessGraphData = async (req, res) => {
 	const dataLog = await DataLog.findById(req.fermentation.dataLog);
 	const rawActual = dataLog.thermalProfile.actual;
-	const arrayActual = rawActual.map(log => [log.time / 60000, log.temp]); //removes second and millisecond accuracy
-	res.json(arrayActual).end();
+	// const arrayActual = rawActual.map(log => [log.time / 60000, log.temp]); //removes second and millisecond accuracy
+	res.json(rawActual).end();
 };

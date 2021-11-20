@@ -1,191 +1,130 @@
 import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
-if (document.getElementById('temp-graph')) drawGraph();
+if (document.getElementsByClassName('graph-container')) drawGraph();
 
 async function drawGraph() {
+	console.log(`🔴`);
 	const fermentationId = /[a-z0-9]{24}/.exec(window.location.pathname)[0];
 
 	let graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
 		console.error(error.message);
 		// informUserFetchRequestFailed();
 	});
-	graphData = await graphData.json();
+	const data = await graphData.json();
 
-	//select graph
-	const graph = document.getElementById('temp-graph');
-	graph.append = addSVGElement;
+	const container = document.getElementsByClassName('graph-container')[0];
 
 	const //
-		graphHeight = graph.clientHeight,
-		graphWidth = graph.clientWidth,
-		startTime = graphData[0][0],
-		endTime = graphData[graphData.length - 1][0],
-		timeRange = endTime - startTime,
-		tempMinMax = getMinMax(graphData),
-		tempRange = tempMinMax.max - tempMinMax.min,
-		//The temperature/y axis range of the graph is 125% the range of the temp data
-		yAxisTempRange = tempRange * 1.25,
-		pixelsPerDegreeC = graphHeight / yAxisTempRange,
-		yAxisMin = tempMinMax.min - tempRange / 8; //there is a margin of 12.5% (1/8th) of the tempRange below the lowest reading on the y axis
+		height = container.clientHeight,
+		width = container.clientWidth;
 
-	function convertTempToYAxisValue(normalTemperatureValue) {
-		const //
-			yValueDegreesC = normalTemperatureValue - yAxisMin,
-			yValuePx = yValueDegreesC * pixelsPerDegreeC;
-		return graphHeight - yValuePx;
-	}
+	const margin = {top: 20, right: 20, bottom: 30, left: 30};
 
-	//add background
-	graph.append({
-		name: 'rect',
-		attributes: {
-			width: graphWidth,
-			height: graphHeight,
-			style: 'fill: #eee'
-		}
-	});
+	// defining the transformation the raw data has to go through to get a coordinate
+	const x = d3
+		.scaleTime()
+		.domain([new Date(data[0].time), new Date(data[data.length - 1].time)])
+		.range([margin.left, width - margin.right])
+		.interpolate(d3.interpolateRound);
 
-	// Draw graph y axis grid/scale line
-	for (let i = Math.floor(yAxisMin); i < yAxisMin + yAxisTempRange; i++) {
-		const colour = i % 5 === 0 ? '#bbb' : '#ddd';
-		const y = convertTempToYAxisValue(i);
-		graph.append({
-			name: 'line',
-			attributes: {
-				x1: 0,
-				y1: y,
-				x2: graph.clientWidth,
-				y2: y,
-				style: `stroke: ${colour}; stroke-width: 1`
-			}
-		});
-		// Add labels to scale
-		if (i % 5 === 0 || i % 2 === 0) {
-			graph.append({
-				name: 'text',
-				attributes: {
-					x: 4,
-					y: y - 4,
-					fill: '#bbb'
-				},
-				innerHTML: i + 'ºC'
-			});
-		}
-	}
+	// defining the transformation the raw data has to go through to get a coordinate
+	const y = d3
+		.scaleLinear()
+		.domain([0, d3.max(data, d => d.temp)])
+		.range([margin.left, height - margin.right])
+		.interpolate(d3.interpolateRound);
 
-	//plot data on graph
-	d3.select('#temp-graph')
-		.selectAll('circle')
-		.data(graphData)
-		.enter()
-		.append('circle')
-		.attr('cx', d => (d[0] - startTime) / (timeRange / graphWidth))
-		.attr('cy', d => convertTempToYAxisValue(d[1])) //temp
-		.attr('r', 2)
-		.attr('fill', d => `hsl(${120 - (d[1] - 19.8) * 30}, 100%, 40%)`)
-		.attr('stroke', null);
+	const xAxis = (g, x) =>
+		g.attr('transform', `translate(0,${height - margin.bottom})`).call(
+			d3
+				.axisBottom(x)
+				.ticks(width / 80)
+				.tickSizeOuter(0)
+		);
 
-	// On mouse over show data value
-	graph.addEventListener('mouseenter', drawCrossHairs);
-}
+	// defining the
+	const yAxis = (g, y) =>
+		g
+			.attr('transform', `translate(${margin.left},0)`)
+			.call(d3.axisLeft(y).ticks(null, 's'))
+			.call(g => g.select('.domain').remove())
+			.call(g =>
+				g
+					.select('.tick:last-of-type text')
+					.clone()
+					.attr('x', 3)
+					.attr('text-anchor', 'start')
+					.attr('font-weight', 'bold')
+					.text(data.y)
+			);
 
-//=========================================================================================================================================================================
-
-function drawCrossHairs(event) {
-	drawXLine(this);
-	drawYLine(this);
-	this.addEventListener('mousemove', moveCrossHairs);
-	this.addEventListener('mouseleave', removeCrossHairs);
-}
-
-function moveCrossHairs(event) {
-	const lines = {
-		x: document.getElementById('cross-hair-x'),
-		y: document.getElementById('cross-hair-y')
+	//defining the function which will draw the data to the graph
+	const area = (data, x) => {
+		console.log(data[0].time);
+		console.log(data[0].temp);
+		return d3
+			.area()
+			.curve(d3.curveStepAfter)
+			.x(d => x(d.time))
+			.y0(y(0))
+			.y1(d => y(d.temp))(data);
 	};
 
-	//move x line
-	lines.x.setAttribute('x1', event.offsetX);
-	lines.x.setAttribute('x2', event.offsetX);
+	const zoom = d3
+		.zoom()
+		.scaleExtent([1, 32])
+		.extent([
+			[margin.left, 0],
+			[width - margin.right, height]
+		])
+		.translateExtent([
+			[margin.left, -Infinity],
+			[width - margin.right, Infinity]
+		])
+		.on('zoom', zoomed);
 
-	//move Y line
-	const plotPoints = [...document.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'circle')];
-	console.log(plotPoints[0].cx.baseVal);
+	//defining the whole graph/SVG
+	const svg = d3
+		.create('svg') //
+		.attr('viewBox', [0, 0, width, height]);
 
-	const selectedPoint = plotPoints.filter(circle => {
-		const xVal = parseFloat(circle.cx).toFixed();
-		if (xVal === event.offsetX) return true;
-	});
-	// get a value for the temp of the selected datapoint
-	const temp = convertXValToTime(this, selectedPoint.cx);
-	console.log(temp);
+	// const clip = DOM.uid('clip');
 
-	//snap Y line to nearest datapoint
-	lines.y.setAttribute('y1', selectedPoint.cy);
-	lines.y.setAttribute('y2', selectedPoint.cy);
-}
+	svg
+		// .append('clipPath')
+		// .attr('id', clip.id)
+		.append('rect')
+		.attr('x', margin.left)
+		.attr('y', margin.top)
+		.attr('width', width - margin.left - margin.right)
+		.attr('height', height - margin.top - margin.bottom);
 
-function convertXValToTime(graph, xVal) {
-	const xPercent = (100 * graph.clientWidth) / xVal,
-		time = (timeRange * xPercent) / 100;
-	return time;
-}
+	const path = svg
+		.append('path') //
+		// .attr('clip-path', clip)
+		.attr('fill', 'steelblue')
+		.attr('d', area(data, x));
 
-function removeCrossHairs() {
-	const lines = [document.getElementById('cross-hair-x'), document.getElementById('cross-hair-y')];
-	lines.forEach(line => line.remove());
+	// adding the X axis
+	const gx = svg //
+		.append('g')
+		.call(xAxis, x);
 
-	this.removeEventListener('mousemove', moveCrossHairs);
-}
+	// adding the Y axis
+	svg.append('g').call(yAxis, y);
 
-function drawXLine(graph) {
-	// vertical line showing the value of the data point on the x axis
-	graph.append({
-		name: 'line',
-		attributes: {
-			x1: 0,
-			y1: 0,
-			x2: graph.clientWidth,
-			y2: graph.clientHeight,
-			style: `stroke: red; stroke-width: 1`,
-			id: `cross-hair-x`
-		}
-	});
-}
+	svg
+		.call(zoom)
+		.transition()
+		.duration(750)
+		.call(zoom.scaleTo, 4, [x(Date.UTC(2001, 8, 1)), 0]);
 
-function drawYLine(graph) {
-	// horizontal line showing the value of the data point on the y axis
-
-	graph.append({
-		name: 'line',
-		attributes: {
-			x1: 0,
-			y1: 0,
-			x2: graph.clientWidth,
-			y2: graph.clientHeight,
-			style: `stroke: red; stroke-width: 1`,
-			id: `cross-hair-y`
-		}
-	});
-}
-
-function addSVGElement(element) {
-	const newElement = document.createElementNS('http://www.w3.org/2000/svg', element.name);
-	for (const key in element.attributes) {
-		newElement.setAttribute(key, element.attributes[key]);
+	//
+	function zoomed(event) {
+		const xz = event.transform.rescaleX(x);
+		path.attr('d', area(data, xz));
+		gx.call(xAxis, xz);
 	}
-	if (element.innerHTML) newElement.innerHTML = element.innerHTML;
-	this.appendChild(newElement);
-}
 
-function getMinMax(logArr) {
-	return logArr.reduce(
-		(prev, curr) => {
-			return {
-				min: curr[1] < prev.min ? curr[1] : prev.min,
-				max: curr[1] > prev.max ? curr[1] : prev.max
-			};
-		},
-		{min: logArr[0][1], max: logArr[0][1]}
-	);
+	container.appendChild(svg.node());
 }
