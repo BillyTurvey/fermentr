@@ -30,10 +30,12 @@ async function drawGraph() {
 	// defining the transformation the raw data has to go through to get a coordinate
 	const y = d3
 		.scaleLinear()
-		.domain([0, d3.max(data, d => d.temp)])
-		.range([margin.left, height - margin.right])
-		.interpolate(d3.interpolateRound);
+		.domain([0, d3.max(data, d => d.temp) + 2])
+		.nice()
+		.range([height - margin.bottom, margin.top]);
+	// .interpolate(d3.interpolateRound);
 
+	// X axis label
 	const xAxis = (g, x) =>
 		g.attr('transform', `translate(0,${height - margin.bottom})`).call(
 			d3
@@ -42,7 +44,7 @@ async function drawGraph() {
 				.tickSizeOuter(0)
 		);
 
-	// defining the
+	// Y axis label
 	const yAxis = (g, y) =>
 		g
 			.attr('transform', `translate(${margin.left},0)`)
@@ -64,7 +66,7 @@ async function drawGraph() {
 		console.log(data[0].temp);
 		return d3
 			.area()
-			.curve(d3.curveStepAfter)
+			.curve(d3.curveBasis)
 			.x(d => x(d.time))
 			.y0(y(0))
 			.y1(d => y(d.temp))(data);
@@ -88,11 +90,11 @@ async function drawGraph() {
 		.create('svg') //
 		.attr('viewBox', [0, 0, width, height]);
 
-	// const clip = DOM.uid('clip');
+	const clip = {id: 'clip-id'};
 
 	svg
-		// .append('clipPath')
-		// .attr('id', clip.id)
+		.append('clipPath')
+		.attr('id', clip.id)
 		.append('rect')
 		.attr('x', margin.left)
 		.attr('y', margin.top)
@@ -101,7 +103,7 @@ async function drawGraph() {
 
 	const path = svg
 		.append('path') //
-		// .attr('clip-path', clip)
+		.attr('clip-path', clip.id)
 		.attr('fill', 'steelblue')
 		.attr('d', area(data, x));
 
@@ -116,8 +118,8 @@ async function drawGraph() {
 	svg
 		.call(zoom)
 		.transition()
-		.duration(750)
-		.call(zoom.scaleTo, 4, [x(Date.UTC(2001, 8, 1)), 0]);
+		.duration(700)
+		.call(zoom.scaleTo, 1, [x(Date.UTC(2001, 8, 1)), 0]);
 
 	//
 	function zoomed(event) {
