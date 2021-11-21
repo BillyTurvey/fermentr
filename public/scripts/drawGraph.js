@@ -30,7 +30,7 @@ async function drawGraph() {
 	// defining the transformation the raw data has to go through to get a coordinate
 	const y = d3
 		.scaleLinear()
-		.domain([0, d3.max(data, d => d.temp) + 2])
+		.domain([5, d3.max(data, d => d.temp) + 2])
 		.nice()
 		.range([height - margin.bottom, margin.top]);
 	// .interpolate(d3.interpolateRound);
@@ -52,6 +52,13 @@ async function drawGraph() {
 			.call(g => g.select('.domain').remove())
 			.call(g =>
 				g
+					.selectAll('.tick line')
+					.clone()
+					.attr('x2', width - margin.left - margin.right)
+					.attr('stroke-opacity', 0.1)
+			)
+			.call(g =>
+				g
 					.select('.tick:last-of-type text')
 					.clone()
 					.attr('x', 3)
@@ -61,16 +68,16 @@ async function drawGraph() {
 			);
 
 	//defining the function which will draw the data to the graph
-	const area = (data, x) => {
-		console.log(data[0].time);
-		console.log(data[0].temp);
-		return d3
+	const area = (data, x) =>
+		d3
 			.area()
 			.curve(d3.curveBasis)
 			.x(d => x(d.time))
 			.y0(y(0))
 			.y1(d => y(d.temp))(data);
-	};
+
+	//Line
+	// const line = (data, x) => d3.line();
 
 	const zoom = d3
 		.zoom()
