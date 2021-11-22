@@ -3,7 +3,6 @@ import * as d3 from 'https://cdn.skypack.dev/d3@7';
 if (document.getElementsByClassName('graph-container')) drawGraph();
 
 async function drawGraph() {
-	console.log(`🔴`);
 	const fermentationId = /[a-z0-9]{24}/.exec(window.location.pathname)[0];
 
 	let graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
@@ -76,8 +75,13 @@ async function drawGraph() {
 			.y0(y(0))
 			.y1(d => y(d.temp))(data);
 
-	//Line
-	// const line = (data, x) => d3.line();
+	// Creating a line generator
+	const line = d3
+		.line()
+		// .defined(i => D[i])
+		.curve(d3.curveBasis)
+		.x(d => x(d.time))
+		.y(d => y(d.temp));
 
 	const zoom = d3
 		.zoom()
@@ -99,6 +103,7 @@ async function drawGraph() {
 
 	const clip = {id: 'data-clip'};
 
+	// add a clipping path to the graph to prevent the plotted data shapes spilling into the axis labels
 	svg
 		.append('clipPath')
 		.attr('id', clip.id)
@@ -108,18 +113,24 @@ async function drawGraph() {
 		.attr('width', width - margin.left - margin.right)
 		.attr('height', height - margin.top - margin.bottom);
 
-	const path = svg
+	// Inserting the area path into the chart
+	const areaPath = svg
 		.append('path') //
 		.attr('clip-path', 'url(#data-clip)')
 		.attr('fill', 'steelblue')
 		.attr('d', area(data, x));
 
-	// adding the X axis
-	const gx = svg //
-		.append('g')
-		.call(xAxis, x);
+	// Inserting the line path into the chart
+	const linePath = svg
+		.append('path') //
+		.attr('clip-path', 'url(#data-clip)')
+		.attr('fill', 'none')
+		.attr('stroke', 'orange')
+		.attr('stroke-width', 2)
+		.attr('d', line(data, x));
 
-	// adding the Y axis
+	// adding the X and Y axis labels
+	const gx = svg.append('g').call(xAxis, x);
 	svg.append('g').call(yAxis, y);
 
 	svg
@@ -131,9 +142,9 @@ async function drawGraph() {
 	//
 	function zoomed(event) {
 		const xz = event.transform.rescaleX(x);
-		path.attr('d', area(data, xz));
+		linePath.attr('d', line(data, xz));
+		areaPath.attr('d', area(data, xz));
 		gx.call(xAxis, xz);
 	}
-
 	container.appendChild(svg.node());
 }
