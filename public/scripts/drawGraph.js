@@ -66,19 +66,9 @@ async function drawGraph() {
 					.text(data.y)
 			);
 
-	//defining the function which will draw the data to the graph
-	const area = (data, x) =>
-		d3
-			.area()
-			.curve(d3.curveBasis)
-			.x(d => x(d.time))
-			.y0(y(0))
-			.y1(d => y(d.temp))(data);
-
-	// Creating a line generator
+	// Creating a function that will generate the path coordinates for the line
 	const line = d3
 		.line()
-		// .defined(i => D[i])
 		.curve(d3.curveBasis)
 		.x(d => x(d.time))
 		.y(d => y(d.temp));
@@ -113,13 +103,6 @@ async function drawGraph() {
 		.attr('width', width - margin.left - margin.right)
 		.attr('height', height - margin.top - margin.bottom);
 
-	// Inserting the area path into the chart
-	const areaPath = svg
-		.append('path') //
-		.attr('clip-path', 'url(#data-clip)')
-		.attr('fill', 'steelblue')
-		.attr('d', area(data, x));
-
 	// Inserting the line path into the chart
 	const linePath = svg
 		.append('path') //
@@ -129,9 +112,9 @@ async function drawGraph() {
 		.attr('stroke-width', 2)
 		.attr('d', line(data, x));
 
-	// adding the X and Y axis labels
-	const gx = svg.append('g').call(xAxis, x);
-	svg.append('g').call(yAxis, y);
+	// adding the axis labels
+	const gx = svg.append('g').call(xAxis, x); //X
+	svg.append('g').call(yAxis, y); //Y
 
 	svg
 		.call(zoom)
@@ -139,12 +122,20 @@ async function drawGraph() {
 		.duration(700)
 		.call(zoom.scaleTo, 1, [x(Date.UTC(2001, 8, 1)), 0]);
 
-	//
 	function zoomed(event) {
 		const xz = event.transform.rescaleX(x);
-		linePath.attr('d', line(data, xz));
-		areaPath.attr('d', area(data, xz));
+
+		linePath.attr(
+			'd',
+			d3
+				.line()
+				.curve(d3.curveBasis)
+				.x(d => xz(d.time))
+				.y(d => y(d.temp))(data)
+		);
+
 		gx.call(xAxis, xz);
 	}
+
 	container.appendChild(svg.node());
 }
