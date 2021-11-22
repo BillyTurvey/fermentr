@@ -97,7 +97,7 @@ async function drawGraph() {
 		.create('svg') //
 		.attr('viewBox', [0, 0, width, height]);
 
-	const clip = {id: 'clip-id'};
+	const clip = {id: 'data-clip'};
 
 	svg
 		.append('clipPath')
@@ -110,7 +110,7 @@ async function drawGraph() {
 
 	const path = svg
 		.append('path') //
-		.attr('clip-path', clip.id)
+		.attr('clip-path', 'url(#data-clip)')
 		.attr('fill', 'steelblue')
 		.attr('d', area(data, x));
 
