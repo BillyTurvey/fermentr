@@ -1,72 +1,72 @@
 extends ../layout
 
 block content
-
-	if (editingExistingFermentation)
-		h1 Edit Fermentation: !{fermentation.name} 
-	else 
-		h1 Add New Fermentation
-
-	- 
-		const f = fermentation ? fermentation : null;
-		const actionPath = editingExistingFermentation ? `/fermentation/${fermentation.id}/update` : '/fermentation/add';
-		// optional chaining doesn't work inline in pug, hence this values object...
-		const values = {
-			name: f?.name || '',
-			description: f?.description || '', 
-			targetOG: f?.gravity?.targetOG || '', 
-			actualOG: f?.gravity?.actualOG || '', 
-			targetFG: f?.gravity?.targetFG || '', 
-			actualFG: f?.gravity?.actualFG || '',
-			assignedDevice: f?.assignedDevice || false
-		};
-
-	form(action=actionPath method='POST') 
-
-		label(for="name") Name
-		input(type="text" name="name" value= name || values.name required)
-		br
-		label(for="description") Description
-		textarea(name="description" rows=5 columns=33) !{description || values.description}
-		br
-		label(for="targetFG") Target OG
-		input(type="number" name="targetOG" step=0.001 value= targetOG || values.targetOG)
-		br
-		label(for="actualFG") Actual OG
-		input(type="number" name="actualOG" step=0.001 value= actualOG || values.actualOG)
-		br
-		label(for="targetFG") Target FG
-		input(type="number" name="targetFG" step=0.001 value= targetFG || values.targetFG)
-		br
+	article 
 		if (editingExistingFermentation)
-			label(for="actualFG") Actual FG
-			input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
-			br
-
-		if (devices.length > 0)
-			h3 Select a device to monitor/control this fermentation
-
-			if (f && f.assignedDevice)
-				p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
-
-			.device-radio-container
-				each device in devices
-					- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
-					if (!device.assignedFermentation || isAssignedToThisFermentation)
-						//- - let ischecked = device.assignedFermentation ? true : false;
-						input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.assignedFermentation!=null)
-						label(for=device.name) !{device.name}
-							span.device-description  - !{device.description}
-
-				input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
-				label(for='none') None
-
-		if (editingExistingFermentation)
-			button(type="submit") Update 
+			h1 Edit Fermentation: !{fermentation.name} 
 		else 
-			button(type="submit") Submit
+			h1 Add New Fermentation
+
+		- 
+			const f = fermentation ? fermentation : null;
+			const actionPath = editingExistingFermentation ? `/fermentation/${fermentation.id}/update` : '/fermentation/add';
+			// optional chaining doesn't work inline in pug, hence this values object...
+			const values = {
+				name: f?.name || '',
+				description: f?.description || '', 
+				targetOG: f?.gravity?.targetOG || '', 
+				actualOG: f?.gravity?.actualOG || '', 
+				targetFG: f?.gravity?.targetFG || '', 
+				actualFG: f?.gravity?.actualFG || '',
+				assignedDevice: f?.assignedDevice || false
+			};
+
+		form(action=actionPath method='POST') 
+
+			label(for="name") Name
+			input(type="text" name="name" value= name || values.name required)
+			br
+			label(for="description") Description
+			textarea(name="description" rows=5 columns=33) !{description || values.description}
+			br
+			label(for="targetFG") Target OG
+			input(type="number" name="targetOG" step=0.001 value= targetOG || values.targetOG)
+			br
+			label(for="actualFG") Actual OG
+			input(type="number" name="actualOG" step=0.001 value= actualOG || values.actualOG)
+			br
+			label(for="targetFG") Target FG
+			input(type="number" name="targetFG" step=0.001 value= targetFG || values.targetFG)
+			br
+			if (editingExistingFermentation)
+				label(for="actualFG") Actual FG
+				input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
+				br
+
+			if (devices.length > 0)
+				h3 Select a device to monitor/control this fermentation
+
+				if (f && f.assignedDevice)
+					p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
+
+				.device-radio-container
+					each device in devices
+						- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
+						if (!device.assignedFermentation || isAssignedToThisFermentation)
+							//- - let ischecked = device.assignedFermentation ? true : false;
+							input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.assignedFermentation!=null)
+							label(for=device.name) !{device.name}
+								span.device-description  - !{device.description}
+
+					input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
+					label(for='none') None
+
+			if (editingExistingFermentation)
+				button(type="submit") Update 
+			else 
+				button(type="submit") Submit
 
 
-	if (editingExistingFermentation)
-		form(action=`/fermentation/${f.id}/delete` method="POST")
-			button(type="submit") Delete !{fermentation.name}
+		if (editingExistingFermentation)
+			form(action=`/fermentation/${f.id}/delete` method="POST")
+				button(type="submit") Delete !{fermentation.name}
