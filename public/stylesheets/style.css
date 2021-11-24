@@ -5,6 +5,7 @@ header > a > svg {
 
 header > a > h1 {
 	margin-top: 1.8rem;
+	color: var(--accent);
 }
 
 header > a:hover {
