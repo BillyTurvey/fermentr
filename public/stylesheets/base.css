@@ -6,25 +6,25 @@
 	--light: hsla(234, 9%, 95%, 1);
 	--white: hsla(234, 0%, 100%, 1);
 
-	--article-margin: 0.8rem;
-	--article-padding: 3.5rem 5rem;
-	--header-padding: 2rem 5rem;
+	--article-margin: 0.4rem;
+	--article-padding: 2.28rem 3.26rem;
+	--header-padding: 1rem 3.26rem;
 
-	--h1-size: 5.7rem;
-	--h2-size: 4.3rem;
-	--h3-size: 3.2rem;
-	--h4-size: 2.4rem;
-	--body-size: 1.8rem;
-	--button-text-size: 1.4rem;
+	--h1-size: 2.87rem;
+	--h2-size: 2.27rem;
+	--h3-size: 2.83rem;
+	--h4-size: 1.77rem;
+	--body-size: 1.13rem;
+	--small-copy-size: 0.89rem;
 }
 
 html {
-	font-size: 62.5%;
+	/* font-size: 62.5%; */
 	font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 body {
-	font-size: 1.8rem;
+	/* font-size: 1.8rem; */
 	line-height: 1.618;
 	max-width: 80em;
 	margin: auto;
@@ -45,14 +45,8 @@ body {
 	}
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1;
-	letter-spacing: 0.1rem;
 	font-kerning: normal;
 	font-family: 'Helvetica Neue', Arial, sans-serif;
 	font-weight: 700;
@@ -65,14 +59,18 @@ h6 {
 
 h1 {
 	font-size: var(--h1-size);
+	letter-spacing: 0.2rem;
+  font-style: italic;
 }
 
 h2 {
 	font-size: var(--h2-size);
+	letter-spacing: 0.14rem;
 }
 
 h3 {
 	font-size: var(--h3-size);
+	letter-spacing: 0.1rem;
 }
 
 h4 {
@@ -92,10 +90,14 @@ p {
 	margin-bottom: 2.5rem;
 }
 
+p.small-copy {
+	font-size: var(--small-copy);
+}
+
 small,
 sub,
 sup {
-	font-size: 75%;
+	/* font-size: 75%; */
 }
 
 hr {
@@ -217,6 +219,7 @@ input[type='button'] {
 	border: 1px solid #1d7484;
 	cursor: pointer;
 	box-sizing: border-box;
+	font-size: var(--small-copy-size);
 }
 .button[disabled],
 button[disabled],
