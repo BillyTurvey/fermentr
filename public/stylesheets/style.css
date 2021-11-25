@@ -3,24 +3,39 @@ header {
 	background-color: var(--light);
 	border-top: 11px solid var(--dark);
 	padding: var(--article-padding);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-header > a > svg {
-	height: 6rem;
-	/* fill: #144f5a; */
-}
-
-header > a > h1 {
+header h1 {
 	color: var(--accent);
+	margin-bottom: 0;
 }
 
-header > a:hover {
+header a:hover {
 	color: red;
 	border-bottom: 0;
 }
 
 header > a {
 	display: flex;
+	margin-bottom: 0;
+}
+
+/* header > div {
+	flex: 1;
+} */
+
+header svg {
+	height: 3rem;
+	margin: 0 2rem 0 6rem;
+	fill: var(--accent);
+}
+
+nav {
+	position: absolute;
+	top: -500px;
 }
 
 div.graph-container {
@@ -34,15 +49,16 @@ article {
 	padding: var(--article-padding);
 }
 
-article.edit > h3 {
-	/* margin: 0; */
-}
+/* article.edit > h3 {
+	margin: 0;
+} */
+
 article.edit a {
 	color: var(--mid);
 	font-size: 2.34rem;
 }
 article.edit a:hover {
-	color: hsl(234, 10%, 50%);
+	color: var(--mid-hover);
 }
 
 footer {

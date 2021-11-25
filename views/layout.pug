@@ -7,8 +7,15 @@ html
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
 		header
-			a(href='/')
-				h1 fermentr
+			.flex-container
+				a(href='/')
+					h1 fermentr
+
+			.icon-container
+				include ../public/SVGs/nav-menu-icon.svg
+				include ../public/SVGs/nav-user-icon.svg
+
+			
 			nav
 				ul
 					if (user)
