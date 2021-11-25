@@ -1,0 +1,8 @@
+a.edit {
+	color: var(--mid);
+	visibility: hidden;
+}
+
+p {
+	color: var(--mid);
+}
