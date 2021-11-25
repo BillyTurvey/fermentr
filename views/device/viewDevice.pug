@@ -2,10 +2,9 @@ extends ../layout
 
 block content
 
-	h2 Device: !{device.name} 
-
-
-	p.description !{device.description}
+	article
+		h1 Device: !{device.name} 
+		p.description !{device.description}
 
 	article.assigned-fermentation
 		if (device.assignedFermentation)
@@ -20,4 +19,5 @@ block content
 				a(href=`/device/${device._id}/edit`) editing this device
 				|.
 
-	a(href=`/device/${device._id}/edit`) Edit device details.
+	article
+		a(href=`/device/${device._id}/edit`) Edit device details.

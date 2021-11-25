@@ -1,31 +1,32 @@
 extends ../layout 
 
 block content
+	article
+		h1 Register
 
-	h1 Register
+		a(href="/user/logIn") Already have an account? Log in here.
 
-	a(href="/user/logIn") Already have an account? Log in here.
+		form(action="/user/register" method="POST")
 
-	form(action="/user/register" method="POST")
+			label(for="name") Name
+			input(type="text" name="name" value=name||'' required)
+			br
 
-		label(for="name") Name
-		input(type="text" name="name" value=name||'' required)
-		br
+			label(for="email") Email
+			input(type="text" name="email" value=email||'' required)
+			br
 
-		label(for="email") Email
-		input(type="text" name="email" value=email||'' required)
-		br
+			label(for="registrationPassword") Registration Password (Only invited users may register at this time.)
+			input(type="password" name="registrationPassword" required)
+			br
 
-		label(for="registrationPassword") Registration Password (Only invited users may register at this time.)
-		input(type="password" name="registrationPassword" required)
-		br
+			label(for="password") Password (> 8 characters)
+			input(type="password" name="password" required)
+			br
 
-		label(for="password") Password (> 8 characters)
-		input(type="password" name="password" required)
-		br
+			label(for="passwordConfirm") Confirm Password
+			input(type="password" name="passwordConfirm" required)
+			br
 
-		label(for="passwordConfirm") Confirm Password
-		input(type="password" name="passwordConfirm" required)
-		br
-
-		button(value="Submit") Submit
+			button(value="Submit") Submit
+		

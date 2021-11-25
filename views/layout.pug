@@ -3,7 +3,7 @@ html
 	head
 		title= title
 		link(rel='icon' type='image/svg+xml' href='/SVGs/airlock.svg')
-		link(rel='stylesheet', href='/stylesheets/sakura.css')
+		link(rel='stylesheet', href='/stylesheets/base.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
 		header
@@ -38,3 +38,15 @@ html
 							button.flash__remove(onClick='this.parentElement.remove()') &times;
 									
 		block content
+		
+		footer
+			ul
+				li
+					a(href="/about") About Fermentr
+				li
+					a(href="https://github.com/BillyTurvey") Contact
+				li
+					a(href="/faq") FAQ
+				if (!user)
+					li
+						a(href="/register") Register

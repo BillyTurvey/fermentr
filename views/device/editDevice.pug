@@ -1,41 +1,39 @@
 extends ../layout
 
 block content
+	article 
+		h2 Edit Device: !{device.name} 
+		
+		form(action=`/device/${device.id}/update` method="POST")
 
-	h2 Edit Device: !{device.name} 
-	
-	form(action=`/device/${device.id}/update` method="POST")
+			label(for="name") Device Name – to help you differentiate multiple devices.
+			input(type="text", name="name" value=device.name||'' required)
 
-		label(for="name") Device Name – to help you differentiate multiple devices.
-		input(type="text", name="name" value=device.name||'' required)
+			br
 
-		br
-
-		label(for="description") Description (optional).
-		textarea(name="description" rows=5 columns=33) !{device.description}
-
-
-
-		if (fermentations.length > 0)
-			if (device.assignedFermentation)
-				h3 !{device.name} is currently assigned to !{device.assignedFermentation.name}
-			else
-				h3 Assign this device to a fermentation
-
-			each fermentation in fermentations
-				if (!fermentation.assignedDevice)
-					.fermentationRadio
-						- const isChecked = device.assignedFermentation?._id.toString() == fermentation._id.toString()
-						input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id checked=isChecked)
-						label(for=fermentation.name) !{fermentation.name} 
-							span.fermentation-description - !{fermentation.description}
-			.fermentationRadio
-				input(type="radio" id='none' name="assignedFermentation" value="null" checked=device.assignedFermentation ? false : true)
-				label(for=None) None
-
-		button(type="submit") Update
-
-	form(action=`/device/${device._id}/delete` method="POST")
-		button(type="submit") Delete !{device.name}
+			label(for="description") Description (optional).
+			textarea(name="description" rows=5 columns=33) !{device.description}
 
 
+
+			if (fermentations.length > 0)
+				if (device.assignedFermentation)
+					h3 !{device.name} is currently assigned to !{device.assignedFermentation.name}
+				else
+					h3 Assign this device to a fermentation
+
+				each fermentation in fermentations
+					if (!fermentation.assignedDevice)
+						.fermentationRadio
+							- const isChecked = device.assignedFermentation?._id.toString() == fermentation._id.toString()
+							input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id checked=isChecked)
+							label(for=fermentation.name) !{fermentation.name} 
+								span.fermentation-description - !{fermentation.description}
+				.fermentationRadio
+					input(type="radio" id='none' name="assignedFermentation" value="null" checked=device.assignedFermentation ? false : true)
+					label(for=None) None
+
+			button(type="submit") Update
+
+		form(action=`/device/${device._id}/delete` method="POST")
+			button(type="submit") Delete !{device.name}

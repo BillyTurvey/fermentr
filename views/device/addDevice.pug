@@ -1,39 +1,39 @@
 extends ../layout
 
 block content
+	article
+		if device
+			h2 You have successfully registered 
+				a(href=`/device/${device._id}`) !{device.name}
+				|. 
+			p !{device.name}'s device ID is !{device.id}, and its security key is !{deviceKey}
 
-	if device
-		h2 You have successfully registered 
-			a(href=`/device/${device._id}`) !{device.name}
-			|. 
-		p !{device.name}'s device ID is !{device.id}, and its security key is !{deviceKey}
+			h3 Do not navigate away from this page until you have recorded your device's security key!
+			P In accordance with security best practices Fermentr will only store device keys in a cryptographically hashed state. This means you will not be able to retrieve this code again and will have to reregister the device if you loose the key.
 
-		h3 Do not navigate away from this page until you have recorded your device's security key!
-		P In accordance with security best practices Fermentr will only store device keys in a cryptographically hashed state. This means you will not be able to retrieve this code again and will have to reregister the device if you loose the key.
+		else 
+			h2 Use this page to register a new device to your account. 
+			
+			form(action="/device/add" method="POST")
 
-	else 
-		h2 Use this page to register a new device to your account. 
-		
-		form(action="/device/add" method="POST")
+				label(for="name") Device Name – to help you differentiate multiple devices.
+				input(type="text", name="name" required)
 
-			label(for="name") Device Name – to help you differentiate multiple devices.
-			input(type="text", name="name" required)
+				label(for="description") Description (optional).
+				textarea(name="description" rows=5 columns=33)
 
-			label(for="description") Description (optional).
-			textarea(name="description" rows=5 columns=33)
+				if (user.fermentations.length > 0)
+					h3 Assign this device to a fermentation
+					
+					each fermentation in user.fermentations
+						if (!fermentation.assignedDevice)
+							.fermentationRadio
+								input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id)
+								label(for=fermentation.name) !{fermentation.name}
+									span.fermentation-description  - !{fermentation.description}
+					.fermentationRadio
+						input(type="radio" id=None name="assignedFermentation" value="null" checked)
+						label(for=None) None
 
-			if (user.fermentations.length > 0)
-				h3 Assign this device to a fermentation
-				
-				each fermentation in user.fermentations
-					if (!fermentation.assignedDevice)
-						.fermentationRadio
-							input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id)
-							label(for=fermentation.name) !{fermentation.name}
-								span.fermentation-description  - !{fermentation.description}
-				.fermentationRadio
-					input(type="radio" id=None name="assignedFermentation" value="null" checked)
-					label(for=None) None
-
-			button(type="submit") Submit
+				button(type="submit") Submit
 
