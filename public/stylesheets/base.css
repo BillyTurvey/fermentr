@@ -2,8 +2,19 @@
 	--accent: hsla(37, 66%, 65%, 1);
 	--dark: hsla(225, 14%, 20%, 1);
 	--mid: hsla(234, 9%, 60%, 1);
+	--mid-hover: hsl(234, 10%, 50%);
 	--light: hsla(234, 9%, 95%, 1);
 	--white: hsla(234, 0%, 100%, 1);
+
+	--article-margin: 11px;
+	--article-padding: 2rem 3rem;
+
+	--h1-size: 5.7rem;
+	--h2-size: 4.3rem;
+	--h3-size: 3.2rem;
+	--h4-size: 2.4rem;
+	--body-size: 1.8rem;
+	--button-text-size: 1.4rem;
 }
 
 html {
@@ -18,7 +29,7 @@ body {
 	margin: auto;
 	color: var(--dark);
 	background-color: var(--white);
-	padding: 13px;
+	padding: 0;
 }
 
 @media (max-width: 684px) {
@@ -42,8 +53,7 @@ h6 {
 	line-height: 1.1;
 	font-family: 'Helvetica Neue', Arial, sans-serif;
 	font-weight: 700;
-	margin-top: 3rem;
-	margin-bottom: 1.5rem;
+	margin: 0 0 1rem 0;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	-ms-word-break: break-all;
@@ -91,19 +101,20 @@ hr {
 
 a {
 	text-decoration: none;
-	color: #1d7484;
+	color: var(--dark);
 	fill: #1d7484;
 }
 a:hover {
-	color: #982c61;
-	border-bottom: 2px solid #4a4a4a;
+	color: var(--mid);
+	/* border-bottom: 2px solid #4a4a4a; */
 }
 a:visited {
-	color: #144f5a;
-	fill: #144f5a;
+	color: var(--dark);
+	fill: orange;
 }
 
 ul {
+	list-style-type: none;
 	padding-left: 1.4em;
 	margin-top: 0px;
 	margin-bottom: 2.5rem;
