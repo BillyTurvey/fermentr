@@ -1,8 +1,8 @@
 header {
 	margin-bottom: var(--article-margin);
 	background-color: var(--light);
-	border-top: 11px solid var(--dark);
-	padding: var(--article-padding);
+	border-top: var(--article-margin) solid var(--dark);
+	padding: var(--header-padding);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -10,6 +10,8 @@ header {
 
 header h1 {
 	color: var(--accent);
+	font-size: var(--h1-size);
+	letter-spacing: 0.3rem;
 	margin-bottom: 0;
 }
 
@@ -22,14 +24,15 @@ header > a {
 	display: flex;
 	margin-bottom: 0;
 }
-
-/* header > div {
-	flex: 1;
+/* 
+header > div.icon-container {
+	display: flex;
 } */
 
 header svg {
 	height: 3rem;
-	margin: 0 2rem 0 6rem;
+	margin: 0.9rem 2rem auto 6rem;
+	/* margin: 1rem 2rem 1rem 6rem; */
 	fill: var(--accent);
 }
 
