@@ -3,6 +3,6 @@ a.edit {
 	visibility: hidden;
 }
 
-p {
+article p {
 	color: var(--mid);
 }

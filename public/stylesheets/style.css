@@ -75,8 +75,8 @@ nav ul li ul {
 	padding-top: 1rem;
 }
 
-ul li:hover > ul,
-ul li ul:hover {
+nav ul li:hover > ul,
+nav ul li ul:hover {
   visibility: visible;
   opacity: 1;
   display: block;
@@ -96,7 +96,7 @@ nav p.logged-in-as {
 	line-height: 100%;
 	margin-top: 0.1rem;
 	color: var(--light);
-	font-weight: 300;
+	font-weight: var(--small-copy-weight);
 	letter-spacing: 1px;
 }
 
@@ -125,13 +125,42 @@ article.edit a:hover {
 	color: var(--mid-hover);
 }
 
+/* ============================================================================ */
+
 footer {
 	color: var(--light);
 	background-color: var(--dark);
 	padding: var(--article-padding);
+	display: flex;
+	justify-content: space-around;
+}
+
+footer div.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+footer div.container:last-of-type {
+	justify-content: flex-end;
+}
+
+footer svg {
+	fill: var(--light);
+	height: 3rem;
+}
+
+footer ul, footer p {
+	margin: 0;
+	padding-left: 0;
 }
 
 footer a,
 footer a:visited {
 	color: var(--light);
+}
+
+footer a, footer p {
+	font-size: var(--small-copy-size);
+	font-weight: var(--small-copy-weight);
 }

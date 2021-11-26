@@ -59,13 +59,19 @@ html
 		block content
 		
 		footer
-			ul
-				li
-					a(href="/about") About Fermentr
-				li
-					a(href="https://github.com/BillyTurvey") Contact
-				li
-					a(href="/faq") FAQ
-				if (!user)
+			.container
+				ul
 					li
-						a(href="/register") Register
+						a(href="/about") About Fermentr
+					li
+						a(href="https://github.com/BillyTurvey") Contact
+					li
+						a(href="/faq") FAQ
+					if (!user)
+						li
+							a(href="/register") Register
+			.container
+				include ../public/SVGs/airlock.svg
+			.container
+				- const year = new Date(Date.now()).getFullYear()
+				p © Copyright #{year} Billy Turvey
