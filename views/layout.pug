@@ -16,23 +16,36 @@ html
 				include ../public/SVGs/nav-user-icon.svg
 
 			nav
-				ul
+				ul 
 					if (user)
 						li
 							a(href="/user/dashboard") Dashboard
 						li
-							a(href="/user/account") Account
+							a(href="/fermentation/add") Add Fermentation
+						li
+							a(href="/device/add") Register Device
+
 					else
+						li
+							a(href="/about") About Fermentr
+						li
+							a(href="https://github.com/BillyTurvey") Contact
+
+				ul
+					if (user)
+						li
+							p Logged in as !{user.name}.
+						li
+							a(href="/user/account") Account
+						li
+							form(action="/user/logOut" method="POST")
+								button(value="Submit") Log Out
+
+					else
+						li
+							a(href="/user/logIn") Log In 
 						li 
 							a(href="/user/register") User Registration
-					li
-						a(href="/about") About
-				if (user)
-					p Logged in as !{user.name}.
-					form(action="/user/logOut" method="POST")
-						button(value="Submit") Log Out
-				else
-					a(href="/user/logIn") Log In 
 
 		block messages 
 			if locals.flashes

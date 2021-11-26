@@ -39,7 +39,14 @@ header svg {
 
 nav {
 	position: absolute;
-	top: -500px;
+	top: 0;
+	right: 0;
+}
+
+nav li {
+	background-color: orange;
+
+	
 }
 
 div.graph-container {
