@@ -11,41 +11,41 @@ html
 				a(href='/')
 					h1 fermentr
 
-			.icon-container
-				include ../public/SVGs/nav-menu-icon.svg
-				include ../public/SVGs/nav-user-icon.svg
-
 			nav
-				ul 
-					if (user)
-						li
-							a(href="/user/dashboard") Dashboard
-						li
-							a(href="/fermentation/add") Add Fermentation
-						li
-							a(href="/device/add") Register Device
-
-					else
-						li
-							a(href="/about") About Fermentr
-						li
-							a(href="https://github.com/BillyTurvey") Contact
-
 				ul
-					if (user)
-						li
-							p Logged in as !{user.name}.
-						li
-							a(href="/user/account") Account
-						li
-							form(action="/user/logOut" method="POST")
-								button(value="Submit") Log Out
-
-					else
-						li
-							a(href="/user/logIn") Log In 
-						li 
-							a(href="/user/register") User Registration
+					li.topmenu
+						include ../public/SVGs/nav-menu-icon.svg
+						ul.submenu
+							if (user)
+								li
+									a(href="/user/dashboard") Dashboard
+								li
+									a(href="/fermentation/add") Add Fermentation
+								li
+									a(href="/device/add") Register Device
+							else
+								li
+									a(href="/about") About Fermentr
+								li
+									a(href="https://github.com/BillyTurvey") Contact
+									
+					li.topmenu 
+						include ../public/SVGs/nav-user-icon.svg
+						ul.submenu 
+							if (user)
+								li
+									p.logged-in-as Logged in as 
+									p !{user.name}
+								li
+									a(href="/user/account") Account details
+								li
+									form(action="/user/logOut" method="POST")
+										button(value="Submit") Log Out
+							else
+								li
+									a(href="/user/logIn") Log In 
+								li 
+									a(href="/user/register") User Registration
 
 		block messages 
 			if locals.flashes
