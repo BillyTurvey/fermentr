@@ -1,7 +1,7 @@
 header {
 	margin-bottom: var(--article-margin);
 	background-color: var(--light);
-	border-top: 0.6em solid var(--dark);
+	border-top: 0.8em solid var(--dark);
 	padding: var(--header-padding);
 	display: flex;
 	align-items: center;
@@ -12,8 +12,8 @@ header h1 {
 	color: var(--accent);
 	font-size: var(--h1-size);
 	margin-bottom: 0;
-  font-style: normal;
-		letter-spacing: 0.3rem;
+	font-style: normal;
+	letter-spacing: 0.3rem;
 }
 
 header a:hover {
@@ -32,7 +32,7 @@ header > div.icon-container {
 
 header svg {
 	height: 1.4rem;
-	margin: 0.9rem 2rem auto 6rem;
+	margin: 0.5625rem 1.25rem auto 3rem;
 	/* margin: 1rem 2rem 1rem 6rem; */
 	fill: var(--accent);
 }

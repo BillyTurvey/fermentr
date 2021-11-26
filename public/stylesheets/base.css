@@ -6,9 +6,9 @@
 	--light: hsla(234, 9%, 95%, 1);
 	--white: hsla(234, 0%, 100%, 1);
 
-	--article-margin: 0.4rem;
-	--article-padding: 2.28rem 3.26rem;
-	--header-padding: 1rem 3.26rem;
+	--article-margin: 0.7rem;
+	--article-padding: 1.7rem 3.26rem 1.8rem;
+	--header-padding: 1.15rem 3.26rem 0.8rem;
 
 	--h1-size: 2.87rem;
 	--h2-size: 2.27rem;
@@ -45,11 +45,16 @@ body {
 	}
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	line-height: 1.1;
 	font-kerning: normal;
 	font-family: 'Helvetica Neue', Arial, sans-serif;
-	font-weight: 700;
+	font-weight: 600;
 	margin: 0 0 1.5rem 0;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
@@ -60,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
 	font-size: var(--h1-size);
 	letter-spacing: 0.2rem;
-  font-style: italic;
+	font-style: italic;
 }
 
 h2 {
@@ -88,6 +93,7 @@ h6 {
 p {
 	margin-top: 0px;
 	margin-bottom: 2.5rem;
+	letter-spacing: 0.04rem;
 }
 
 p.small-copy {
