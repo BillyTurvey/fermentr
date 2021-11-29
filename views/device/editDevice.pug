@@ -6,21 +6,21 @@ block content
 		
 		form(action=`/device/${device.id}/update` method="POST")
 
-			label(for="name") Device Name – to help you differentiate multiple devices.
-			input(type="text", name="name" value=device.name||'' required)
+			label(for="name") Device Name
+			input.device-name(type="text", name="name" value=device.name||'' required)
 
 			br
 
-			label(for="description") Description (optional).
+			label(for="description") Description
 			textarea(name="description" rows=5 columns=33) !{device.description}
 
-
+			hr
 
 			if (fermentations.length > 0)
 				if (device.assignedFermentation)
-					h3 !{device.name} is currently assigned to !{device.assignedFermentation.name}
+					h3.label !{device.name} is currently assigned to !{device.assignedFermentation.name}
 				else
-					h3 Assign this device to a fermentation
+					h3.label Assign this device to a fermentation
 
 				each fermentation in fermentations
 					if (!fermentation.assignedDevice)

@@ -24,7 +24,7 @@ block content
 		form(action=actionPath method='POST') 
 
 			label(for="name") Name
-			input(type="text" name="name" value= name || values.name required)
+			input.fermentation-name(type="text" name="name" value= name || values.name required)
 			br
 			label(for="description") Description
 			textarea(name="description" rows=5 columns=33) !{description || values.description}
@@ -43,8 +43,10 @@ block content
 				input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
 				br
 
+			hr
+
 			if (devices.length > 0)
-				h3 Select a device to monitor/control this fermentation
+				h3.label Select a device to monitor/control this fermentation
 
 				if (f && f.assignedDevice)
 					p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.

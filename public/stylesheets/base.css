@@ -12,12 +12,19 @@
 
 	--h1-size: 2.87rem;
 	--h2-size: 2.27rem;
-	--h3-size: 2.83rem;
-	--h4-size: 1.77rem;
-	--body-size: 1.13rem;
+	--h3-size: 1.8rem;
+	--h4-size: 1.2rem;
+	
+	--body-copy-size: 1.13rem;
+	--body-copy-weight: 400;
 	--bold-copy-weight: 700; 
-	--small-copy-size: 0.8rem;
+	--body-copy-spacing: 0.02rem;
+	
 	--small-copy-weight: 340;
+	--small-copy-size: 0.8rem;
+	
+	--label-weight: 500;
+	
 }
 
 html {
@@ -26,11 +33,12 @@ html {
 }
 
 body {
-	/* font-size: 1.8rem; */
+	font-size: var(--body-copy-size);
 	line-height: 1.618;
 	max-width: 80em;
 	margin: auto;
 	color: var(--dark);
+	letter-spacing: var(--body-copy-spacing);
 	background-color: var(--white);
 	padding: 0;
 }
@@ -72,7 +80,7 @@ h1 {
 
 h2 {
 	font-size: var(--h2-size);
-	letter-spacing: 0.14rem;
+	letter-spacing: 0.05rem;
 }
 
 h3 {
@@ -109,7 +117,8 @@ sup {
 }
 
 hr {
-	border-color: #1d7484;
+	border-color: transparent;
+	margin: 1rem;
 }
 
 a {
@@ -201,6 +210,7 @@ th {
 input,
 textarea {
 	border: 1px solid #4a4a4a;
+	background-color: var(--white);
 }
 input:focus,
 textarea:focus {
@@ -222,12 +232,14 @@ input[type='button'] {
 	text-decoration: none;
 	white-space: nowrap;
 	background-color: var(--accent);
-	color: #f9f9f9;
-	border-radius: 1px;
-	border: 1px solid #1d7484;
+	color: var(--dark);
+	border: none;
 	cursor: pointer;
 	box-sizing: border-box;
 	font-size: var(--small-copy-size);
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	font-weight: 500;
 }
 .button[disabled],
 button[disabled],
@@ -256,21 +268,29 @@ input[type='button']:hover:enabled {
 textarea,
 select,
 input {
-	color: #4a4a4a;
+	color: var(--dark);
 	font-family: 'Helvetica Neue', Arial, sans-serif;
+	font-size: var(--body-copy-size);
+	letter-spacing: var(--body-copy-spacing);
 	padding: 6px 10px;
 	/* The 6px vertically centers text on FF, ignored by Webkit */
 	margin-bottom: 10px;
-	background-color: #f1f1f1;
-	border: 1px solid #f1f1f1;
-	border-radius: 4px;
+	background-color: var(--white);
+	border: none;
+	border-radius: 0px;
 	box-shadow: none;
 	box-sizing: border-box;
 }
+
+input.fermentation-name,
+input.device-name {
+	width: 100%;
+}
+
 textarea:focus,
 select:focus,
 input:focus {
-	border: 1px solid #1d7484;
+	border: 1px solid var(--accent);
 	outline: 0;
 }
 
@@ -283,5 +303,11 @@ legend,
 fieldset {
 	display: block;
 	margin-bottom: 0.5rem;
-	font-weight: 600;
+	font-weight: var(--label-weight);
+	color: var(--mid);
+	font-size: var(--h4-size)
+}
+
+.label {
+	color: var(--mid);
 }

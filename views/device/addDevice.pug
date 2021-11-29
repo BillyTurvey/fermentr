@@ -12,18 +12,20 @@ block content
 			P In accordance with security best practices Fermentr will only store device keys in a cryptographically hashed state. This means you will not be able to retrieve this code again and will have to reregister the device if you loose the key.
 
 		else 
-			h2 Use this page to register a new device to your account. 
+			h2 Register A New Device 
 			
 			form(action="/device/add" method="POST")
 
 				label(for="name") Device Name – to help you differentiate multiple devices.
-				input(type="text", name="name" required)
+				input.device-name(type="text", name="name" required)
 
 				label(for="description") Description (optional).
 				textarea(name="description" rows=5 columns=33)
 
+				hr
+
 				if (user.fermentations.length > 0)
-					h3 Assign this device to a fermentation
+					h3.label Assign this device to a fermentation
 					
 					each fermentation in user.fermentations
 						if (!fermentation.assignedDevice)

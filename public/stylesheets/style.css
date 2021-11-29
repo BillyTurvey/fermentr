@@ -99,7 +99,9 @@ nav button {
 	background-color: transparent;
 	font-size: var(--body-copy-size);
 	color: var(--dark);
-	font-weight: var(--body-copy-weight);
+	font-weight: var(--bold-copy-weight);
+	letter-spacing: var(--body-copy-spacing);
+	text-transform: none;
 	padding: 0;
 	outline: 0;
 	border: none;
