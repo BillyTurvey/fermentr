@@ -15,6 +15,7 @@
 	--h3-size: 2.83rem;
 	--h4-size: 1.77rem;
 	--body-size: 1.13rem;
+	--bold-copy-weight: 700; 
 	--small-copy-size: 0.8rem;
 	--small-copy-weight: 340;
 }
@@ -55,7 +56,7 @@ h6 {
 	line-height: 1.1;
 	font-kerning: normal;
 	font-family: 'Helvetica Neue', Arial, sans-serif;
-	font-weight: 600;
+	font-weight: var(--bold-copy-weight);
 	margin: 0 0 1.5rem 0;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
@@ -104,7 +105,7 @@ p.small-copy {
 small,
 sub,
 sup {
-	/* font-size: 75%; */
+	font-size: var(--small-copy);
 }
 
 hr {
@@ -220,7 +221,7 @@ input[type='button'] {
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
-	background-color: #1d7484;
+	background-color: var(--accent);
 	color: #f9f9f9;
 	border-radius: 1px;
 	border: 1px solid #1d7484;

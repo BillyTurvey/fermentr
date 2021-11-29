@@ -45,9 +45,8 @@ nav ul.topmenu > li {
 }
 
 nav ul.submenu > li {
-	cursor: pointer;
 	padding: 0.45rem 0.6rem 0.3rem;
-	font-weight: 520;
+	font-weight: var(--bold-copy-weight);
 	background-color: var(--mid);
 	margin: 0;
 	border-bottom: 2px solid var(--light);
@@ -87,17 +86,29 @@ ul li ul li {
   width: 100%;
 }
 
-nav ul.sub li {
-	background-color: grey;
-}
-
 nav p.logged-in-as {
 	font-size: 0.75rem;
 	line-height: 100%;
 	margin-top: 0.1rem;
 	color: var(--light);
-	font-weight: var(--small-copy-weight);
+	font-weight: var(--bold-copy-weight);
 	letter-spacing: 1px;
+}
+
+nav button {
+	background-color: transparent;
+	font-size: var(--body-copy-size);
+	color: var(--dark);
+	font-weight: var(--body-copy-weight);
+	padding: 0;
+	outline: 0;
+	border: none;
+}
+
+nav button:focus:enabled,
+nav button:hover:enabled {
+	background-color: transparent;
+	color: var(--dark);
 }
 
 /* ============================================================================ */
@@ -138,6 +149,9 @@ footer {
 footer div.container {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	width: 20%;
+	display: flex;
 	justify-content: center;
 }
 
