@@ -1,8 +1,9 @@
 :root {
 	--accent: hsla(37, 66%, 65%, 1);
+	--accent-hover: hsla(37, 75%, 55%, 1);
 	--dark: hsla(225, 14%, 20%, 1);
 	--mid: hsla(234, 9%, 60%, 1);
-	--mid-hover: hsl(234, 10%, 50%);
+	--mid-hover: hsla(234, 10%, 50%, 1);
 	--light: hsla(234, 9%, 95%, 1);
 	--white: hsla(234, 0%, 100%, 1);
 
@@ -14,17 +15,16 @@
 	--h2-size: 2.27rem;
 	--h3-size: 1.8rem;
 	--h4-size: 1.2rem;
-	
+
 	--body-copy-size: 1.13rem;
 	--body-copy-weight: 400;
-	--bold-copy-weight: 700; 
+	--bold-copy-weight: 700;
 	--body-copy-spacing: 0.02rem;
-	
+
 	--small-copy-weight: 340;
 	--small-copy-size: 0.8rem;
-	
+
 	--label-weight: 500;
-	
 }
 
 html {
@@ -43,7 +43,7 @@ body {
 	padding: 0;
 }
 
-@media (max-width: 684px) {
+/* @media (max-width: 684px) {
 	body {
 		font-size: 1.53rem;
 	}
@@ -53,7 +53,7 @@ body {
 	body {
 		font-size: 1.35rem;
 	}
-}
+} */
 
 h1,
 h2,
@@ -106,7 +106,7 @@ p {
 	letter-spacing: 0.04rem;
 }
 
-p.small-copy {
+small-copy {
 	font-size: var(--small-copy);
 }
 
@@ -124,7 +124,7 @@ hr {
 a {
 	text-decoration: none;
 	color: var(--dark);
-	fill: #1d7484;
+	fill: none;
 }
 a:hover {
 	color: var(--mid);
@@ -132,7 +132,7 @@ a:hover {
 }
 a:visited {
 	color: var(--dark);
-	fill: orange;
+	fill: none;
 }
 
 ul {
@@ -153,9 +153,9 @@ blockquote {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
 	padding-right: 0.8em;
-	border-left: 5px solid #1d7484;
+	border-left: 5px solid var(--accent);
 	margin-bottom: 2.5rem;
-	background-color: #f1f1f1;
+	background-color: var(--white);
 }
 
 blockquote p {
@@ -172,7 +172,7 @@ video {
 
 /* Pre and Code */
 pre {
-	background-color: #f1f1f1;
+	background-color: var(--white);
 	display: block;
 	padding: 1em;
 	overflow-x: auto;
@@ -183,7 +183,7 @@ pre {
 code {
 	font-size: 0.9em;
 	padding: 0 0.5em;
-	background-color: #f1f1f1;
+	background-color: var(--white);
 	white-space: pre-wrap;
 }
 
@@ -203,18 +203,18 @@ table {
 td,
 th {
 	padding: 0.5em;
-	border-bottom: 1px solid #f1f1f1;
+	border-bottom: 1px solid var(--white);
 }
 
 /* Buttons, forms and input */
 input,
 textarea {
-	border: 1px solid #4a4a4a;
+	/* border: 1px solid #4a4a4a; */
 	background-color: var(--white);
 }
 input:focus,
 textarea:focus {
-	border: 1px solid #1d7484;
+	border: 1px solid var(--accent);
 }
 
 textarea {
@@ -259,10 +259,9 @@ input[type='reset']:focus:enabled,
 input[type='reset']:hover:enabled,
 input[type='button']:focus:enabled,
 input[type='button']:hover:enabled {
-	background-color: #982c61;
-	border-color: #982c61;
-	color: #f9f9f9;
-	outline: 0;
+	background-color: var(--accent-hover);
+	border-color: var(--accent-hover);
+	outline: none;
 }
 
 textarea,
@@ -295,7 +294,7 @@ input:focus {
 }
 
 input[type='checkbox']:focus {
-	outline: 1px dotted #1d7484;
+	outline: 1px dotted var(--accent);
 }
 
 label,
@@ -304,10 +303,18 @@ fieldset {
 	display: block;
 	margin-bottom: 0.5rem;
 	font-weight: var(--label-weight);
-	color: var(--mid);
-	font-size: var(--h4-size)
+	font-size: var(--h4-size);
 }
 
+label,
+legend,
+fieldset,
 .label {
 	color: var(--mid);
+}
+
+.p-style {
+	color: var(--dark);
+	font-size: var(--body-copy-size);
+	letter-spacing: var(--body-copy-spacing);
 }

@@ -51,17 +51,18 @@ block content
 				if (f && f.assignedDevice)
 					p Currently device '!{f.assignedDevice.name}' is assigned to !{f.name}.
 
-				.device-radio-container
-					each device in devices
-						- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
-						if (!device.assignedFermentation || isAssignedToThisFermentation)
+				each device in devices
+					- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
+					if (!device.assignedFermentation || isAssignedToThisFermentation)
+						.device-radio-container
 							//- - let ischecked = device.assignedFermentation ? true : false;
 							input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.assignedFermentation!=null)
-							label(for=device.name) !{device.name}
-								span.device-description  - !{device.description}
+							label.p-style(for=device.name) !{device.name}
+								span.small-copy  - !{device.description}
 
+				.device-radio-container
 					input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
-					label(for='none') None
+					label.p-style(for='none') None
 
 			if (editingExistingFermentation)
 				button(type="submit") Update 
