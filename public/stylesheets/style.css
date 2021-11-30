@@ -134,6 +134,7 @@ article.edit {
 article.edit h3,
 article.edit h4 {
 	margin-bottom: 0;
+	font-size: var(--h3point4-size);
 }
 
 article.edit a {
@@ -146,6 +147,7 @@ article.edit a:hover {
 
 .radio-container {
 	display: flex;
+	margin-bottom: 0.55rem;
 }
 
 /* ============================================================================ */

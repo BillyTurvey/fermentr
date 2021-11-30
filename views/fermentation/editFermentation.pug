@@ -64,11 +64,12 @@ block content
 				each device in devices
 					- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
 					if (!device.assignedFermentation || isAssignedToThisFermentation)
+
 						.radio-container
 							//- - let ischecked = device.assignedFermentation ? true : false;
 							input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.assignedFermentation!=null)
 							label.p-style(for=device.name) !{device.name}
-								p.small-copy !{device.description}
+							p.small-copy !{device.description}
 
 				.radio-container
 					input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
