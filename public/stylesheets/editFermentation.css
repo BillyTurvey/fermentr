@@ -1,0 +1,11 @@
+.gravity-container-outer {
+	display: flex;
+}
+
+.gravity-container-inner:first-child {
+	margin-right: 3rem;
+}
+
+.gravity-container-inner input {
+	width: 15rem;
+}

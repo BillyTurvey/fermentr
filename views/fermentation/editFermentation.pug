@@ -1,6 +1,10 @@
 extends ../layout
 
 block content
+
+	style
+		include ../../public/stylesheets/editFermentation.css
+
 	article 
 		if (editingExistingFermentation)
 			h1 Edit Fermentation: !{fermentation.name} 
@@ -29,19 +33,25 @@ block content
 			label(for="description") Description
 			textarea(name="description" rows=5 columns=33) !{description || values.description}
 			br
-			label(for="targetFG") Target OG
-			input(type="number" name="targetOG" step=0.001 value= targetOG || values.targetOG)
-			br
-			label(for="actualFG") Actual OG
-			input(type="number" name="actualOG" step=0.001 value= actualOG || values.actualOG)
-			br
-			label(for="targetFG") Target FG
-			input(type="number" name="targetFG" step=0.001 value= targetFG || values.targetFG)
-			br
-			if (editingExistingFermentation)
-				label(for="actualFG") Actual FG
-				input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
-				br
+
+			.gravity-container-outer
+				.gravity-container-inner
+					label(for="targetFG") Target original gravity
+					input(type="number" name="targetOG" step=0.001 value= targetOG || values.targetOG)
+				
+				.gravity-container-inner
+					label(for="actualFG") Actual original gravity
+					input(type="number" name="actualOG" step=0.001 value= actualOG || values.actualOG)
+
+			.gravity-container-outer
+				.gravity-container-inner
+					label(for="targetFG") Target final gravity
+					input(type="number" name="targetFG" step=0.001 value= targetFG || values.targetFG)
+					
+				.gravity-container-inner
+					if (editingExistingFermentation)
+						label(for="actualFG") Actual final gravity
+						input(type="number" name="actualFG" step=0.001 value= actualFG || values.actualFG)
 
 			hr
 
@@ -54,13 +64,13 @@ block content
 				each device in devices
 					- let isAssignedToThisFermentation = device.assignedFermentation == f?.id;
 					if (!device.assignedFermentation || isAssignedToThisFermentation)
-						.device-radio-container
+						.radio-container
 							//- - let ischecked = device.assignedFermentation ? true : false;
 							input(type="radio" id=device.name name="assignedDevice" value=device._id checked=device.assignedFermentation!=null)
 							label.p-style(for=device.name) !{device.name}
-								span.small-copy  - !{device.description}
+								p.small-copy !{device.description}
 
-				.device-radio-container
+				.radio-container
 					input(type="radio" id='none' name="assignedDevice" value="null" checked= f ? !f.assignedDevice : true)
 					label.p-style(for='none') None
 
