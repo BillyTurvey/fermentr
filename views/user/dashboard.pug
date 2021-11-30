@@ -19,7 +19,9 @@ block content
 							a.edit(href=`/fermentation/${fermentation._id}/edit`) Edit
 						p.small-copy !{fermentation.description}
 			li
-				a(href="/fermentation/add") + Add a new fermentation
+				a(href="/fermentation/add")
+					span.plus + 
+					h4 Add a new fermentation
 
 	article.devices
 		h2 Devices
@@ -36,5 +38,7 @@ block content
 						p.small-copy !{device.description}
 
 			li
-				a(href="/device/add") + Register a new device
+				a(href="/device/add")
+					span.plus + 
+					h4 Register a new device
 
