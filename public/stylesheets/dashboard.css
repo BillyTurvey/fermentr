@@ -6,3 +6,11 @@ a.edit {
 article p {
 	color: var(--mid);
 }
+
+article .small-copy {
+	font-size: 0.9rem;
+}
+
+article h4 {
+	margin-bottom: 0.2rem;
+}
