@@ -97,6 +97,13 @@ nav p.logged-in-as {
 	letter-spacing: 1px;
 }
 
+nav a,
+nav a:focus,
+nav a:hover,
+nav a:visited {
+	color: var(--dark);
+}
+
 nav button {
 	background-color: transparent;
 	font-size: var(--body-copy-size);

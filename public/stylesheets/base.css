@@ -2,6 +2,7 @@
 	--accent: hsla(37, 66%, 65%, 1);
 	--accent-hover: hsla(37, 75%, 55%, 1);
 	--dark: hsla(225, 14%, 20%, 1);
+	--dark-hover: hsla(225, 42%, 20%, 1);
 	--mid: hsla(234, 9%, 60%, 1);
 	--mid-hover: hsla(234, 10%, 50%, 1);
 	--light: hsla(234, 9%, 95%, 1);
@@ -134,16 +135,19 @@ hr {
 
 a {
 	text-decoration: none;
-	color: var(--dark);
-	fill: none;
-}
-a:hover {
 	color: var(--mid);
-	/* border-bottom: 2px solid #4a4a4a; */
-}
-a:visited {
-	color: var(--dark);
 	fill: none;
+}
+
+a:visited {
+	color: var(--mid);
+	fill: none;
+}
+
+a:hover,
+a:focus {
+	color: var(--mid-hover);
+	/* border-bottom: 2px solid #4a4a4a; */
 }
 
 ul {

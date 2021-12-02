@@ -15,6 +15,15 @@ article h4 {
 	margin-bottom: 0.23rem;
 }
 
+article a,
+article a:focus,
+article a:visited {
+	color: var(--dark);
+}
+article a:hover {
+	color: var(--dark-hover);
+}
+
 span.plus {
 	color: var(--accent);
 	font-size: var(--h2-size);
