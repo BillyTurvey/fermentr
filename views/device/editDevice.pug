@@ -23,7 +23,8 @@ block content
 					h3.label Assign this device to a fermentation
 
 				each fermentation in fermentations
-					if (!fermentation.assignedDevice)
+					- let isAssignedToThisDevice = fermentation.assignedDevice == device.id;
+					if (!fermentation.assignedDevice || isAssignedToThisDevice)
 						.fermentationRadio
 							- const isChecked = device.assignedFermentation?._id.toString() == fermentation._id.toString()
 							input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id checked=isChecked)
