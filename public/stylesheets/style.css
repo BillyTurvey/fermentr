@@ -3,7 +3,7 @@
 header {
 	margin-bottom: var(--article-margin);
 	background-color: var(--light);
-	border-top: 0.8em solid var(--dark);
+	border-top: 0.7em solid var(--dark);
 	padding: var(--header-padding);
 	display: flex;
 	align-items: center;
