@@ -31,12 +31,18 @@ span.plus {
 	line-height: 0.8;
 }
 
+article a:hover > span.plus,
+article a:focus > span.plus {
+	color: var(--accent-hover);
+}
+
 span.plus + h4 {
 	font-size: var(--h3point4-size);
 	display: inline-block;
 	color: var(--mid);
 }
 
-span.plus + h4:hover {
+article a:hover > span.plus + h4,
+article a:focus > span.plus + h4 {
 	color: var(--mid-hover);
 }
