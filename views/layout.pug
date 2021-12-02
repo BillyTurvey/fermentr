@@ -54,7 +54,7 @@ html
 					each message in flashes[category]
 						article.flash(class=`flash--${category}`)
 							p.flash__text!= message
-							button.flash__remove(onClick='this.parentElement.remove()') &times;
+							button.flash__remove(onClick='this.parentNode.parentNode.removeChild(this.parentNode)') &times;
 									
 		block content
 

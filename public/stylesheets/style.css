@@ -183,6 +183,28 @@ button.danger:focus {
 	background-color: red;
 }
 
+/* ================================== flashes ========================================== */
+
+article.flash {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+article.flash p,
+article.flash button {
+	margin: 0;
+}
+
+article.flash button {
+	width: 1.5rem;
+	height: 1.5rem;
+	font-size: calc(var(--small-copy-size) * 1.2);
+	line-height: 1.5;
+	padding: 0 0 01.1rem 0.1rem;
+}
+
 /* ================================== footer ========================================== */
 
 footer {
