@@ -33,8 +33,3 @@
 	grid-area: bottom-right;
 	color: var(--mid);
 }
-
-article button {
-	margin: 2rem auto 0;
-	display: block;
-}

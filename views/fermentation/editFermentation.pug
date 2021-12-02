@@ -80,7 +80,7 @@ block content
 			else 
 				button(type="submit") Submit
 
-
-		if (editingExistingFermentation)
+	if (editingExistingFermentation)
+		article
 			form(action=`/fermentation/${f.id}/delete` method="POST")
 				button(type="submit") Delete !{fermentation.name}

@@ -163,6 +163,13 @@ article > p:last-child {
 	margin-bottom: 0;
 }
 
+/* ================================== forms & button ========================================== */
+
+article button {
+	margin-top: 1rem;
+	display: block;
+}
+
 /* ================================== footer ========================================== */
 
 footer {

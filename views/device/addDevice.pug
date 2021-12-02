@@ -31,6 +31,7 @@ block content
 				hr
 
 				if (user.fermentations.length > 0)
+
 					h3.label Assign this device to a fermentation
 					
 					each fermentation in user.fermentations
@@ -39,6 +40,7 @@ block content
 								input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id)
 								label(for=fermentation.name) !{fermentation.name}
 									span.fermentation-description  - !{fermentation.description}
+
 					.fermentationRadio
 						input(type="radio" id=None name="assignedFermentation" value="null" checked)
 						label(for=None) None
