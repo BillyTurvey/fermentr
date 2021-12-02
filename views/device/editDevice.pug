@@ -5,7 +5,7 @@ block content
 	style
 		include ../../public/stylesheets/editFermentation.css
 
-	article 
+	article.flex-grow
 		h2 Edit Device: !{device.name} 
 		
 		form(action=`/device/${device.id}/update` method="POST")

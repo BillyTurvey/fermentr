@@ -40,11 +40,15 @@ body {
 	font-size: var(--body-copy-size);
 	line-height: 1.618;
 	max-width: 80em;
+	min-height: 100vh;
 	margin: auto;
 	color: var(--dark);
 	letter-spacing: var(--body-copy-spacing);
 	background-color: var(--white);
 	padding: 0;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: space-between; */
 }
 
 /* @media (max-width: 684px) {

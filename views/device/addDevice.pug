@@ -7,7 +7,7 @@ block content
 		include ../../public/stylesheets/editFermentation.css
 
 
-	article
+	article.flex-grow
 		if device
 			h2 You have successfully registered 
 				a(href=`/device/${device._id}`) !{device.name}

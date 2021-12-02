@@ -163,6 +163,14 @@ article > p:last-child {
 	margin-bottom: 0;
 }
 
+article.flash {
+	flex: 0;
+}
+
+article.flex-grow {
+	flex-grow: 1;
+}
+
 /* ================================== forms & button ========================================== */
 
 article button {
@@ -183,6 +191,8 @@ footer {
 	padding: var(--article-padding);
 	display: flex;
 	justify-content: space-around;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 footer div.container {

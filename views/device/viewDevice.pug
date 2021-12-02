@@ -6,7 +6,7 @@ block content
 		h1 Device: !{device.name} 
 		p.description !{device.description}
 
-	article.assigned-fermentation
+	article.assigned-fermentation.flex-grow
 		if (device.assignedFermentation)
 			p !{device.name} is currently assigned to '
 				a(href=`/fermentation/${device.assignedFermentation._id}`) !{device.assignedFermentation.name}
