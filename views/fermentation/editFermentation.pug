@@ -83,4 +83,4 @@ block content
 	if (editingExistingFermentation)
 		article
 			form(action=`/fermentation/${f.id}/delete` method="POST")
-				button(type="submit") Delete !{fermentation.name}
+				button.danger(type="submit") Delete !{fermentation.name}

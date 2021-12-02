@@ -170,6 +170,11 @@ article button {
 	display: block;
 }
 
+button.danger:hover,
+button.danger:focus {
+	background-color: red;
+}
+
 /* ================================== footer ========================================== */
 
 footer {

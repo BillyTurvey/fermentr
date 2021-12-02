@@ -36,14 +36,15 @@ block content
 					
 					each fermentation in user.fermentations
 						if (!fermentation.assignedDevice)
-							.fermentationRadio
-								input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id)
-								label(for=fermentation.name) !{fermentation.name}
-									span.fermentation-description  - !{fermentation.description}
 
-					.fermentationRadio
+							.radio-container
+								input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id)
+								label.p-style(for=fermentation.name) !{fermentation.name}
+								p.small-copy !{fermentation.description}
+
+					.radio-container
 						input(type="radio" id=None name="assignedFermentation" value="null" checked)
-						label(for=None) None
+						label.p-style(for=None) None
 
 				button(type="submit") Submit
 

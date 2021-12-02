@@ -1,6 +1,10 @@
 extends ../layout
 
 block content
+
+	style
+		include ../../public/stylesheets/editFermentation.css
+
 	article 
 		h2 Edit Device: !{device.name} 
 		
@@ -25,17 +29,19 @@ block content
 				each fermentation in fermentations
 					- let isAssignedToThisDevice = fermentation.assignedDevice == device.id;
 					if (!fermentation.assignedDevice || isAssignedToThisDevice)
-						.fermentationRadio
+
+						.radio-container
 							- const isChecked = device.assignedFermentation?._id.toString() == fermentation._id.toString()
 							input(type="radio" id=fermentation.name name="assignedFermentation" value=fermentation._id checked=isChecked)
-							label(for=fermentation.name) !{fermentation.name} 
-								span.fermentation-description - !{fermentation.description}
-				.fermentationRadio
+							label.p-style(for=fermentation.name) !{fermentation.name} 
+							p.small-copy !{fermentation.description}
+							
+				.radio-container
 					input(type="radio" id='none' name="assignedFermentation" value="null" checked=device.assignedFermentation ? false : true)
-					label(for=None) None
+					label.p-style(for=None) None
 
 			button(type="submit") Update
 
 	article
 		form(action=`/device/${device._id}/delete` method="POST")
-			button(type="submit") Delete !{device.name}
+			button.danger(type="submit") Delete !{device.name}
