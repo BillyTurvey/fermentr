@@ -49,12 +49,15 @@ html
 
 		block messages 
 			if locals.flashes
+				script(nonce=locals.nonce)
+				
+					include ../public/scripts/closeFlash.js
 				- const categories = Object.keys(locals.flashes)
 				each category in categories
 					each message in flashes[category]
 						article.flash(class=`flash--${category}`)
 							p.flash__text!= message
-							button.flash__remove(onClick='this.parentNode.parentNode.removeChild(this.parentNode)') &times;
+							button.flash-remove &times;
 									
 		block content
 

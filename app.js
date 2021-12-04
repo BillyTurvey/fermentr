@@ -9,6 +9,7 @@ import passport from './utils/passport.js';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 const SessionStore = MongoDBStore(session);
+import cryptoRandomString from 'crypto-random-string';
 
 import indexRouter from './routes/index.js';
 import deviceRouter from './routes/deviceRouter.js';
@@ -30,8 +31,13 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// node rate limiter
 if (app.get('env') !== 'development') app.use(rateLimiterMiddleware);
 
+// create nonce for allowing inline scripts
+const nonce = cryptoRandomString({length: 64, type: 'hex'});
+
+// set CORP and CSP
 app.use(
 	helmet({
 		referrerPolicy: {policy: 'same-origin'},
@@ -39,7 +45,7 @@ app.use(
 			useDefaults: true,
 			directives: {
 				defaultSrc: ["'self'"],
-				scriptSrc: ["'self'", 'https://cdn.skypack.dev'],
+				scriptSrc: ["'self'", 'https://cdn.skypack.dev', `'nonce-${nonce}'`],
 				objectSrc: ["'none'"],
 				upgradeInsecureRequests: []
 			}
@@ -94,6 +100,7 @@ app.use((req, res, next) => {
 	res.locals.flashes = req.flash();
 	res.locals.user = req.user || null;
 	res.locals.currentPath = req.path;
+	res.locals.nonce = nonce;
 	next();
 });
 
