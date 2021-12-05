@@ -1,9 +1,13 @@
-const closeButtons = [...document.getElementsByClassName('flash-remove')];
+document.addEventListener('DOMContentLoaded', addFlashCloseListeners);
 
-closeButtons.forEach(button => {
-	button.addEventListener('click', removeFlash);
-});
+function addFlashCloseListeners() {
+	const closeButtons = [...document.getElementsByClassName('flash-remove')];
 
-function removeFlash(event) {
-	console.log(event);
+	closeButtons.forEach(button => {
+		button.addEventListener('click', removeFlash);
+	});
+
+	function removeFlash(event) {
+		event.target.parentElement.remove();
+	}
 }
