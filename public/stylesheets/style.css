@@ -26,14 +26,14 @@ header > div.icon-container {
 	display: flex;
 } */
 
-header svg {
+/* ==================================== nav ======================================== */
+
+nav svg {
 	height: 1.4rem;
 	margin: 0.5625rem 1.25rem auto 3rem;
 	/* margin: 1rem 2rem 1rem 6rem; */
 	fill: var(--accent);
 }
-
-/* ==================================== nav ======================================== */
 
 nav > ul {
 	display: flex;
@@ -59,6 +59,11 @@ nav ul li ul:hover {
 	visibility: visible;
 	opacity: 1;
 	display: block;
+}
+
+nav ul li:hover svg,
+nav ul li ul:hover svg {
+	fill: var(--accent-hover);
 }
 
 nav ul.submenu li {
