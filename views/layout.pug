@@ -17,34 +17,35 @@ html
 						include ../public/SVGs/nav-menu-icon.svg
 						ul.submenu
 							if (user)
-								li
+								li.submenu
 									a(href="/user/dashboard") Dashboard
-								li
+								li.submenu
 									a(href="/fermentation/add") Add Fermentation
-								li
+								li.submenu
 									a(href="/device/add") Register Device
 							else
-								li
+								li.submenu
 									a(href="/about") About Fermentr
-								li
+								li.submenu
 									a(href="https://github.com/BillyTurvey") Contact
 									
 					li.topmenu 
 						include ../public/SVGs/nav-user-icon.svg
 						ul.submenu 
 							if (user)
-								li
-									p.logged-in-as Logged in as 
-									p !{user.name}
-								li
+								li.submenu.logged-in-as
+									div
+										p.logged-in-as Logged in as 
+										p !{user.name}
+								li.submenu
 									a(href="/user/account") Account details
-								li
+								li.submenu
 									form(action="/user/logOut" method="POST")
 										button(value="Submit") Log Out
 							else
-								li
+								li.submenu
 									a(href="/user/logIn") Log In 
-								li 
+								li.submenu 
 									a(href="/user/register") User Registration
 
 		block messages 

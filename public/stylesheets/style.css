@@ -40,40 +40,18 @@ nav > ul {
 	margin: 0;
 }
 
-nav ul.topmenu > li {
-	flex: 1;
-	transition-duration: 1s;
-	margin: 0;
-}
-
-nav ul.submenu > li {
-	padding: 0.45rem 0.6rem 0.3rem;
-	font-weight: var(--bold-copy-weight);
-	background-color: var(--mid);
-	margin: 0;
-	border-bottom: 2px solid var(--light);
+nav li.topmenu {
 	position: relative;
-	right: 6.5rem;
 }
 
-nav ul.submenu li:hover {
-	background-color: var(--mid-hover);
-}
-
-nav p {
-	margin: 0;
-}
-
-nav ul li ul {
+nav ul.submenu {
 	visibility: hidden;
 	opacity: 0;
+	display: none;
 	position: absolute;
 	transition: all 0.5s ease;
-	margin-top: 1rem;
-	display: none;
-	background-color: hsla(0 0% 0% 0);
-	top: 3.5rem;
-	padding-top: 1rem;
+	right: 0;
+	padding: 1rem 0 0 0;
 }
 
 nav ul li:hover > ul,
@@ -83,9 +61,26 @@ nav ul li ul:hover {
 	display: block;
 }
 
-ul li ul li {
-	clear: both;
-	width: 100%;
+nav ul.submenu li {
+	padding: 0;
+	margin: 0;
+	font-weight: var(--bold-copy-weight);
+	background-color: var(--mid);
+	border-bottom: 3px solid var(--light);
+}
+
+nav ul.submenu a,
+nav ul.submenu li.logged-in-as div,
+nav ul.submenu button {
+	display: block;
+	padding: 0.45rem 0.6rem 0.3rem;
+	margin: 0;
+	text-align: left;
+	width: max-content;
+}
+
+nav p {
+	margin: 0;
 }
 
 nav p.logged-in-as {
@@ -95,6 +90,14 @@ nav p.logged-in-as {
 	color: var(--light);
 	font-weight: var(--bold-copy-weight);
 	letter-spacing: 1px;
+}
+
+nav ul.submenu li:hover {
+	background-color: var(--mid-hover);
+}
+
+nav ul.submenu li.logged-in-as:hover {
+	background-color: var(--mid);
 }
 
 nav a,
@@ -110,6 +113,7 @@ nav button {
 	color: var(--dark);
 	font-weight: var(--bold-copy-weight);
 	letter-spacing: var(--body-copy-spacing);
+	line-height: 1.618;
 	text-transform: none;
 	padding: 0;
 	outline: 0;
