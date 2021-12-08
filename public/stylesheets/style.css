@@ -51,7 +51,7 @@ nav ul.submenu li:hover svg polygon {
 }
 
 nav ul.submenu li.logged-in-as:hover svg polygon {
-	fill: var(--midz);
+	fill: var(--mid);
 }
 
 nav > ul {
@@ -71,6 +71,7 @@ nav ul.submenu {
 	transition: all 0.5s ease;
 	right: 0;
 	padding: 1rem 0 0 0;
+	width: max-content;
 }
 
 nav ul li:hover > ul,
@@ -100,6 +101,8 @@ nav ul.submenu button {
 	padding: 0.45rem 0.6rem 0.3rem;
 	margin: 0;
 	text-align: left;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 nav p {
