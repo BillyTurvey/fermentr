@@ -33,8 +33,3 @@
 	grid-area: bottom-right;
 	color: var(--mid);
 }
-
-button.danger {
-	margin-top: 0;
-	margin-bottom: -0.4rem;
-}

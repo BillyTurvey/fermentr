@@ -1,10 +1,14 @@
 extends ../layout 
 
 block content
+
+	style
+		include ../../public/stylesheets/confirmDelete.css
+
 	article.flex-grow
 
 		h1 Are you sure you want to delete your account?
 		p All of your data will be lost, this cannot be undone.
 
 		form(action=`/user/deleteAccount` method="POST")
-			button(type="submit") Delete my account forever
+			button.danger(type="submit") Delete my account forever

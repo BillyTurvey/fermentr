@@ -214,6 +214,13 @@ article button {
 	display: block;
 }
 
+article > form > button.danger {
+	background-color: var(--mid);
+	/* color: var(--accent-hover); */
+	margin-top: 0;
+	margin-bottom: -0.4rem;
+}
+
 button.danger:hover,
 button.danger:focus {
 	background-color: red;

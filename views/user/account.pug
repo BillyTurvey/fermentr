@@ -17,4 +17,9 @@ block content
 
 			button(type="submit") Update Account Details
 
-		a(href=`/user/deleteAccount`) Delete your account.
+		//- a(href=`/user/deleteAccount`) Delete your account.
+
+	article
+		form(action=`/user/deleteAccount` method="GET")
+			button.danger(type="submit") Delete your account
+
