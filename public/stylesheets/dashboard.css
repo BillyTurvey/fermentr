@@ -1,10 +1,46 @@
-a.edit {
+article {
+	--delay: 0.07s;
+}
+
+article a.edit {
 	color: var(--mid);
-	visibility: hidden;
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: color var(--delay);
+}
+
+article > ul > li > a {
+	display: block;
+	margin: 1rem 0.5rem;
+}
+
+article > ul {
+	padding: 0;
+	position: relative;
+}
+
+article li {
+	position: relative;
+	border-left: 0.5rem solid var(--light);
+	transition: border var(--delay);
+}
+
+article li:hover,
+article li:focus {
+	border-left: 0.5rem solid var(--accent);
+}
+
+article a,
+article a:focus,
+article a:visited {
+	color: var(--dark);
 }
 
 article p {
 	color: var(--mid);
+	margin: 0;
 }
 
 article .small-copy {
@@ -13,22 +49,31 @@ article .small-copy {
 
 article h4 {
 	margin-bottom: 0.23rem;
-}
-
-article a,
-article a:focus,
-article a:visited {
 	color: var(--dark);
 }
-article a:hover {
-	color: var(--dark-hover);
+
+article a.edit h4 {
+	color: var(--light);
 }
 
-span.plus {
+article li:hover a.edit h4,
+article li:focus a.edit h4 {
+	color: var(--mid);
+}
+
+article li a.edit:hover h4,
+article li a.edit:focus h4 {
+	color: var(--dark);
+}
+
+/* ===================== + Add new fermentation/device ========================= */
+
+article span.plus {
 	color: var(--accent);
 	font-size: var(--h2-size);
 	font-weight: var(--bold-copy-weight);
 	line-height: 0.8;
+	transition: color var(--delay);
 }
 
 article a:hover > span.plus,
@@ -40,9 +85,15 @@ span.plus + h4 {
 	font-size: var(--h3point4-size);
 	display: inline-block;
 	color: var(--mid);
+	transition: color var(--delay);
 }
 
 article a:hover > span.plus + h4,
 article a:focus > span.plus + h4 {
 	color: var(--mid-hover);
+}
+
+article li.plus:hover,
+article li.plus:focus {
+	border-left: 0.5rem solid var(--light);
 }

@@ -11,14 +11,12 @@ block content
 			if (user.fermentations.length > 0)
 				each fermentation in user.fermentations
 					li
-						h4
-							a(href=`/fermentation/${fermentation._id}`) !{fermentation.name}
-							|
-							|
-							|
-							a.edit(href=`/fermentation/${fermentation._id}/edit`) Edit
-						p.small-copy !{fermentation.description}
-			li
+						a(href=`/fermentation/${fermentation._id}`)
+							h4 !{fermentation.name}
+							p.small-copy !{fermentation.description}
+						a.edit(href=`/fermentation/${fermentation._id}/edit`)
+							h4 Edit
+			li.plus
 				a(href="/fermentation/add")
 					span.plus + 
 					h4 Add a new fermentation
@@ -29,15 +27,13 @@ block content
 			if (user.devices.length > 0)
 				each device in user.devices
 					li
-						h4
-							a(href=`/device/${device._id}`) !{device.name}
-							|
-							|
-							|
-							a.edit(href=`/device/${device._id}/edit`) Edit
-						p.small-copy !{device.description}
+						a(href=`/device/${device._id}`)
+							h4 !{device.name}
+							p.small-copy !{device.description}
+						a.edit(href=`/device/${device._id}/edit`)
+							h4 Edit
 
-			li
+			li.plus
 				a(href="/device/add")
 					span.plus + 
 					h4 Register a new device

@@ -72,6 +72,7 @@ nav ul.submenu {
 	right: 0;
 	padding: 1rem 0 0 0;
 	width: max-content;
+	z-index: 1;
 }
 
 nav ul li:hover > ul,
