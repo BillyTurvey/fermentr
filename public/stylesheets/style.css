@@ -28,11 +28,30 @@ header > div.icon-container {
 
 /* ==================================== nav ======================================== */
 
-nav svg {
+nav li.topmenu > svg {
 	height: 1.4rem;
 	margin: 0.5625rem 1.25rem auto 3rem;
 	/* margin: 1rem 2rem 1rem 6rem; */
 	fill: var(--accent);
+}
+
+nav ul.submenu svg {
+	height: 0.5rem;
+	position: absolute;
+	top: 0.5rem;
+	right: 1.5rem;
+}
+
+nav ul.submenu svg polygon {
+	fill: var(--mid);
+}
+
+nav ul.submenu li:hover svg polygon {
+	fill: var(--mid-hover);
+}
+
+nav ul.submenu li.logged-in-as:hover svg polygon {
+	fill: var(--midz);
 }
 
 nav > ul {
@@ -81,7 +100,6 @@ nav ul.submenu button {
 	padding: 0.45rem 0.6rem 0.3rem;
 	margin: 0;
 	text-align: left;
-	width: max-content;
 }
 
 nav p {
