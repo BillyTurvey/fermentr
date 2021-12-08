@@ -38,7 +38,7 @@ export const sanitizeAndValidateUser = [
 	}),
 
 	body('registrationPassword', 'Invalid registration password.').escape().notEmpty(),
-	body('password', 'Password is not valid.').escape().notEmpty().isLength({min: 8}),
+	body('password', 'Password is not valid.').escape().notEmpty().isLength({min: 10}),
 	body('passwordConfirm', 'Password confirmation cannot be blank.').escape().notEmpty(),
 	async function checkIfPasswordsMatch(req, res, next) {
 		if (req.body.password) {

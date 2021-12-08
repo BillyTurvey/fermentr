@@ -127,6 +127,10 @@ p {
 	/* letter-spacing: 0.06rem; */
 }
 
+.normal-weight {
+	font-weight: var(--body-copy-weight);
+}
+
 small,
 sub,
 sup {

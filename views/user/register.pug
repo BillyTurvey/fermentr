@@ -12,10 +12,12 @@ block content
 			label(for="email") Email
 			input(type="text" name="email" value=email||'' required)
 
-			label(for="registrationPassword") Registration Password (Only invited users may register at this time.)
+			label(for="registrationPassword") Registration Password 
+				span.small-copy.normal-weight Only invited users may register at this time.
 			input(type="password" name="registrationPassword" required)
 
-			label(for="password") Password (> 8 characters)
+			label(for="password") Password 
+				span.small-copy.normal-weight Must be longer than 10 characters
 			input(type="password" name="password" required)
 
 			label(for="passwordConfirm") Confirm Password
