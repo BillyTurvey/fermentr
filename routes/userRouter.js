@@ -27,6 +27,7 @@ user.logIn
 
 router.use(function removeSessionFromRequest(req, res, next) {
 	req.session = null;
+	res.locals.flashes = null;
 	next();
 });
 

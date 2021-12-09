@@ -30,6 +30,7 @@ router.get('/:id/edit', device.editDeviceForm);
 // requests handled below here will have no session
 router.use(function removeSessionFromRequest(req, res, next) {
 	req.session = null;
+	res.locals.flashes = null;
 	next();
 });
 

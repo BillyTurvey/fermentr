@@ -114,6 +114,7 @@ app.use('/', indexRouter);
 // do not save sessions for requests which aren't served by the above routes
 app.use((req, res, next) => {
 	req.session = null;
+	res.locals.flashes = null;
 	next();
 });
 
