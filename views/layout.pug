@@ -55,7 +55,6 @@ html
 		block messages 
 			if locals.flashes
 				script(nonce=locals.nonce)
-				
 					include ../public/scripts/closeFlash.js
 				- const categories = Object.keys(locals.flashes)
 				each category in categories
