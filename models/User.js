@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-mongoose.Promise = global.Promise;
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import Device from './Device.js';
