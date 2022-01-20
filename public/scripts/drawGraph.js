@@ -1,6 +1,6 @@
 import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
-if (document.getElementsByClassName('graph-container')) drawGraph();
+if (fermentationHasTemperatureData()) drawGraph();
 
 async function drawGraph() {
 	const fermentationId = /[a-z0-9]{24}/.exec(window.location.pathname)[0];
@@ -138,4 +138,12 @@ async function drawGraph() {
 	}
 
 	container.appendChild(svg.node());
+}
+
+function fermentationHasTemperatureData() {
+	if (document.getElementsByClassName('temperature').length > 0) {
+		return true;
+	} else {
+		return false;
+	}
 }
