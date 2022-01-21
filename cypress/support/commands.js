@@ -18,26 +18,6 @@ function logInAs(user) {
 	cy.visit('/user/logIn');
 	cy.get('input[name="email"]').type(user.email);
 	cy.get('input[name="password"]').type(password + '{enter}');
-
-	// cy.request({
-	// 	method: 'POST',
-	// 	url: '/user/logIn',
-	// 	body: {
-	// 		email: user.email,
-	// 		password: password
-	// 	}
-	// });
-
-	// cy.request('POST', '/user/logOut').then(() => {
-	// 	cy.request({
-	// 		method: 'POST',
-	// 		url: '/user/logIn',
-	// 		body: {
-	// 			email: user.email,
-	// 			password: password
-	// 		}
-	// 	});
-	// });
 }
 
 Cypress.Commands.add('logInAs', logInAs);
@@ -54,5 +34,19 @@ Cypress.Commands.add('deleteFermentation', (fermentationName, fermentationOwner)
 		.click();
 	cy.get('button') //
 		.contains(`Delete ${fermentationName}`)
+		.click();
+});
+
+Cypress.Commands.add('deleteDevice', (deviceName, deviceOwner) => {
+	if (deviceOwner) logInAs(deviceOwner);
+	cy.visit('/user/dashboard');
+	cy.get('article.devices > ul > li > a') //
+		.contains(deviceName)
+		.parent()
+		.next('a')
+		.contains('Edit')
+		.click();
+	cy.get('button') //
+		.contains(`Delete ${deviceName}`)
 		.click();
 });
