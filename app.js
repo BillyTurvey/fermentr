@@ -27,17 +27,13 @@ dotenv.config({path: 'variables.env'});
 
 var app = express();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// node rate limiter
 if (app.get('env') !== 'development') app.use(rateLimiterMiddleware);
 
-// create nonce for allowing inline scripts
 const nonce = cryptoRandomString({length: 64, type: 'hex'});
 
-// set CORP and CSP
 app.use(
 	helmet({
 		referrerPolicy: {policy: 'same-origin'},
@@ -45,7 +41,6 @@ app.use(
 			useDefaults: true,
 			directives: {
 				defaultSrc: ["'self'"],
-				scriptSrc: ["'self'", 'https://cdn.skypack.dev', `'nonce-${nonce}'`],
 				objectSrc: ["'none'"],
 				upgradeInsecureRequests: []
 			}
@@ -59,9 +54,6 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
-// Sessions...
-
-//// Where we will store session data
 const mongoSessionStore = new SessionStore({
 	uri: process.env.DB,
 	collection: 'userSessions',
@@ -71,7 +63,6 @@ const mongoSessionStore = new SessionStore({
 	}
 });
 
-//// Catch session store errors
 mongoSessionStore.on('error', error => {
 	console.error(`  ❌  ❌  (Session store) ${error.message}  ❌  ❌  `);
 });
@@ -91,11 +82,9 @@ app.use(
 	})
 );
 
-// // // Passport JS is what we use to handle user session
 app.use(passport.initialize());
 app.use(passport.session());
 
-// pass variables to our templates + all requests
 app.use((req, res, next) => {
 	res.locals.flashes = req.flash();
 	res.locals.user = req.user || null;
@@ -104,32 +93,26 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Routes
 app.use('/user', userRouter);
 app.use('/device', deviceRouter);
 app.use('/fermentation', fermentationRouter);
 app.use('/api', apiRouter);
 app.use('/', indexRouter);
 
-// do not save sessions for requests which aren't served by the above routes
 app.use((req, res, next) => {
 	req.session = null;
 	res.locals.flashes = null;
 	next();
 });
 
-// catch 404 and forward to error handler
 app.use((req, res, next) => {
 	next(createError(404));
 });
 
-// error handler
 app.use((err, req, res, next) => {
-	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-	// render the error page
 	res.status(err.status || 500);
 	res.render('error');
 });
