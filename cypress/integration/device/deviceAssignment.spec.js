@@ -2,7 +2,7 @@ describe('Device Assignment', function () {
 	beforeEach(() => {
 		cy.logInAs('Jeanette');
 	});
-	it.only('Device can be assigned to a fermentation when a user adds a fermentation to their account.', function () {
+	it('Device can be assigned to a fermentation when a user adds a fermentation to their account.', function () {
 		const sameTestFermentationName = `TemporaryTestFermentation${Math.random().toString().slice(2, 7)}`;
 		const sameTestDeviceName = `TemporaryTestDevice${Math.random().toString().slice(2, 7)}`;
 		// create device
@@ -27,13 +27,8 @@ describe('Device Assignment', function () {
 		cy.get('p')
 			.contains(`${sameTestDeviceName} is currently assigned to '${sameTestFermentationName}'.`)
 			.should('exist');
-		// delete fermentation
-		cy.get('a').contains(sameTestFermentationName).click();
-		cy.get('a').contains('Edit fermentation details').click();
-		cy.get('button') //
-			.contains(`Delete ${sameTestFermentationName}`)
-			.click();
-		// delete device
+
+		cy.deleteFermentation(sameTestFermentationName);
 		cy.deleteDevice(sameTestDeviceName);
 	});
 
