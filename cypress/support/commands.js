@@ -27,8 +27,9 @@ Cypress.Commands.add('logOut', () => cy.request('POST', '/user/logOut'));
 Cypress.Commands.add('deleteFermentation', (fermentationName, fermentationOwner) => {
 	if (fermentationOwner) logInAs(fermentationOwner);
 	cy.visit('/user/dashboard');
-	cy.get('article.fermentations > ul > li') //
+	cy.get('article.fermentations > ul > li > a') //
 		.contains(fermentationName)
+		.parent()
 		.next('a')
 		.contains('Edit')
 		.click();
