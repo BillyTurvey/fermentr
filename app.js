@@ -41,6 +41,7 @@ app.use(
 			useDefaults: true,
 			directives: {
 				defaultSrc: ["'self'"],
+				scriptSrc: ["'self'", 'https://cdn.skypack.dev', `'nonce-${nonce}'`],
 				objectSrc: ["'none'"],
 				upgradeInsecureRequests: []
 			}
