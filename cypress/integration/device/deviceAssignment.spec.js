@@ -68,26 +68,29 @@ describe('Device Assignment', function () {
 		const testFermentationName = util.newTestFermentationName();
 		// create fermentation
 		cy.createFermentation(testFermentationName);
-		// create a device and assign it to the fermentation
-		cy.visit('/device/add');
-		cy.get('input[name="name"]').type(testDeviceName);
-		cy.get('textarea[name="description"]').type(
-			'Temporary test device to ensure the correct documents are updated when a user assigns a device to a fermentation during device registration.'
-		);
-		cy.get(`form input[id="${testFermentationName}"]`).click();
-		cy.get('form > button').contains('Submit').click();
-		// assert assignment, on fermentation page
-		cy.get('p')
-			.contains(`Device '${testDeviceName}' is currently assigned to '${testFermentationName}'.`)
-			.should('exist');
-		// assert assignment, on device page
-		cy.get('a').contains(testDeviceName).click();
-		cy.get('p')
-			.contains(`${testDeviceName} is currently assigned to '${testFermentationName}'.`)
-			.should('exist');
-		// delete device and fermentation
-		cy.deleteFermentation(testFermentationName);
-		cy.deleteDevice(testDeviceName);
+		cy.url().then(fermentationURL => {
+			// create a device and assign it to the fermentation
+			cy.visit('/device/add');
+			cy.get('input[name="name"]').type(testDeviceName);
+			cy.get('textarea[name="description"]').type(
+				'Temporary test device to ensure the correct documents are updated when a user assigns a device to a fermentation during device registration.'
+			);
+			cy.get(`form input[id="${testFermentationName}"]`).click();
+			cy.get('form > button').contains('Submit').click();
+			// assert assignment, on fermentation page
+			cy.visit(fermentationURL);
+			cy.get('p')
+				.contains(`Device '${testDeviceName}' is currently assigned to '${testFermentationName}'.`)
+				.should('exist');
+			// assert assignment, on device page
+			cy.get('a').contains(testDeviceName).click();
+			cy.get('p')
+				.contains(`${testDeviceName} is currently assigned to '${testFermentationName}'.`)
+				.should('exist');
+			// delete device and fermentation
+			cy.deleteFermentation(testFermentationName);
+			cy.deleteDevice(testDeviceName);
+		});
 	});
 
 	it('Device can be assigned to a fermentation when a user edits a device.', function () {
