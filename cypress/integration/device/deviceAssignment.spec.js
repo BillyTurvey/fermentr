@@ -7,7 +7,10 @@ describe('Device Assignment', function () {
 	it('Device can be assigned to a fermentation when a user adds a fermentation to their account.', function () {
 		const sameTestFermentationName = util.newTestFermentationName();
 		const sameTestDeviceName = util.newTestDeviceName();
-		cy.createDevice(sameTestDeviceName);
+		cy.createDevice(
+			sameTestDeviceName,
+			'Device can be assigned to a fermentation when a user adds a fermentation to their account.'
+		);
 		// create fermentation
 		cy.visit('/fermentation/add');
 		cy.get('input[name="name"]').type(sameTestFermentationName);
@@ -67,7 +70,10 @@ describe('Device Assignment', function () {
 		const testDeviceName = util.newTestDeviceName();
 		const testFermentationName = util.newTestFermentationName();
 		// create fermentation
-		cy.createFermentation(testFermentationName);
+		cy.createFermentation(
+			testFermentationName,
+			'Device can be assigned to a fermentation during device registration.'
+		);
 		cy.url().then(fermentationURL => {
 			// create a device and assign it to the fermentation
 			cy.visit('/device/add');
@@ -97,7 +103,10 @@ describe('Device Assignment', function () {
 		const testDeviceName = util.newTestDeviceName();
 		const testFermentationName = util.newTestFermentationName();
 		// create fermentation
-		cy.createFermentation(testFermentationName);
+		cy.createFermentation(
+			testFermentationName,
+			'Device can be assigned to a fermentation when a user edits a device.'
+		);
 		cy.url().then(fermentationURL => {
 			// create device
 			cy.createDevice(testDeviceName);
@@ -127,7 +136,10 @@ describe('Device Assignment', function () {
 		const sameTestDeviceName = util.newTestDeviceName();
 		const sameTestFermentationName = util.newTestFermentationName();
 		// create fermentation
-		cy.createFermentation(sameTestFermentationName);
+		cy.createFermentation(
+			sameTestFermentationName,
+			'Device is unassigned from a fermentation when a user deletes a device.'
+		);
 		cy.url().then(fermentationURL => {
 			// create device and assign it to a fermentation (Brett IPA)
 			cy.visit('/device/add');
