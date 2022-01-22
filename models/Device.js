@@ -59,11 +59,15 @@ deviceSchema.pre('save', async function removeFromOldFermentationDocument(next) 
 	try {
 		const oldDevice = await Device.findById(this._id).exec();
 		if (oldDevice && oldDevice.assignedFermentation != this.assignedFermentation) {
-			await Fermentation.findByIdAndUpdate(oldDevice.assignedFermentation?._id, {assignedDevice: null});
+			await Fermentation.findByIdAndUpdate(oldDevice.assignedFermentation?._id, {
+				assignedDevice: null
+			});
 		}
 		next();
 	} catch (error) {
-		console.error(`Error, could not remove device from fermentation document: ${error.message}`);
+		console.error(
+			`Error, could not remove device from fermentation document: ${error.message}`
+		);
 		next(error);
 	}
 });
@@ -71,7 +75,9 @@ deviceSchema.pre('save', async function removeFromOldFermentationDocument(next) 
 deviceSchema.pre('save', async function addToNewFermentationDocument(next) {
 	if (!this.assignedFermentation) return next();
 	try {
-		await Fermentation.findByIdAndUpdate(this.assignedFermentation, {assignedDevice: this._id}).exec();
+		await Fermentation.findByIdAndUpdate(this.assignedFermentation, {
+			assignedDevice: this._id
+		}).exec();
 		next();
 	} catch (error) {
 		console.error(`Error, could not add device to fermentation document: ${error.message}`);
@@ -98,7 +104,6 @@ deviceSchema.pre('findOneAndDelete', async function removeFromFermentationDocume
 	// https://mongoosejs.com/docs/middleware.html#notes
 	try {
 		const device = await this.model.findOne(this.getQuery());
-		// if (!device.assignedFermentation) return next();
 		Fermentation.findByIdAndUpdate(device.assignedFermentation, {assignedDevice: null}).exec();
 		next();
 	} catch (error) {
