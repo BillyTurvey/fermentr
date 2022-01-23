@@ -17,8 +17,11 @@ describe('Fermentation editing', function () {
 			.next('a')
 			.contains('Edit')
 			.click();
-		cy.get('textarea[name="description"]').type(
-			'A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah A load more text to cause this description to be too long and fail validation.'
+		cy.get(
+			'textarea[name="description"]'
+		).type(
+			'A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah A load more text to cause this description to be too long and fail validation. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah A load more text to cause this description to be too long and fail validation.',
+			{delay: 0}
 		);
 		cy.get('form > button').contains('Update').click();
 		cy.get('textarea[name=description]').contains('blah blah').should('exist');
