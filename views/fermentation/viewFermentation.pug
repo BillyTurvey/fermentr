@@ -12,11 +12,6 @@ block content
 		if (fermentation.description)
 			p.description !{fermentation.description}
 		
-	//- article
-	//- 	h2 Fermentation Target Thermal Profile
-
-	//- 	.graph-container
-
 	if (fermentation.recipe.malt || fermentation.recipe.hops || fermentation.recipe.yeast) 
 		article.recipe
 			h2 Recipe
@@ -26,7 +21,6 @@ block content
 			h2 Temperature
 			p Last logged temperature: #{lastLog.temp}°C at #{lastLog.timeDateString}.
 			.graph-container
-				//- svg#temp-graph
 	
 	if (fermentation.targetOG || fermentation.actualOG || fermentation.targetFG || fermentation.actualFG)
 		article.gravity
