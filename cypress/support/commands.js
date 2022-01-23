@@ -16,8 +16,8 @@ Cypress.Commands.add('logInAs', user => {
 	}
 
 	cy.visit('/user/logIn');
-	cy.get('input[name="email"]').type(user.email);
-	cy.get('input[name="password"]').type(password + '{enter}');
+	cy.get('input[name="email"]').type(user.email, {delay: 0});
+	cy.get('input[name="password"]').type(password + '{enter}', {delay: 0});
 });
 
 Cypress.Commands.add('logOut', () => cy.request('POST', '/user/logOut'));
@@ -52,18 +52,20 @@ Cypress.Commands.add('deleteDevice', (deviceName, deviceOwner) => {
 
 Cypress.Commands.add('createDevice', device => {
 	cy.visit('/device/add');
-	cy.get('input[name="name"]').type(device.name);
-	cy.get('textarea[name="description"]').type(device.description || 'Temporary test device.');
+	cy.get('input[name="name"]').type(device.name, {delay: 0});
+	cy.get('textarea[name="description"]').type(device.description || 'Temporary test device.', {delay: 0});
 	cy.get('form').contains('Submit').click();
 	if (!(device.redirect === false)) {
 		cy.get('a').contains(device.name).click(); //allows tests to save the url of the freshly created device
 	}
 });
 
-Cypress.Commands.add('createFermentation', (fermentationName, description) => {
+Cypress.Commands.add('createFermentation', fermentation => {
 	cy.visit('/fermentation/add');
-	cy.get('input[name="name"]').type(fermentationName);
-	cy.get('textarea[name="description"]').type(description || 'Temporary test fermentation.');
+	cy.get('input[name="name"]').type(fermentation.name, {delay: 0});
+	cy.get('textarea[name="description"]').type(fermentation.description || 'Temporary test fermentation.', {
+		delay: 0
+	});
 	cy.get('form').contains('Submit').click();
 });
 

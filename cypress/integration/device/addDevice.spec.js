@@ -76,7 +76,7 @@ describe('Add device page lists fermentations', function () {
 	it("contains a list of user's fermentations", function () {
 		cy.logInAs('Jeanette');
 		const fermentationName = util.newTestFermentationName();
-		cy.createFermentation(fermentationName, 'Add device page lists fermentations');
+		cy.createFermentation({name: fermentationName, description: 'Add device page lists fermentations'});
 		cy.visit('/device/add');
 		cy.get('form label') //
 			.contains(fermentationName)
