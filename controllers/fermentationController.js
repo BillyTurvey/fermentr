@@ -46,17 +46,13 @@ export const update = async (req, res, next) => {
 
 export const addToDatabase = async (req, res, next) => {
 	try {
-		// pre-validate middleware on the fermentation model checks the device ID is valid
-		// and that the device is owned by the user who is creating the fermentation.
-		// pre-save middleware on the fermentation model adds the fermentation id to the User db entry
-		// post-save middleware on the fermentation model the activeFermentation field on the device is updated
-
 		const fermentation = await Fermentation.create({
 			name: req.body.name,
 			description: req.body.description,
 			dateRegistered: Date.now(),
 			user: req.user._id,
-			assignedDevice: req.body.assignedDevice === ('null' || undefined) ? null : req.body.assignedDevice
+			assignedDevice:
+				req.body.assignedDevice === ('null' || undefined) ? null : req.body.assignedDevice
 		});
 		req.flash('success', 'Fermentation added.');
 		return res.redirect(`/fermentation/${fermentation._id}`);
@@ -76,7 +72,6 @@ export const addToDatabase = async (req, res, next) => {
 };
 
 export const deleteFermentation = async function (req, res, next) {
-	// pre delete hook on the fermentation model removes the fermentation id from the user's db entry
 	try {
 		await Fermentation.findByIdAndDelete(req.fermentation._id).exec();
 		req.flash('success', `Fermentation: ${req.fermentation.name} was successfully deleted.`);
@@ -91,7 +86,9 @@ export const view = async (req, res, next) => {
 	const fermentation = await req.fermentation.populate('dataLog').execPopulate();
 	if (fermentation.dataLog.thermalProfile.actual[0]) {
 		var lastLog =
-			fermentation.dataLog.thermalProfile.actual[fermentation.dataLog.thermalProfile.actual.length - 1];
+			fermentation.dataLog.thermalProfile.actual[
+				fermentation.dataLog.thermalProfile.actual.length - 1
+			];
 		lastLog.timeDateString = makeTimeStrings(lastLog?.time).timeDateString;
 	} else {
 		var lastLog = false;
@@ -122,6 +119,5 @@ export const authenticateAndAttachToReq = async (req, res, next, id) => {
 export const retrieveAndProcessGraphData = async (req, res) => {
 	const dataLog = await DataLog.findById(req.fermentation.dataLog);
 	const rawActual = dataLog.thermalProfile.actual;
-	// const arrayActual = rawActual.map(log => [log.time / 60000, log.temp]); //removes second and millisecond accuracy
 	res.json(rawActual).end();
 };

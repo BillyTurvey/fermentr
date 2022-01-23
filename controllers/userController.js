@@ -29,7 +29,11 @@ export const logIn = (req, res, next) => {
 		}
 		if (!user) {
 			req.flash('error', 'Login failed.');
-			return res.render('user/logIn', {title: 'Log In', email: req.body.email, flashes: req.flash()});
+			return res.render('user/logIn', {
+				title: 'Log In',
+				email: req.body.email,
+				flashes: req.flash()
+			});
 		}
 		req.logIn(user, async function (err) {
 			if (err) return next(err);
@@ -83,7 +87,6 @@ export const confirmDelete = (req, res) => {
 export const updateAccount = (req, res) => {};
 
 export const deleteAccount = async (req, res, next) => {
-	// pre delete hook on the user model deletes the user's devices and fermentations.
 	try {
 		if (req.user) {
 			await User.findByIdAndDelete(req.user._id).exec();
