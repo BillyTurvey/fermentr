@@ -125,5 +125,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# snyk
 .dccache
+
+# cypress screenshots and videos
+cypress/screenshots
+cypress/videos
+
