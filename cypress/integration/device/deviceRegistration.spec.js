@@ -1,4 +1,5 @@
 import {logOut} from '../../fixtures/testUtils.js';
+import * as util from '../../support/commands.js';
 
 const visitAddDeviceWithoutRequired = () => {
 	cy.visit('/device/add', {
@@ -72,81 +73,89 @@ describe('Device description', function () {
 describe('Add device page lists fermentations', function () {
 	it("contains a list of user's fermentations", function () {
 		cy.logInAs('Jeanette');
+		// create fermentation
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation(fermentationName, 'Add device page lists fermentations');
 		cy.visit('/device/add');
-		cy.get('form > .fermentationRadio > label') //
-			.contains('Breakfast Stout')
+		cy.get('form label') //
+			.contains(fermentationName)
+			.should('exist');
+		cy.deleteFermentation(fermentationName);
+	});
+});
+
+describe('All fields are properly sanitized/escaped', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('device name is escaped', function () {
+		// create device with name to be sanitized
+		const deviceName = util.newTestDeviceName().slice(20) + ' & <br>';
+		cy.createDevice(deviceName, 'device name is escaped');
+		// assert name is rendered correctly
+		cy.get('h1').contains(' & <br>').should('exist');
+		// delete device
+		cy.deleteDevice(deviceName);
+	});
+	it('device description is escaped', function () {
+		// create device with script in description
+		const deviceName = util.newTestDeviceName();
+		cy.createDevice(deviceName, '<script> alert("test") </script>');
+		// assert script is rendered in full
+		cy.get('p').contains('<script> alert("test") </script>').should('exist');
+		// delete device
+		cy.deleteDevice(deviceName);
+	});
+});
+
+describe('Success', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('provides access key upon successfully registering device', function () {
+		// create device
+		const deviceName = util.newTestDeviceName();
+		cy.createDevice(deviceName, 'provides access key upon successfully registering device', false);
+		// assert access key is provided
+		const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
+		cy.get('p').contains(uuidRegEx).should('exist');
+		// delete device
+		cy.deleteDevice(deviceName);
+	});
+});
+
+describe('Successfully adding a Device', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it("causes the device to appear in a list on the user's dashboard", function () {
+		cy.visit('/user/dashboard');
+		cy.get('article.devices > ul > li > a') //
+			.contains(temporaryTestDeviceName)
 			.should('exist');
 	});
-});
-
-// all fields are sanitized/escaped
-describe('Sanitization', function () {
-	it('form inputs are escaped', function () {
-		cy.logInAs('Jeanette');
-		cy.visit('/device/add');
-		cy.get('input[name="name"]').type('<script>&');
-		cy.get('form').contains('Submit').click();
-		cy.get('.flash--error').should(
-			'contain',
-			`You already have a device named '<script>&', please choose a new name.`
-		);
-		logOut();
+	it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
+		cy.visit('/user/dashboard');
+		cy.get('article.devices > ul > li > a') //
+			.contains(temporaryTestDeviceName)
+			.click();
 	});
 });
 
-{
-	const temporaryTestDeviceName = `TemporaryTestDevice${Date.now().toString().slice(8, 12)}`;
-
-	describe('Success', function () {
-		before(() => cy.logInAs('Jeanette'));
-		it('provides access key upon successfully registering device', function () {
-			const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
-			cy.visit('/device/add');
-			cy.get('input[name="name"]').type(temporaryTestDeviceName);
-			cy.get('form > .fermentationRadio > input[id="Bière De Saison"]') //
-				.click();
-			cy.get('form').contains('Submit').click();
-			cy.get('p').contains(uuidRegEx).should('exist');
-		});
+describe('Deleting a device', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('Device can be deleted using a button on the "edit device" page', function () {
+		cy.visit('/user/dashboard');
+		cy.get('article.devices > ul > li') //
+			.contains(temporaryTestDeviceName)
+			.next('a')
+			.contains('Edit')
+			.click();
+		cy.get('button') //
+			.contains(`Delete ${temporaryTestDeviceName}`)
+			.click();
+		cy.get('article.devices > ul > li') //
+			.contains(temporaryTestDeviceName)
+			.should('not.exist');
 	});
-
-	describe('Successfully adding a Device', function () {
-		beforeEach(() => cy.logInAs('Jeanette'));
-		it("causes the device to appear in a list on the user's dashboard", function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.devices > ul > li > a') //
-				.contains(temporaryTestDeviceName)
-				.should('exist');
-		});
-		it('causes the chosen device to have the fermentation listed as its current fermentaion', function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.devices > ul > li > a') //
-				.contains(temporaryTestDeviceName)
-				.click();
-		});
+	it("causes the device to be removed from the user's DB entry", function () {
+		cy.visit('/user/dashboard');
+		cy.get('article.devices > ul > li > a') //
+			.contains(temporaryTestDeviceName)
+			.should('not.exist');
 	});
-
-	describe('Deleting a device', function () {
-		beforeEach(() => cy.logInAs('Jeanette'));
-		it('Device can be deleted using a button on the "edit device" page', function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.devices > ul > li') //
-				.contains(temporaryTestDeviceName)
-				.next('a')
-				.contains('Edit')
-				.click();
-			cy.get('button') //
-				.contains(`Delete ${temporaryTestDeviceName}`)
-				.click();
-			cy.get('article.devices > ul > li') //
-				.contains(temporaryTestDeviceName)
-				.should('not.exist');
-		});
-		it("causes the device to be removed from the user's DB entry", function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.devices > ul > li > a') //
-				.contains(temporaryTestDeviceName)
-				.should('not.exist');
-		});
-	});
-}
+});
