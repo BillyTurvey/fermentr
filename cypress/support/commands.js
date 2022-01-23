@@ -68,5 +68,6 @@ Cypress.Commands.add('createFermentation', (fermentationName, description) => {
 });
 
 export const newTestDeviceName = () => `TemporaryTestDevice${Math.random().toString().slice(2, 7)}`;
+
 export const newTestFermentationName = () =>
 	`TemporaryTestFermentation${Math.random().toString().slice(2, 7)}`;
