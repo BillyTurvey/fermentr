@@ -41,7 +41,9 @@ describe('Add fermantation page', function () {
 		cy.get('form')
 			.should('contain', 'Name') //
 			.should('contain', 'Description')
-			.should('contain', 'Target FG');
+			.should('contain', 'Target final gravity')
+			.should('contain', 'Target original gravity')
+			.should('contain', 'Actual original gravity');
 	});
 });
 
@@ -80,7 +82,7 @@ describe('Fermentation name', function () {
 
 describe('Add fermentation page: Devices...', function () {
 	before(() => cy.logInAs('Jeanette'));
-	it('contains a list of available devices owned by the user', function () {
+	it.only('contains a list of available devices owned by the user', function () {
 		cy.visit('/fermentation/add');
 		cy.get('form > .device-radio-container > label') //
 			.contains('Arduino MKR')
@@ -95,7 +97,8 @@ describe('Fermentation description', function () {
 		cy.get('input[name="name"]').type('Test Fermentation');
 		cy.get('textarea[name="description"]') //
 			.type(
-				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters.'
+				'A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum A description which consists of too many characters.',
+				{delay: 0}
 			);
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
