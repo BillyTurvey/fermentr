@@ -1,4 +1,16 @@
-// must be logged in to view fermentation
+describe('Viewing a fermentation', function () {
+	it('User must be logged in.', function () {
+		cy.logOut;
+		cy.request({
+			method: 'GET',
+			url: '/fermentation/60e1b00a3efff60ee0a65001',
+			failOnStatusCode: false
+		}).should(response => {
+			expect(response.status).to.eq(401);
+		});
+	});
+});
+
 // page lists fermentation specs:
 // name
 // Description
