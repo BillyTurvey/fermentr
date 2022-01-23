@@ -36,6 +36,7 @@ describe('Authenticated log request', function () {
 			expect(response.status).to.eq(200);
 		});
 	});
+
 	it('log requests are saved in the database', function () {
 		const sameTemperature = randomTemperature();
 		const key = Cypress.env('activeTestDeviceKey');
