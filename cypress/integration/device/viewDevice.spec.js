@@ -22,7 +22,7 @@ describe('Viewing a device', function () {
 			});
 		});
 	});
-	it.only('If logged in, user is able to view one of thier own devices.', function () {
+	it('If logged in, user is able to view one of thier own devices.', function () {
 		cy.logInAs('Jeanette');
 		const deviceName = util.newTestDeviceName();
 		cy.createDevice({

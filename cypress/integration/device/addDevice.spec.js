@@ -27,13 +27,14 @@ describe('User', function () {
 describe('Device name', function () {
 	beforeEach(() => {
 		cy.logInAs('Nelson');
-		visitAddDeviceWithoutRequired();
 	});
 	it('is a required field', function () {
+		visitAddDeviceWithoutRequired();
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should('contain', 'Device name is a required field.');
 	});
 	it('must be unique to user', function () {
+		cy.visit('/device/add');
 		cy.get('input[name="name"]').type('Arduino One');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
@@ -42,6 +43,7 @@ describe('Device name', function () {
 		);
 	});
 	it('must be shorter than 30 chars', function () {
+		cy.visit('/device/add');
 		cy.get('input[name="name"]').type('This string really is far far far too long for a device name');
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
