@@ -1,6 +1,5 @@
 import {logOut} from '../../fixtures/testUtils.js';
-import nelson from '../../fixtures/testUserNelson.json';
-import jeanette from '../../fixtures/testUserJeanette.json';
+import * as util from '../../support/commands.js';
 
 const logInAndVisitAddFermentationWithoutRequired = () => {
 	cy.logInAs('Nelson');
@@ -54,16 +53,23 @@ describe('Fermentation name', function () {
 		cy.get('.flash--error').should('contain', 'Fermentation name is a required field.');
 	});
 	it('must be unique to user', function () {
-		cy.get('input[name="name"]').type('Just Another IPA');
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation({
+			name: fermentationName,
+			description: 'Fermentation can be deleted using a button on the "edit fermentation" page'
+		});
+		cy.visit('/fermentation/add');
+		cy.get('input[name="name"]').type(fermentationName);
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
-			`You already have a fermentation named 'Just Another IPA', please choose a new name.`
+			`You already have a fermentation named '${fermentationName}', please choose a new name.`
 		);
+		cy.deleteFermentation(fermentationName);
 	});
 	it('must be shorter than 30 chars', function () {
 		cy.get('input[name="name"]') //
-			.type('This string really is far far far too long for a Fermentation name');
+			.type('This string really is far far far too long for a Fermentation name', {delay: 0});
 		cy.get('form').contains('Submit').click();
 		cy.get('.flash--error').should(
 			'contain',
@@ -82,10 +88,12 @@ describe('Fermentation name', function () {
 
 describe('Add fermentation page: Devices...', function () {
 	before(() => cy.logInAs('Jeanette'));
-	it.only('contains a list of available devices owned by the user', function () {
+	it('contains a list of available devices owned by the user', function () {
 		cy.visit('/fermentation/add');
-		cy.get('form > .device-radio-container > label') //
-			.contains('Arduino MKR')
+		cy.get('form h3') //
+			.contains('Select a device to monitor/control this fermentation')
+			.should('exist');
+		cy.get('form div.radio-container') //
 			.should('exist');
 	});
 });
@@ -108,77 +116,67 @@ describe('Fermentation description', function () {
 	});
 });
 
-{
-	const temporaryTestFermentationName = `Test Fermentation<br>${Math.random().toString().slice(9, 12)}`;
-	const jeanettesDevice = jeanette.devices[0].name;
-
-	// Updates the device's entry in the databse to show its active fermentation
-
-	describe('Successfully adding a fermentation', function () {
-		beforeEach(() => cy.logInAs('Jeanette'));
-		it('redirects to viewing the saved fermentation', function () {
-			cy.visit('/fermentation/add');
-			cy.get('input[name="name"]').type(temporaryTestFermentationName);
-			cy.get('textarea[name="description"]').type(
-				'This block of text is the description for a TEMPORARY test fermentation. We\'re including a script element to test for correct form input sanitization: <script>alert("Gotcha!")</script>.'
-			);
-			cy.get(`form > .device-radio-container > input[id="${jeanettesDevice}"]`).click();
-			cy.get('form').contains('Submit').click();
-			cy.get('h1').contains(temporaryTestFermentationName).should('exist');
+describe('Successfully adding a fermentation', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('redirects to viewing the saved fermentation', function () {
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation({
+			name: fermentationName,
+			description: 'Successfully adding a fermentation redirects to viewing the saved fermentation'
 		});
-		it("causes the fermentation to appear on the user's dashboard", function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.fermentations > ul > li > a') //
-				.contains(temporaryTestFermentationName)
-				.should('exist');
-		});
+		cy.get('h1').contains(fermentationName).should('exist');
+		cy.deleteFermentation(fermentationName);
 	});
-
-	describe('Sanitization', function () {
-		beforeEach(() => cy.logInAs('Jeanette'));
-		it('Fermentation name is escaped', function () {
-			cy.visit('/user/dashboard');
-			cy.get('a').contains(temporaryTestFermentationName).should('exist');
+	it("causes the fermentation to appear on the user's dashboard", function () {
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation({
+			name: fermentationName,
+			description: "Successfully adding a fermentation causes it to appear on the user's dashboard"
 		});
-		it('Fermentation description is escaped', function () {
-			cy.visit('/user/dashboard');
-			cy.get('a').contains(temporaryTestFermentationName).click();
-			cy.get('p').contains('<script>alert("Gotcha!")</script>').should('exist');
-		});
+		cy.visit('/user/dashboard');
+		cy.get('article.fermentations a') //
+			.contains(fermentationName)
+			.should('exist');
+		cy.deleteFermentation(fermentationName);
 	});
+});
 
-	describe('Deleting a fermentation', function () {
-		beforeEach(() => cy.logInAs('Jeanette'));
-		it('Fermentation can be deleted using a button on the "edit fermentation" page', function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.fermentations > ul > li') //
-				.contains(temporaryTestFermentationName)
-				.next('a')
-				.contains('Edit')
-				.click();
-			cy.get('button') //
-				.contains(`Delete ${temporaryTestFermentationName}`)
-				.click();
-			cy.visit('/user/dashboard');
-			cy.get('article.fermentations > ul > li') //
-				.contains(temporaryTestFermentationName)
-				.should('not.exist');
-		});
-		it("causes the fermentation to be removed from the user's DB entry", function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.fermentations > ul > li > a') //
-				.contains(temporaryTestFermentationName)
-				.should('not.exist');
-		});
-		it("causes the fermentation's active device to no longer have an active fermentation", function () {
-			cy.visit('/user/dashboard');
-			cy.get('article.devices > ul > li > a') //
-				.contains(jeanettesDevice)
-				.click();
-			cy.get('p') //
-				.contains(`${jeanettesDevice} is not currently assigned to a fermentation.`)
-				.should('exist');
-		});
+describe('Sanitization', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('fermentation name is escaped', function () {
+		const fermentationName = util.newTestFermentationName().slice(20) + ' & <br>';
+		cy.createFermentation({name: fermentationName, description: 'fermentation name is escaped'});
+		cy.get('h1').contains(' & <br>').should('exist');
+		cy.deleteFermentation(fermentationName);
 	});
-}
+	it('fermentation description is escaped', function () {
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation({name: fermentationName, description: '<script> alert("test") </script>'});
+		cy.get('p').contains('<script> alert("test") </script>').should('exist');
+		cy.deleteFermentation(fermentationName);
+	});
+});
+
+describe('Deleting a fermentation', function () {
+	beforeEach(() => cy.logInAs('Jeanette'));
+	it('Fermentation can be deleted using a button on the "edit fermentation" page', function () {
+		const fermentationName = util.newTestFermentationName();
+		cy.createFermentation({
+			name: fermentationName,
+			description: 'Fermentation can be deleted using a button on the "edit fermentation" page'
+		});
+		cy.get('a') //
+			.contains('Edit fermentation details')
+			.click();
+		cy.get('button') //
+			.contains(`Delete ${fermentationName}`)
+			.click();
+		cy.get('p.flash__text') //
+			.contains(`${fermentationName} was successfully deleted`)
+			.should('exist');
+		cy.get('article.fermentations li') //
+			.contains(fermentationName)
+			.should('not.exist');
+	});
+});
 // gravity readings must be formatted correctly}
