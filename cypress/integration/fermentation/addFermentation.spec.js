@@ -1,4 +1,3 @@
-import {logOut} from '../../fixtures/testUtils.js';
 import * as util from '../../support/commands.js';
 
 const logInAndVisitAddFermentationWithoutRequired = () => {
@@ -38,7 +37,7 @@ describe('Add fermantation page', function () {
 	it('contains form with correct inputs', function () {
 		cy.visit('/fermentation/add');
 		cy.get('form')
-			.should('contain', 'Name') //
+			.should('contain', 'Name')
 			.should('contain', 'Description')
 			.should('contain', 'Target final gravity')
 			.should('contain', 'Target original gravity')
@@ -179,4 +178,3 @@ describe('Deleting a fermentation', function () {
 			.should('not.exist');
 	});
 });
-// gravity readings must be formatted correctly}
