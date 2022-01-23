@@ -89,7 +89,7 @@ describe('All fields are properly sanitized/escaped', function () {
 	it('device name is escaped', function () {
 		// create device with name to be sanitized
 		const deviceName = util.newTestDeviceName().slice(20) + ' & <br>';
-		cy.createDevice(deviceName, 'device name is escaped');
+		cy.createDevice({name: deviceName, description: 'device name is escaped'});
 		// assert name is rendered correctly
 		cy.get('h1').contains(' & <br>').should('exist');
 		// delete device
@@ -98,7 +98,7 @@ describe('All fields are properly sanitized/escaped', function () {
 	it('device description is escaped', function () {
 		// create device with script in description
 		const deviceName = util.newTestDeviceName();
-		cy.createDevice(deviceName, '<script> alert("test") </script>');
+		cy.createDevice({name: deviceName, description: '<script> alert("test") </script>'});
 		// assert script is rendered in full
 		cy.get('p').contains('<script> alert("test") </script>').should('exist');
 		// delete device
@@ -111,7 +111,11 @@ describe('Success', function () {
 	it('provides access key upon successfully registering device', function () {
 		// create device
 		const deviceName = util.newTestDeviceName();
-		cy.createDevice(deviceName, 'provides access key upon successfully registering device', false);
+		cy.createDevice({
+			name: deviceName,
+			description: 'provides access key upon successfully registering device',
+			redirect: false
+		});
 		// assert access key is provided
 		const uuidRegEx = /\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}/;
 		cy.get('p').contains(uuidRegEx).should('exist');

@@ -50,12 +50,14 @@ Cypress.Commands.add('deleteDevice', (deviceName, deviceOwner) => {
 		.click();
 });
 
-Cypress.Commands.add('createDevice', (deviceName, description) => {
+Cypress.Commands.add('createDevice', device => {
 	cy.visit('/device/add');
-	cy.get('input[name="name"]').type(deviceName);
-	cy.get('textarea[name="description"]').type(description || 'Temporary test device.');
+	cy.get('input[name="name"]').type(device.name);
+	cy.get('textarea[name="description"]').type(device.description || 'Temporary test device.');
 	cy.get('form').contains('Submit').click();
-	cy.get('a').contains(deviceName).click(); //allows tests to save the url of the freshly created device
+	if (!(device.redirect === false)) {
+		cy.get('a').contains(device.name).click(); //allows tests to save the url of the freshly created device
+	}
 });
 
 Cypress.Commands.add('createFermentation', (fermentationName, description) => {
