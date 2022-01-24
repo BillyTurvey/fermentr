@@ -1,5 +1,6 @@
 :root {
 	--accent: hsla(37, 66%, 65%, 1);
+	accent-color: hsla(37, 66%, 65%, 1);
 	--accent-hover: hsla(37, 75%, 55%, 1);
 	--dark: hsla(225, 14%, 20%, 1);
 	--dark-hover: hsla(225, 42%, 30%, 1);
