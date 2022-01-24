@@ -1,11 +1,11 @@
 import {Router} from 'express';
-import * as api from '../controllers/apiController.js';
-import * as fermentation from '../controllers/fermentationController.js';
+import * as api from '../controllers/api/apiController.js';
+import * as fermentation from '../controllers/fermentation/authorise.js'
 
 const router = Router();
 
-router.param('id', fermentation.authenticateAndAttachToReq);
+router.param('id', fermentation.authoriseAndAttachToRequest);
 
-router.get('/:id/graph', fermentation.retrieveAndProcessGraphData);
+router.get('/:id/graph', api.retrieveAndProcessGraphData);
 
 export default router;

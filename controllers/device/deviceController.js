@@ -187,11 +187,8 @@ export const sendTargetTemp = (req, res) => {
 };
 
 export const register = [
-	// sanitize and validate device
 	sanitizeAndValidate.device,
-	//generate hashed access token
 	generateKey,
 	hashKey,
-	//save to db
 	addDeviceToDatabase
 ];
