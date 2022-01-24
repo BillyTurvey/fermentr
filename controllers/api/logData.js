@@ -3,16 +3,14 @@ import DataLog from '../../models/DataLog.js';
 export const logReading = async (req, res, next) => {
 	try {
 		if (!req.device) {
-			res.status(400).json({
+			res.status(401).json({
 				message: 'Device configuration error, check authentication credentials.'
 			});
-			throw new Error(
-				'This device is not assigned to a fermentation, therefore the data it is submitting cannot be saved.'
-			);
+			throw new Error('Not authorized, data cannot be saved.');
 		}
 		const fermentation = req.device.assignedFermentation;
 		if (!fermentation) {
-			res.status(400).json({
+			res.status(405).json({
 				message:
 					'Error! This device is not assigned to a fermentation, therefore the data it is submitting cannot be saved.'
 			});

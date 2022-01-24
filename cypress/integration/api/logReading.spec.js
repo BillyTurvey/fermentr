@@ -5,7 +5,7 @@ describe('Unauthenticated log request', function () {
 	it('receives a 401 response code', function () {
 		cy.request({
 			method: 'POST',
-			url: '/device/093845/log',
+			url: '/api/device/093845/log',
 			headers: {
 				'device-key': 'incorrect-key'
 			},
@@ -25,7 +25,7 @@ describe('Authenticated log request', function () {
 		const key = Cypress.env('activeTestDeviceKey');
 		cy.request({
 			method: 'POST',
-			url: `/device/${device.id}/log`,
+			url: `/api/device/${device.id}/log`,
 			headers: {
 				'device-key': `${key}`
 			},
@@ -40,10 +40,9 @@ describe('Authenticated log request', function () {
 	it('log requests are saved in the database', function () {
 		const sameTemperature = randomTemperature();
 		const key = Cypress.env('activeTestDeviceKey');
-
 		cy.request({
 			method: 'POST',
-			url: `/device/${jeanette.activeTestDevice.id}/log`,
+			url: `/api/device/${jeanette.activeTestDevice.id}/log`,
 			headers: {
 				'device-key': key
 			},

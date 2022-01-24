@@ -5,7 +5,7 @@ if (fermentationHasTemperatureData()) drawGraph();
 async function drawGraph() {
 	const fermentationId = /[a-z0-9]{24}/.exec(window.location.pathname)[0];
 
-	let graphData = await fetch(`/api/${fermentationId}/graph`).catch(error => {
+	let graphData = await fetch(`/api/fermentation/${fermentationId}/graph`).catch(error => {
 		console.error(error.message);
 		// informUserFetchRequestFailed();
 	});

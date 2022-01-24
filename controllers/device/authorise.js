@@ -1,6 +1,6 @@
 import Device from '../../models/Device.js';
 
-export const authenticateAndAttachToReq = async (req, res, next, id) => {
+export const authoriseAndAttachToRequest = async (req, res, next, id) => {
 	if (req.user && (await req.user.ownsDevice(id))) {
 		try {
 			const device = await Device.findById(id).populate('assignedFermentation').exec();
