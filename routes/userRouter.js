@@ -8,7 +8,7 @@ router.post('/logIn', user.logIn);
 
 router.get('/dashboard', user.dashboard);
 
-router.get('/updateAccount', user.userAccountForm);
+router.get('/account', user.userAccountForm);
 // router.post('/account', user.updateAccount);
 
 router.get('/deleteAccount', user.confirmDelete);
