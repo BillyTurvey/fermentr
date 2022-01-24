@@ -70,49 +70,6 @@ export const sanitizeAndValidateUser = [
 	}
 ];
 
-export const sanitizeAndValidateDeviceLog = [
-	body('temperature').escape().trim().notEmpty().isNumeric(),
-	function sanitizeAndValidateDeviceLog(req, res, next) {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			res.status(400).json({errors: errors.array().map(err => err.msg)});
-		} else {
-			next();
-		}
-	}
-];
-
-export const sanitizeAndValidateDevice = [
-	body('name', 'Device name is a required field.').escape().trim().notEmpty(),
-	body('name', 'Device name is too long, please limit to fewer than 30 alphanumeric characters.').isLength({
-		max: 30
-	}),
-	body('description', 'Description is too long, please limit to fewer than 600 characters.')
-		.escape()
-		.trim()
-		.isLength({max: 600}),
-	body('assignedFermentation').escape(),
-	handleDeviceValidationErrors
-];
-
-function handleDeviceValidationErrors(req, res, next) {
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
-		req.flash(
-			'error',
-			errors.array().map(err => err.msg)
-		);
-		res.render('device/addDevice', {
-			title: 'Register A New Device',
-			device: null,
-			name: req.body.name,
-			flashes: req.flash()
-		});
-	} else {
-		next();
-	}
-}
-
 export const sanitizeAndValidateFermentation = [
 	// stringifyNumericFormInputs,
 	body('name', 'Fermentation name is a required field.').escape().trim().notEmpty(),
@@ -184,7 +141,8 @@ function stringifyNumericFormInputs(req, res, next) {
 	// may need this when validating gravity values
 	for (let input in req.body) {
 		req.body[input] = req.body[input] ? req.body[input] : '';
-		req.body[input] = typeof req.body[input] == 'number' ? req.body[input].toString() : req.body[input];
+		req.body[input] =
+			typeof req.body[input] == 'number' ? req.body[input].toString() : req.body[input];
 	}
 	next();
 }

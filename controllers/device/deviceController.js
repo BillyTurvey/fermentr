@@ -1,7 +1,8 @@
-import Device from '../models/Device.js';
-import DataLog from '../models/DataLog.js';
+import Device from '../../models/Device.js';
+import DataLog from '../../models/DataLog.js';
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
+import * as sanitizeAndValidate from '../../utils/validation/index.js';
 
 export const generateKey = (req, res, next) => {
 	res.locals.key = uuidv4();
@@ -16,7 +17,7 @@ export const hashKey = (req, res, next) => {
 	});
 };
 
-export const addToDatabase = async (req, res) => {
+export const addDeviceToDatabase = async (req, res) => {
 	try {
 		const device = await Device.create({
 			deviceID: res.locals.deviceID,
@@ -27,6 +28,7 @@ export const addToDatabase = async (req, res) => {
 			assignedFermentation:
 				req.body.assignedFermentation === 'null' ? null : req.body.assignedFermentation
 		});
+
 		req.flash('success', 'Device registered.');
 		return res.render('device/addDevice', {
 			title: 'Done!',
@@ -48,7 +50,7 @@ export const addToDatabase = async (req, res) => {
 	}
 };
 
-export const update = async (req, res) => {
+export const updateDeviceDBRecord = async (req, res) => {
 	try {
 		const device = req.device;
 		device.name = req.body.name;
@@ -72,6 +74,8 @@ export const update = async (req, res) => {
 		});
 	}
 };
+
+export const update = [sanitizeAndValidate.device, updateDeviceDBRecord];
 
 export const addDeviceForm = async (req, res, next) => {
 	if (req.user) {
@@ -181,3 +185,13 @@ export const sendTargetTemp = (req, res) => {
 	//calculate the time location
 	//send it back to the device
 };
+
+export const register = [
+	// sanitize and validate device
+	sanitizeAndValidate.device,
+	//generate hashed access token
+	generateKey,
+	hashKey,
+	//save to db
+	addDeviceToDatabase
+];

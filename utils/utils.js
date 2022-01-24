@@ -58,3 +58,9 @@ function getDateSuffix(date) {
 			return 'th';
 	}
 }
+
+export const removeSessionFromRequest = (req, res, next) => {
+	req.session = null;
+	res.locals.flashes = null;
+	next();
+};
