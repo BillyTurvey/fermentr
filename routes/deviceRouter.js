@@ -1,6 +1,7 @@
 import {Router} from 'express';
-import * as device from '../controllers/device/deviceController.js';
+import * as device from '../controllers/device/index.js';
 import { removeSessionFromRequest } from '../utils/utils.js';
+import { logReading } from '../controllers/device/deviceController.js';
 
 const router = Router();
 
@@ -17,6 +18,6 @@ router.post('/:id/delete', device.deleteDevice);
 
 router.use(removeSessionFromRequest);
 
-router.post('/:id/log',	device.logReading);
+router.post('/:id/log',	logReading);
 
 export default router;
