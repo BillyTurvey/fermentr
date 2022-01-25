@@ -5,7 +5,6 @@ import * as sanitizeAndValidate from '../../utils/validation/index.js';
 import {authenticateUserAndEstablishSession} from './logIn.js';
 
 export const addUserToDatabase = async (req, res, next) => {
-	console.log(`🔴 `);
 	try {
 		const registrationPassword = await Util.findById('6154725802b5519bf4772293').exec();
 		const isAuthorisedToRegister = await bcrypt.compare(
